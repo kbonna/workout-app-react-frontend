@@ -1,0 +1,61 @@
+@import "../../variables.scss";
+
+.burger-wrapper {
+  cursor: pointer;
+  padding: 4px;
+}
+
+.burger {
+  --burger-width: 30px;
+  --burger-height: 4px;
+  --burger-gap: 5px;
+  --transition-duration: 100ms;
+
+  position: relative;
+  background-color: white;
+  width: var(--burger-width);
+  height: var(--burger-height);
+
+  @media screen and (min-width: $sidebar-breakpoint) {
+    display: none;
+  }
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--burger-height);
+    background-color: inherit;
+    transition: transform var(--transition-duration) ease-in-out,
+      top var(--transition-duration) ease-in-out;
+  }
+
+  &:before {
+    top: calc((-1) * var(--burger-gap) + (-1) * var(--burger-height));
+  }
+
+  &:after {
+    top: calc(var(--burger-gap) + var(--burger-height));
+  }
+
+  &--opened {
+    height: 0;
+
+    &:before,
+    &:after {
+      top: 0;
+      transition: transform var(--transition-duration) ease-in-out,
+        top var(--transition-duration) ease-in-out;
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import "../../variables.scss";
+
+.app-content {
+  position: relative;
+  top: var(--header-height);
+  left: var(--sidebar-width);
+  width: calc(100vw - var(--sidebar-width));
+  padding: 2em;
+
+  @media screen and (max-width: $sidebar-breakpoint) {
+    left: 0;
+    width: 100%;
+  }
+}

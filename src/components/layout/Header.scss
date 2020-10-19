@@ -1,0 +1,30 @@
+.header {
+  // layout
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+
+  // inside layout
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  // style
+  background-color: var(--col-gray-1);
+  color: white;
+  padding: 0 1.5rem;
+
+  &__logo {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+  }
+}

@@ -1,0 +1,63 @@
+@import "../../variables.scss";
+
+.sidebar {
+  --transition-duration: 100ms;
+
+  // layout
+  z-index: 20;
+  position: fixed;
+  left: 0;
+  top: var(--header-height);
+  bottom: 0;
+  width: var(--sidebar-width);
+
+  // style
+  background-color: var(--col-gray-5);
+  font-size: 1.25rem;
+  color: var(--col-gray-1);
+
+  @media screen and (max-width: $sidebar-breakpoint) {
+    left: calc((-1) * var(--sidebar-width));
+    transition: left var(--transition-duration) ease-in-out;
+
+    &--opened {
+      left: 0;
+      transition: left var(--transition-duration) ease-in-out;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin-top: 0.5em;
+  }
+
+  &__list-item-separator {
+    align-self: center;
+    font-size: 0.75em;
+    font-weight: bold;
+    border-top: 1px solid var(--col-gray-4);
+    padding-top: 0.5em;
+    width: 90%;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 0.5em 0.5em;
+    border-radius: 5px;
+    margin: 0.6em 1.2em;
+
+    &--active {
+      background-color: var(--col-gray-1);
+      color: var(--col-white);
+    }
+
+    &:hover {
+      background-color: var(--col-gray-1);
+      color: var(--col-white);
+    }
+  }
+}
