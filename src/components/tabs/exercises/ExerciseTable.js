@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import ExerciseTableRow from "./ExerciseTableRow";
 import "./ExerciseTable.scss";
+import ExerciseTableHeader from "./ExerciseTableHeader";
+import ExerciseTableRow from "./ExerciseTableRow";
+import ExerciseTableFooter from "./ExerciseTableFooter";
+import ExerciseTableError from "./ExerciseTableError";
 
-const EXERCISES_PER_PAGE = 7;
+export const EXERCISES_PER_PAGE = 7;
 
 function ExerciseTable({ exercises }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,33 +23,24 @@ function ExerciseTable({ exercises }) {
     }
   };
 
-  // variables derived from state
+  // variables derived from state & props
   const nExercises = exercises.length;
   const nPages = Math.ceil(nExercises / EXERCISES_PER_PAGE);
-
-  const firstExerciseIndex = (currentPage - 1) * EXERCISES_PER_PAGE;
-  let lastExerciseIndex = currentPage * EXERCISES_PER_PAGE;
-  if (lastExerciseIndex + 1 > nExercises) {
-    lastExerciseIndex = nExercises;
-  }
+  const [firstExerciseIndex, lastExerciseIndex] = getPaginatedRange(
+    currentPage,
+    EXERCISES_PER_PAGE,
+    nExercises
+  );
 
   const exercisesToShow = exercises.slice(
     firstExerciseIndex,
     lastExerciseIndex
   );
 
-  const exercisesToShowInfo = `${
-    firstExerciseIndex + 1
-  }-${lastExerciseIndex} out of ${exercises.length} exercises`;
-
   return exercises.length ? (
     <table className="exercise-table">
       <thead>
-        <tr className="exercise-table__header-row">
-          <th className="exercise-table__header-cell">Name</th>
-          <th className="exercise-table__header-cell">Type</th>
-          <th className="exercise-table__header-cell"></th>
-        </tr>
+        <ExerciseTableHeader></ExerciseTableHeader>
       </thead>
       <tbody>
         {exercisesToShow.map((exercise, idx) => (
@@ -57,94 +51,37 @@ function ExerciseTable({ exercises }) {
         ))}
       </tbody>
       <tfoot>
-        <tr className="exercise-table__footer-row">
-          <th className="exercise-table__footer-cell">
-            <div className="exercise-table__nav">
-              <button
-                className="exercise-table__nav-btn"
-                onClick={decrementPage}
-              >
-                {"<"}
-              </button>
-              <p>
-                {exerciseTableNavDigits(
-                  currentPage,
-                  nPages,
-                  "exercise-table__nav-regular-digit",
-                  "exercise-table__nav-currentpage-digit",
-                  "exercise-table__nav-dots"
-                )}
-              </p>
-              <button
-                className="exercise-table__nav-btn"
-                onClick={incrementPage}
-              >
-                {">"}
-              </button>
-            </div>
-          </th>
-          <th className="exercise-table__footer-cell"></th>
-          <th className="exercise-table__footer-cell">{exercisesToShowInfo}</th>
-        </tr>
+        <ExerciseTableFooter
+          currentPage={currentPage}
+          nPages={nPages}
+          decrementPage={decrementPage}
+          incrementPage={incrementPage}
+          nExercises={nExercises}
+        ></ExerciseTableFooter>
       </tfoot>
     </table>
   ) : (
-    <div className="exercise-table__error">No exercises found.</div>
+    <ExerciseTableError></ExerciseTableError>
   );
 }
 
-function exerciseTableNavDigits(
-  currentPage,
-  nPages,
-  regularDigitClassName,
-  currentPageDigitClassName,
-  dotsClassName
-) {
-  let pageNumbers = [...Array(nPages + 1).keys()].slice(1);
-
-  // remove pages in between
-  pageNumbers = pageNumbers.filter((pageNumber) =>
-    pageNumber === 1 ||
-    (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1) ||
-    pageNumber === nPages
-      ? true
-      : false
-  );
-
-  // insert dots
-  if (nPages > 3) {
-    if (pageNumbers[1] !== pageNumbers[0] + 1) {
-      pageNumbers.splice(1, 0, "...");
-    }
-    if (
-      pageNumbers[pageNumbers.length - 1] !==
-      pageNumbers[pageNumbers.length - 2] + 1
-    )
-      pageNumbers.splice(pageNumbers.length - 1, 0, "...");
-  }
-
-  // wrap all pages in spans
-  pageNumbers = pageNumbers.map((pageNumber, idx) => {
-    let className;
-    let key;
-    if (pageNumber === "...") {
-      className = dotsClassName;
-      key = `exercise-table-nav-item-dots-${idx}`;
-    } else if (pageNumber === currentPage) {
-      className = currentPageDigitClassName;
-      key = `exercise-table-nav-item-page-${pageNumber}`;
-    } else {
-      className = regularDigitClassName;
-      key = `exercise-table-nav-item-page-${pageNumber}`;
-    }
-    return (
-      <span key={key} className={className}>
-        {pageNumber}
-      </span>
-    );
-  });
-
-  return pageNumbers;
-}
+/**
+ * Let's assume that we have array of nItems items that we want to divide into
+ * pages containing nItemsPerPage items per page. This function returns first
+ * and last index of array slice (subarray) that contains all items for page
+ * with number currentPage.
+ *
+ * @param {number} currentPage - Current page number.
+ * @param {number} itemsPerPage - Number of items per page.
+ * @param {number} nItems - Total number of items in a collection.
+ */
+export const getPaginatedRange = (currentPage, nItemsPerPage, nItems) => {
+  const firstItemIndex = (currentPage - 1) * nItemsPerPage;
+  const lastItemIndex =
+    currentPage * nItemsPerPage + 1 > nItems
+      ? nItems
+      : currentPage * nItemsPerPage;
+  return [firstItemIndex, lastItemIndex];
+};
 
 export default ExerciseTable;

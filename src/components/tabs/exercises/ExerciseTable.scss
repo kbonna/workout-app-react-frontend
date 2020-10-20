@@ -64,9 +64,12 @@
   &__nav-dots {
     margin: 0 0.75em;
   }
-}
 
-.exercise-table {
+  &__link {
+    text-decoration: none;
+    color: inherit;
+  }
+
   &__error {
     margin-top: 2rem;
     height: 75px;

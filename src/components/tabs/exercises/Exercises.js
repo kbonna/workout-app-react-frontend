@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import ExerciseTable from "./ExerciseTable";
-import { UserContext, API_URL } from "../../App";
-import { header_with_token } from "../../../services/Auth";
+import { UserContext, API_URL } from "components/App";
+import { header_with_token } from "services/Auth";
 import { useRouteMatch, useLocation, Route, Switch } from "react-router-dom";
-import LinkHighlighedIfMatch from "./../../hoc/LinkHighlighedIfMatch";
+import LinkHighlighedIfMatch from "components/hoc/LinkHighlighedIfMatch";
 import "./Exercises.scss";
 
 function Exercises() {
