@@ -9,25 +9,50 @@ import "./Exercises.scss";
 function Exercises() {
   const [exercises, setExercises] = useState([]);
   const [exercisesFilterString, setExercisesFilterString] = useState("");
-  const user = useContext(UserContext);
-  const { userId } = user;
+  const { userId } = useContext(UserContext);
 
   let { url } = useRouteMatch();
   let location = useLocation();
 
   useEffect(() => {
     if (userId) {
-      fetch(`${API_URL}/exercises/?user=${userId}`, {
-        headers: header_with_token(),
-      }).then((res) => {
-        if (res.status === 200) {
-          res.json().then((json) => {
-            setExercises(json);
-          });
-        }
-      });
+      if (location.pathname === `${url}/my-exercises`) {
+        fetchExercises(API_URL, userId).then((exercises) => {
+          if (exercises.length) {
+            setExercises(exercises);
+          }
+        });
+      } else if (location.pathname === `${url}/discover`) {
+        fetchExercises(API_URL, userId, true).then((exercises) => {
+          if (exercises.length) {
+            setExercises(exercises);
+          }
+        });
+      }
     }
-  }, [userId]);
+  }, [userId, url, location.pathname]);
+
+  function handleDelete(exerciseId) {
+    fetch(`${API_URL}/exercises/${exerciseId}`, {
+      method: "delete",
+      headers: header_with_token(),
+    }).then((res) => {
+      if (res.status === 204) {
+        console.log("resetting exercises");
+        setExercises((prevExercises) =>
+          prevExercises.filter((exercise) => exercise.pk !== exerciseId)
+        );
+      }
+    });
+  }
+
+  function handleEdit(exerciseId) {
+    console.log(`editing exercise ${exerciseId}`);
+  }
+
+  function handleFork(exerciseId) {
+    console.log(`forking exercise ${exerciseId}`);
+  }
 
   const filterExercises = (exercises, exercisesFilterString) => {
     return exercises.filter((exercise) => {
@@ -78,14 +103,42 @@ function Exercises() {
         <Route path={`${url}/my-exercises`}>
           <ExerciseTable
             exercises={filterExercises(exercises, exercisesFilterString)}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
           ></ExerciseTable>
         </Route>
         <Route path={`${url}/discover`}>
-          <h1>Discover</h1>
+          <ExerciseTable
+            exercises={filterExercises(exercises, exercisesFilterString)}
+            handleFork={handleFork}
+          ></ExerciseTable>
         </Route>
       </Switch>
     </>
   );
 }
+
+/**
+ * Returns all exercise owned by the user. In case of error in response, empty
+ * array is returned.
+ *
+ * @param {string} api_url - REST API url.
+ * @param {number} userId - User primary key.
+ * @param {boolean} discover - Determines if querystring should include discover
+ * flag.
+ */
+const fetchExercises = async function (api_url, userId, discover = false) {
+  const response = await fetch(
+    `${api_url}/exercises/?user=${userId}${discover ? "&discover=True" : ""}`,
+    {
+      headers: header_with_token(),
+    }
+  );
+  if (response.status !== 200) {
+    return [];
+  }
+  const exercises = await response.json();
+  return exercises;
+};
 
 export default Exercises;

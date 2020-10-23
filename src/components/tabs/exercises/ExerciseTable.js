@@ -7,8 +7,12 @@ import ExerciseTableError from "./ExerciseTableError";
 
 export const EXERCISES_PER_PAGE = 7;
 
-function ExerciseTable({ exercises }) {
+function ExerciseTable({ exercises, handleEdit, handleDelete, handleFork }) {
   const [currentPage, setCurrentPage] = useState(1);
+
+  // TODO: don't pass handleFork where it is not required (header, footer).
+  // Instead create bool varable here isDiscover based on handleFork being
+  // undefined and pass that information to chilren.
 
   // functions
   const decrementPage = () => {
@@ -40,13 +44,16 @@ function ExerciseTable({ exercises }) {
   return exercises.length ? (
     <table className="exercise-table">
       <thead>
-        <ExerciseTableHeader></ExerciseTableHeader>
+        <ExerciseTableHeader handleFork={handleFork}></ExerciseTableHeader>
       </thead>
       <tbody>
         {exercisesToShow.map((exercise, idx) => (
           <ExerciseTableRow
             key={exercise.pk}
             exercise={exercise}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            handleFork={handleFork}
           ></ExerciseTableRow>
         ))}
       </tbody>
@@ -57,6 +64,7 @@ function ExerciseTable({ exercises }) {
           decrementPage={decrementPage}
           incrementPage={incrementPage}
           nExercises={nExercises}
+          handleFork={handleFork}
         ></ExerciseTableFooter>
       </tfoot>
     </table>

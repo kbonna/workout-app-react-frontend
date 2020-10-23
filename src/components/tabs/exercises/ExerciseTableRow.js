@@ -1,20 +1,67 @@
 import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { header_with_token } from "services/Auth";
-import { API_URL } from "components/App";
 
-function ExerciseTableRow({ exercise }) {
+function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
   const { url } = useRouteMatch();
   let parentUrl = url.split("/").slice(0, -1).join("/");
 
-  function handleDelete(e) {
-    fetch(`${API_URL}/exercises/${exercise.pk}`, {
-      method: "delete",
-      headers: header_with_token(),
-    }).then((res) => {
-      console.log(res);
-      res.json().then((json) => console.log(json));
-    });
+  console.log(handleFork, handleEdit, handleDelete);
+
+  let buttons = [];
+  if (typeof handleEdit !== "undefined") {
+    buttons.push(
+      <button
+        onClick={() => {
+          handleEdit(exercise.pk);
+        }}
+        className="btn mx-1"
+      >
+        Edit
+      </button>
+    );
+  }
+  if (typeof handleDelete !== "undefined") {
+    buttons.push(
+      <button
+        onClick={() => {
+          handleDelete(exercise.pk);
+        }}
+        className="btn"
+      >
+        Delete
+      </button>
+    );
+  }
+  if (typeof handleFork !== "undefined") {
+    if (exercise.can_be_forked) {
+      buttons.push(
+        <button
+          onClick={() => {
+            handleFork(exercise.pk);
+          }}
+          className="btn"
+        >
+          Fork
+        </button>
+      );
+    } else {
+      buttons.push(
+        <span className="exercise-table__span">You already own this</span>
+      );
+    }
+  }
+
+  let forksCountCell;
+  if (typeof handleFork !== "undefined") {
+    if (exercise.forks_count) {
+      forksCountCell = (
+        <td className="exercise-table__cell">{`${exercise.forks_count} ★`}</td>
+      );
+    } else {
+      forksCountCell = <td className="exercise-table__cell">{"-"}</td>;
+    }
+  } else {
+    forksCountCell = null;
   }
 
   return (
@@ -28,12 +75,8 @@ function ExerciseTableRow({ exercise }) {
         </Link>
       </td>
       <td className="exercise-table__cell">{exercise.kind_display}</td>
-      <td className="exercise-table__cell">
-        <button className="btn mx-1">Edit</button>
-        <button onClick={handleDelete} className="btn">
-          Delete
-        </button>
-      </td>
+      {forksCountCell}
+      <td className="exercise-table__cell">{buttons}</td>
     </tr>
   );
 }
