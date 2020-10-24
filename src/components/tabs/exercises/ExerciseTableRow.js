@@ -5,8 +5,6 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
   const { url } = useRouteMatch();
   let parentUrl = url.split("/").slice(0, -1).join("/");
 
-  console.log(handleFork, handleEdit, handleDelete);
-
   let buttons = [];
   if (typeof handleEdit !== "undefined") {
     buttons.push(
@@ -15,6 +13,7 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
           handleEdit(exercise.pk);
         }}
         className="btn mx-1"
+        key={`button-edit-${exercise.pk}`}
       >
         Edit
       </button>
@@ -27,6 +26,7 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
           handleDelete(exercise.pk);
         }}
         className="btn"
+        key={`button-delete-${exercise.pk}`}
       >
         Delete
       </button>
@@ -40,13 +40,16 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
             handleFork(exercise.pk);
           }}
           className="btn"
+          key={`button-fork-${exercise.pk}`}
         >
           Fork
         </button>
       );
     } else {
       buttons.push(
-        <span className="exercise-table__span">You already own this</span>
+        <span className="exercise-table__span " key={`span-${exercise.pk}`}>
+          You already own this
+        </span>
       );
     }
   }

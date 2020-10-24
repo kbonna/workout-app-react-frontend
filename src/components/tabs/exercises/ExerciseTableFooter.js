@@ -7,17 +7,8 @@ function ExerciseTableFooter({
   decrementPage,
   incrementPage,
   nExercises,
-  handleFork,
+  isDiscover,
 }) {
-  let colspanValue;
-  if (typeof handleFork === "undefined") {
-    // my-exercises tab
-    colspanValue = "1";
-  } else {
-    // discover tab
-    colspanValue = "2";
-  }
-
   const [firstExerciseIndex, lastExerciseIndex] = getPaginatedRange(
     currentPage,
     EXERCISES_PER_PAGE,
@@ -49,7 +40,10 @@ function ExerciseTableFooter({
           </button>
         </div>
       </td>
-      <td colSpan={colspanValue} className="exercise-table__footer-cell"></td>
+      <td
+        colSpan={isDiscover ? "2" : "1"}
+        className="exercise-table__footer-cell"
+      ></td>
       <td className="exercise-table__footer-cell">{exercisesToShowInfo}</td>
     </tr>
   );

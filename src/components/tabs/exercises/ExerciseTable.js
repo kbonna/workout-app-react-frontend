@@ -1,18 +1,21 @@
-import React, { useState } from "react";
-import "./ExerciseTable.scss";
+import React, { useState, useEffect } from "react";
+import { useRouteMatch } from "react-router-dom";
+
 import ExerciseTableHeader from "./ExerciseTableHeader";
 import ExerciseTableRow from "./ExerciseTableRow";
 import ExerciseTableFooter from "./ExerciseTableFooter";
-import ExerciseTableError from "./ExerciseTableError";
+import "./ExerciseTable.scss";
 
 export const EXERCISES_PER_PAGE = 7;
 
 function ExerciseTable({ exercises, handleEdit, handleDelete, handleFork }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const isDiscover = typeof handleFork !== "undefined" ? true : false;
+  const { url } = useRouteMatch();
 
-  // TODO: don't pass handleFork where it is not required (header, footer).
-  // Instead create bool varable here isDiscover based on handleFork being
-  // undefined and pass that information to chilren.
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [url]);
 
   // functions
   const decrementPage = () => {
@@ -41,10 +44,10 @@ function ExerciseTable({ exercises, handleEdit, handleDelete, handleFork }) {
     lastExerciseIndex
   );
 
-  return exercises.length ? (
+  return (
     <table className="exercise-table">
       <thead>
-        <ExerciseTableHeader handleFork={handleFork}></ExerciseTableHeader>
+        <ExerciseTableHeader isDiscover={isDiscover}></ExerciseTableHeader>
       </thead>
       <tbody>
         {exercisesToShow.map((exercise, idx) => (
@@ -64,14 +67,14 @@ function ExerciseTable({ exercises, handleEdit, handleDelete, handleFork }) {
           decrementPage={decrementPage}
           incrementPage={incrementPage}
           nExercises={nExercises}
-          handleFork={handleFork}
+          isDiscover={isDiscover}
         ></ExerciseTableFooter>
       </tfoot>
     </table>
-  ) : (
-    <ExerciseTableError></ExerciseTableError>
   );
 }
+
+export default ExerciseTable;
 
 /**
  * Let's assume that we have array of nItems items that we want to divide into
@@ -91,5 +94,3 @@ export const getPaginatedRange = (currentPage, nItemsPerPage, nItems) => {
       : currentPage * nItemsPerPage;
   return [firstItemIndex, lastItemIndex];
 };
-
-export default ExerciseTable;
