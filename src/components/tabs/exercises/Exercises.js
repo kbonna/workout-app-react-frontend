@@ -5,10 +5,21 @@ import { useLocation, Route, Switch, useRouteMatch } from "react-router-dom";
 
 import ExerciseTablePage from "./ExerciseTablePage";
 import ExerciseDetailPage from "./ExerciseDetailPage";
+import { fetchExercise, fetchExercises } from "services/Exercises";
 
+/**
+ * State:
+ *  exercises:
+ *    Array representing fetched list of exercises. In case of fetching single
+ *    exercise using detail endpoint, array will contain single element. Empty
+ *    array represents cases in which exercises were not found (due to either
+ *    incorrectly requesting non existing resource or in the case when user did
+ *    not defined or forked any exercises yet). During fetching, exercises is
+ *    null to inform child compontents that they should render loaders instead
+ *    of missing resources information.
+ */
 function Exercises() {
   const [exercises, setExercises] = useState([]);
-  const [exercisesFilterString, setExercisesFilterString] = useState("");
   const { userId } = useContext(UserContext);
 
   const location = useLocation();
@@ -17,39 +28,38 @@ function Exercises() {
   const urlDiscover = `${url}/discover`;
   const urlExercise = `${url}/exercise`;
 
-  console.log(exercises);
-
-  useEffect(() => {
+  const fetchData = () => {
     if (userId) {
+      setExercises(null);
+      let fetchDataPromise;
       if (location.pathname === urlMyExercises) {
-        //TODO: some loading spinner
-        fetchExercises(API_URL, userId).then((exercises) => {
-          if (exercises.length) {
-            setExercises(exercises);
-          }
-        });
+        fetchDataPromise = fetchExercises(API_URL, userId);
       } else if (location.pathname === urlDiscover) {
-        fetchExercises(API_URL, userId, true).then((exercises) => {
-          if (exercises.length) {
-            setExercises(exercises);
-          }
-        });
+        fetchDataPromise = fetchExercises(API_URL, userId, true);
       } else if (location.pathname.includes(urlExercise)) {
         const exerciseId = location.pathname.split("/").slice(-1)[0];
-        fetchExercise(API_URL, exerciseId).then((exercise) => {
-          setExercises([exercise]);
-        });
+        fetchDataPromise = fetchExercise(API_URL, exerciseId);
       }
+      fetchDataPromise.then((exercises) => {
+        if (exercises.length) {
+          setExercises(exercises);
+        } else {
+          setExercises([]);
+        }
+      });
     }
-  }, [userId, location.pathname, urlDiscover, urlExercise, urlMyExercises]);
+  };
 
+  useEffect(fetchData, [userId, location.pathname]);
+  // console.log(JSON.stringify(header_with_token()));
+
+  // TODO: move into servives
   function handleDelete(exerciseId) {
     fetch(`${API_URL}/exercises/${exerciseId}`, {
       method: "delete",
       headers: header_with_token(),
     }).then((res) => {
       if (res.status === 204) {
-        console.log("resetting exercises");
         setExercises((prevExercises) =>
           prevExercises.filter((exercise) => exercise.pk !== exerciseId)
         );
@@ -62,79 +72,36 @@ function Exercises() {
   }
 
   function handleFork(exerciseId) {
-    console.log(`forking exercise ${exerciseId}`);
-  }
-
-  const filterExercises = (exercises, exercisesFilterString) => {
-    return exercises.filter((exercise) => {
-      if (!exercisesFilterString) {
-        return true;
-      } else if (exercise.name.includes(exercisesFilterString)) {
-        return true;
-      } else {
-        return false;
-      }
+    fetch(`${API_URL}/exercises/${exerciseId}`, {
+      method: "post",
+      headers: header_with_token(),
+    }).then((res) => {
+      console.log(res);
     });
-  };
+  }
 
   return (
     <>
       <Switch>
-        <Route path={`${url}/my-exercises`}>
+        <Route path={urlMyExercises}>
           <ExerciseTablePage
-            exercises={filterExercises(exercises, exercisesFilterString)}
-            setExercisesFilterString={setExercisesFilterString}
+            exercises={exercises}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
           ></ExerciseTablePage>
         </Route>
-        <Route path={`${url}/discover`}>
+        <Route path={urlDiscover}>
           <ExerciseTablePage
-            exercises={filterExercises(exercises, exercisesFilterString)}
-            setExercisesFilterString={setExercisesFilterString}
+            exercises={exercises}
             handleFork={handleFork}
           ></ExerciseTablePage>
         </Route>
-        <Route path={`${url}/exercise/:id`}>
-          <ExerciseDetailPage></ExerciseDetailPage>
+        <Route path={`${urlExercise}/:id`}>
+          <ExerciseDetailPage exercises={exercises}></ExerciseDetailPage>
         </Route>
       </Switch>
     </>
   );
 }
-
-/**
- * Returns all exercise owned by the user. In case of error in response, empty
- * array is returned.
- *
- * @param {string} api_url - REST API url.
- * @param {number} userId - User primary key.
- * @param {boolean} discover - Determines if querystring should include discover
- * flag.
- */
-const fetchExercises = async function (api_url, userId, discover = false) {
-  const response = await fetch(
-    `${api_url}/exercises/?user=${userId}${discover ? "&discover=True" : ""}`,
-    {
-      headers: header_with_token(),
-    }
-  );
-  if (response.status !== 200) {
-    return [];
-  }
-  const exercises = await response.json();
-  return exercises;
-};
-
-const fetchExercise = async function (api_url, exerciseId) {
-  const response = await fetch(`${api_url}/exercises/${exerciseId}`, {
-    headers: header_with_token(),
-  });
-  if (response.status !== 200) {
-    return [];
-  }
-  const exercises = await response.json();
-  return exercises;
-};
 
 export default Exercises;

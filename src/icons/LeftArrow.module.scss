@@ -1,0 +1,8 @@
+.icon-left-arrow {
+  &:hover {
+    transform: translateX(-10%);
+  }
+
+  transition: transform 150ms ease-in-out;
+  cursor: pointer;
+}

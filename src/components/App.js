@@ -9,7 +9,7 @@ import SignupForm from "./forms/SignupForm";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 import PublicRoute from "./hoc/PublicRoute";
 import LandingPage from "./layout/LandingPage";
-import { login, signup } from "../services/Auth";
+import { login, signup, current_user } from "services/Auth";
 
 export const BASE_URL = "http://localhost:8000";
 export const API_URL = BASE_URL + "/api";
@@ -32,57 +32,44 @@ function App() {
   const [isSidebarOpened, setIsSidebarOpened] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      fetch(`${API_URL}/current_user`, {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem("token")}`,
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          res.json().then((json) => {
-            setLoggedIn(true);
-            setUsername(json.username);
-            setUserId(json.pk);
-          });
-        } else {
-          setLoggedIn(false);
-        }
+    current_user()
+      .then((user) => {
+        setLoggedIn(true);
+        setUsername(user.username);
+        setUserId(user.pk);
+      })
+      .catch((error) => {
+        setLoggedIn(false);
+        setUsername("");
+        setUserId("");
       });
-    } else {
-      setLoggedIn(false);
-    }
   }, [loggedIn]);
 
   const handleLogin = (e, username, password, history) => {
     login(username, password)
-      .then((userId) => {
+      .then(() => {
         setLoggedIn(true);
-        setUsername(username);
-        setUserId(userId);
         history.push("/app/dashboard");
       })
       .catch((error) => {
-        setLoginErrorMsg(error);
+        setLoginErrorMsg(error.message);
       });
   };
 
   const handleSignup = (e, username, password, history) => {
     signup(username, password)
-      .then((userId) => {
-        setUsername(username);
-        setUserId(userId);
-        setLoggedIn(true);
-        history.push("app/dashboard");
+      .then(() => {
+        handleLogin(e, username, password, history);
       })
       .catch((error) => {
-        setSignupErrorMsg(error);
+        setSignupErrorMsg(error.message);
       });
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("token-access");
+    localStorage.removeItem("token-refresh");
     setLoggedIn(false);
-    setUsername("");
   };
 
   if (loggedIn === null) {
