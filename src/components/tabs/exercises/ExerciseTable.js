@@ -26,7 +26,7 @@ export const EXERCISES_PER_PAGE = 7;
  *    null to inform child compontents that they should render loaders instead
  *    of missing resources information.
  */
-function ExerciseTable({ exercisesFilterString }) {
+function ExerciseTable({ exercisesFilterString, url }) {
   const [exercises, setExercises] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -38,16 +38,8 @@ function ExerciseTable({ exercisesFilterString }) {
   console.log("rendering...", exercises === null ? null : exercises.length);
 
   const fetchData = () => {
-    // sleep(100);
-
     if (userId) {
-      let fetchExercisesPromise;
-      if (stripCurrentPath(location.pathname) === "my-exercises") {
-        fetchExercisesPromise = fetchExercises(API_URL, userId);
-      } else if (stripCurrentPath(location.pathname) === "discover") {
-        fetchExercisesPromise = fetchExercises(API_URL, userId, true);
-      }
-      fetchExercisesPromise.then((exercises) => {
+      url().then((exercises) => {
         if (exercises.length) {
           setExercises(exercises);
           setCurrentPage(1);
@@ -62,7 +54,7 @@ function ExerciseTable({ exercisesFilterString }) {
     };
   };
 
-  useEffect(fetchData, [location.pathname, userId]);
+  useEffect(fetchData, [userId, url]);
 
   // TODO: move into servives
   function handleDelete(exerciseId) {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ExerciseTableNav from "./ExerciseTableNav";
 import ExerciseTable from "./ExerciseTable";
 
-function ExerciseTablePage() {
+function ExerciseTablePage({ url }) {
   const [exercisesFilterString, setExercisesFilterString] = useState("");
 
   return (
@@ -12,6 +12,7 @@ function ExerciseTablePage() {
       ></ExerciseTableNav>
       <ExerciseTable
         exercisesFilterString={exercisesFilterString}
+        url={url}
       ></ExerciseTable>
     </>
   );
