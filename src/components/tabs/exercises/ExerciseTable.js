@@ -1,21 +1,95 @@
-import React, { useState, useEffect } from "react";
-import { useRouteMatch } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
 
 import ExerciseTableHeader from "./ExerciseTableHeader";
 import ExerciseTableRow from "./ExerciseTableRow";
 import ExerciseTableFooter from "./ExerciseTableFooter";
+import ExerciseTableError from "./ExerciseTableError";
 import "./ExerciseTable.scss";
+import Spinner from "icons/Spinner";
+
+import { UserContext, API_URL } from "components/App";
+import { header_with_token } from "services/Auth";
+import { useLocation } from "react-router-dom";
+import { fetchExercises } from "services/Exercises";
+import { stripCurrentPath } from "utilities/misc";
 
 export const EXERCISES_PER_PAGE = 7;
 
-function ExerciseTable({ exercises, handleEdit, handleDelete, handleFork }) {
+/**
+ * State:
+ *  exercises:
+ *    Array representing fetched list of exercises. In case of fetching single
+ *    exercise using detail endpoint, array will contain single element. Empty
+ *    array represents cases in which exercises were not found (due to either
+ *    incorrectly requesting non existing resource or in the case when user did
+ *    not defined or forked any exercises yet). During fetching, exercises is
+ *    null to inform child compontents that they should render loaders instead
+ *    of missing resources information.
+ */
+function ExerciseTable({ exercisesFilterString }) {
+  const [exercises, setExercises] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const isDiscover = typeof handleFork !== "undefined" ? true : false;
-  const { url } = useRouteMatch();
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [url]);
+  const { userId } = useContext(UserContext);
+
+  const location = useLocation();
+  const isDiscover = stripCurrentPath(location.pathname) === "discover";
+
+  console.log("rendering...", exercises === null ? null : exercises.length);
+
+  const fetchData = () => {
+    // sleep(100);
+
+    if (userId) {
+      let fetchExercisesPromise;
+      if (stripCurrentPath(location.pathname) === "my-exercises") {
+        fetchExercisesPromise = fetchExercises(API_URL, userId);
+      } else if (stripCurrentPath(location.pathname) === "discover") {
+        fetchExercisesPromise = fetchExercises(API_URL, userId, true);
+      }
+      fetchExercisesPromise.then((exercises) => {
+        if (exercises.length) {
+          setExercises(exercises);
+          setCurrentPage(1);
+        } else {
+          setExercises([]);
+        }
+      });
+    }
+    return () => {
+      console.log("cleanup...");
+      setExercises(null);
+    };
+  };
+
+  useEffect(fetchData, [location.pathname, userId]);
+
+  // TODO: move into servives
+  function handleDelete(exerciseId) {
+    fetch(`${API_URL}/exercises/${exerciseId}`, {
+      method: "delete",
+      headers: header_with_token(),
+    }).then((res) => {
+      if (res.status === 204) {
+        setExercises((prevExercises) =>
+          prevExercises.filter((exercise) => exercise.pk !== exerciseId)
+        );
+      }
+    });
+  }
+
+  function handleEdit(exerciseId) {
+    console.log(`editing exercise ${exerciseId}`);
+  }
+
+  function handleFork(exerciseId) {
+    fetch(`${API_URL}/exercises/${exerciseId}`, {
+      method: "post",
+      headers: header_with_token(),
+    }).then((res) => {
+      console.log(res);
+    });
+  }
 
   // functions
   const decrementPage = () => {
@@ -25,53 +99,63 @@ function ExerciseTable({ exercises, handleEdit, handleDelete, handleFork }) {
   };
 
   const incrementPage = () => {
-    if (currentPage < nPages) {
+    if (currentPage < Math.ceil(exercises.length / EXERCISES_PER_PAGE)) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
-  // variables derived from state & props
-  const nExercises = exercises.length;
-  const nPages = Math.ceil(nExercises / EXERCISES_PER_PAGE);
-  const [firstExerciseIndex, lastExerciseIndex] = getPaginatedRange(
-    currentPage,
-    EXERCISES_PER_PAGE,
-    nExercises
-  );
+  if (exercises === null) {
+    return (
+      <div
+        className="d-flex justify-content-center"
+        style={{ marginTop: "100px" }}
+      >
+        <Spinner></Spinner>
+      </div>
+    );
+  } else if (!exercises.length) {
+    return <ExerciseTableError></ExerciseTableError>;
+  } else {
+    const [firstExerciseIndex, lastExerciseIndex] = getPaginatedRange(
+      currentPage,
+      EXERCISES_PER_PAGE,
+      exercises.length
+    );
 
-  const exercisesToShow = exercises.slice(
-    firstExerciseIndex,
-    lastExerciseIndex
-  );
+    const actionHandlers = isDiscover
+      ? { handleFork: handleFork }
+      : { handleDelete: handleDelete, handleEdit: handleEdit };
 
-  return (
-    <table className="exercise-table">
-      <thead>
-        <ExerciseTableHeader isDiscover={isDiscover}></ExerciseTableHeader>
-      </thead>
-      <tbody>
-        {exercisesToShow.map((exercise, idx) => (
-          <ExerciseTableRow
-            key={exercise.pk}
-            exercise={exercise}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
-            handleFork={handleFork}
-          ></ExerciseTableRow>
-        ))}
-      </tbody>
-      <tfoot>
-        <ExerciseTableFooter
-          currentPage={currentPage}
-          nPages={nPages}
-          decrementPage={decrementPage}
-          incrementPage={incrementPage}
-          nExercises={nExercises}
-          isDiscover={isDiscover}
-        ></ExerciseTableFooter>
-      </tfoot>
-    </table>
-  );
+    return (
+      <table className="exercise-table">
+        <thead>
+          <ExerciseTableHeader isDiscover={isDiscover}></ExerciseTableHeader>
+        </thead>
+        <tbody>
+          {exercises
+            .filter(filterPropertyWithString(exercisesFilterString, "name"))
+            .slice(firstExerciseIndex, lastExerciseIndex)
+            .map((exercise, idx) => (
+              <ExerciseTableRow
+                key={exercise.pk}
+                exercise={exercise}
+                {...actionHandlers}
+              ></ExerciseTableRow>
+            ))}
+        </tbody>
+        <tfoot>
+          <ExerciseTableFooter
+            currentPage={currentPage}
+            nPages={Math.ceil(exercises.length / EXERCISES_PER_PAGE)}
+            decrementPage={decrementPage}
+            incrementPage={incrementPage}
+            nExercises={exercises.length}
+            isDiscover={isDiscover}
+          ></ExerciseTableFooter>
+        </tfoot>
+      </table>
+    );
+  }
 }
 
 export default ExerciseTable;
@@ -94,3 +178,20 @@ export const getPaginatedRange = (currentPage, nItemsPerPage, nItems) => {
       : currentPage * nItemsPerPage;
   return [firstItemIndex, lastItemIndex];
 };
+
+/**
+ *
+ * @param {string} filterString - Filter string.
+ * @param {string} property - Object property name.
+ */
+const filterPropertyWithString = (filterString, property) => (obj) =>
+  obj[property].includes(filterString);
+
+/**
+ *
+ * @param {*} miliseconds
+ */
+function sleep(miliseconds) {
+  var currentTime = new Date().getTime();
+  while (currentTime + miliseconds >= new Date().getTime()) {}
+}

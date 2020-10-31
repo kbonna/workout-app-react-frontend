@@ -39,8 +39,7 @@ export const fetchExercise = async function (api_url, exerciseId) {
     headers: header_with_token(),
   });
   if (response.status !== 200) {
-    return [];
+    return {};
   }
-  const exercise = await response.json();
-  return [exercise];
+  return await response.json();
 };

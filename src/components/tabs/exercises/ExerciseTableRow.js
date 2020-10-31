@@ -6,7 +6,7 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
   let parentUrl = url.split("/").slice(0, -1).join("/");
 
   let buttons = [];
-  if (typeof handleEdit !== "undefined") {
+  if (handleEdit !== undefined) {
     buttons.push(
       <button
         onClick={() => {
@@ -19,7 +19,7 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
       </button>
     );
   }
-  if (typeof handleDelete !== "undefined") {
+  if (handleDelete !== undefined) {
     buttons.push(
       <button
         onClick={() => {
@@ -32,7 +32,7 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
       </button>
     );
   }
-  if (typeof handleFork !== "undefined") {
+  if (handleFork !== undefined) {
     if (exercise.can_be_forked) {
       buttons.push(
         <button
@@ -55,7 +55,7 @@ function ExerciseTableRow({ exercise, handleDelete, handleEdit, handleFork }) {
   }
 
   let forksCountCell;
-  if (typeof handleFork !== "undefined") {
+  if (handleFork !== undefined) {
     if (exercise.forks_count) {
       forksCountCell = (
         <td className="exercise-table__cell">{`${exercise.forks_count} ★`}</td>

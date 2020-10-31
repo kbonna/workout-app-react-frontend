@@ -1,12 +1,13 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { stripParentPath } from "utilities/misc";
 
 import LinkHighlighedIfMatch from "components/hoc/LinkHighlighedIfMatch";
 import "./ExerciseTableNav.scss";
 
 function ExerciseTableNav({ setExercisesFilterString }) {
   let location = useLocation();
-  const parentUrl = location.pathname.split("/").slice(0, -1).join("/");
+  const parentUrl = stripParentPath(location.pathname);
 
   return (
     <div className="exercise-table-nav">
