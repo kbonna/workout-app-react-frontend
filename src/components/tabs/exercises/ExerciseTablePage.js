@@ -1,19 +1,31 @@
 import React, { useState } from "react";
-import ExerciseTableNav from "./ExerciseTableNav";
-import ExerciseTable from "./ExerciseTable";
+import { Switch, Route } from "react-router-dom";
 
-function ExerciseTablePage({ url }) {
+import ExerciseTablePageNav from "./ExerciseTablePageNav";
+import ExerciseTableMyExercises from "./ExerciseTableMyExercises";
+import ExerciseTableDiscover from "./ExerciseTableDiscover";
+import routes from "utilities/routes";
+
+function ExerciseTablePage(props) {
   const [exercisesFilterString, setExercisesFilterString] = useState("");
 
   return (
     <>
-      <ExerciseTableNav
+      <ExerciseTablePageNav
         setExercisesFilterString={setExercisesFilterString}
-      ></ExerciseTableNav>
-      <ExerciseTable
-        exercisesFilterString={exercisesFilterString}
-        url={url}
-      ></ExerciseTable>
+      ></ExerciseTablePageNav>
+      <Switch>
+        <Route path={routes.app.exercises.myExercises}>
+          <ExerciseTableMyExercises
+            exercisesFilterString={exercisesFilterString}
+          ></ExerciseTableMyExercises>
+        </Route>
+        <Route>
+          <ExerciseTableDiscover
+            exercisesFilterString={exercisesFilterString}
+          ></ExerciseTableDiscover>
+        </Route>
+      </Switch>
     </>
   );
 }

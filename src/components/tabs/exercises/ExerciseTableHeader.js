@@ -1,15 +1,16 @@
 import React from "react";
 
-function ExerciseTableHeader({ isDiscover }) {
+function ExerciseTableHeader({ columnNames }) {
   return (
-    <tr className="exercise-table__header-row">
-      <th className="exercise-table__header-cell">Name</th>
-      <th className="exercise-table__header-cell">Type</th>
-      {isDiscover ? (
-        <th className="exercise-table__header-cell">Stars</th>
-      ) : null}
-      <th className="exercise-table__header-cell"></th>
-    </tr>
+    <thead>
+      <tr className="exercise-table__header-row">
+        {columnNames.map((columnName, idx) => (
+          <th className="exercise-table__header-cell" key={idx}>
+            {columnName}
+          </th>
+        ))}
+      </tr>
+    </thead>
   );
 }
 

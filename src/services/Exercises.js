@@ -4,18 +4,18 @@ import { header_with_token } from "./Auth";
  * Returns all exercise owned by the user. In case of error in response, empty
  * array is returned.
  *
- * @param {string} api_url - REST API url.
+ * @param {string} endpoint_url - URL of exercises list.
  * @param {number} userId - User primary key.
  * @param {boolean} discover - Determines if querystring should include discover
  * flag.
  */
 export const fetchExercises = async function (
-  api_url,
+  endpoint_url,
   userId,
   discover = false
 ) {
   const response = await fetch(
-    `${api_url}/exercises/?user=${userId}${discover ? "&discover=True" : ""}`,
+    `${endpoint_url}/?user=${userId}${discover ? "&discover=True" : ""}`,
     {
       headers: header_with_token(),
     }
