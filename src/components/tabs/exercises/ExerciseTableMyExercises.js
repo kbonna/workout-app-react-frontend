@@ -9,9 +9,7 @@ import "./ExerciseTable.scss";
 
 import { UserContext } from "components/App";
 import { getPaginatedRange, filterPropertyWithString } from "utilities/misc";
-import { fetchExercises } from "services/Exercises";
-import { header_with_token } from "services/Auth";
-import routes from "utilities/routes";
+import { fetchExercises, deleteExercise } from "services/Exercises";
 
 /**
  * State:
@@ -34,7 +32,7 @@ function ExerciseTableMyExercises({
 
   const fetchData = () => {
     if (userId) {
-      fetchExercises(routes.api.exercises.self, userId).then((exercises) => {
+      fetchExercises(userId).then((exercises) => {
         if (exercises.length) {
           setExercises(exercises);
         } else {
@@ -47,18 +45,13 @@ function ExerciseTableMyExercises({
   // TODO: Do I need userId in every useEffect???
   useEffect(fetchData, [userId]);
 
-  // TODO: move into servives
   function handleDelete(exerciseId) {
-    fetch(`${routes.api.exercises.self}/${exerciseId}`, {
-      method: "delete",
-      headers: header_with_token(),
-    }).then((res) => {
-      if (res.status === 204) {
-        setExercises((prevExercises) =>
-          prevExercises.filter((exercise) => exercise.pk !== exerciseId)
-        );
-      }
-    });
+    const success = deleteExercise(exerciseId);
+    if (success) {
+      setExercises((prevExercises) =>
+        prevExercises.filter((exercise) => exercise.pk !== exerciseId)
+      );
+    }
   }
 
   function handleEdit(exerciseId) {

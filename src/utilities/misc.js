@@ -68,3 +68,15 @@ export const getPaginatedRange = (currentPage, nItemsPerPage, nItems) => {
  */
 export const filterPropertyWithString = (filterString, property) => (obj) =>
   obj[property].includes(filterString);
+
+/**
+ * Transforms object with keys as CSS class names and values as logical
+ * exprossions into classNames string.
+ *
+ * @param {Object} classes - Classes object.
+ */
+export const classNames = (classes) =>
+  Object.entries(classes)
+    .filter((entry) => entry[1])
+    .map((entry) => entry[0])
+    .join(" ");

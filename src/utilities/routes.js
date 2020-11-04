@@ -13,6 +13,10 @@ const routes = {
     routines: {
       self: "/routines",
     },
+    users: {
+      self: "/users",
+      user: "/user",
+    },
   },
   api: {
     self: API_URL,

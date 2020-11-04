@@ -31,15 +31,13 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
 
   const fetchData = () => {
     if (userId) {
-      fetchExercises(routes.api.exercises.self, userId, true).then(
-        (exercises) => {
-          if (exercises.length) {
-            setExercises(exercises);
-          } else {
-            setExercises([]);
-          }
+      fetchExercises(userId, true).then((exercises) => {
+        if (exercises.length) {
+          setExercises(exercises);
+        } else {
+          setExercises([]);
         }
-      );
+      });
     }
   };
 

@@ -1,21 +1,19 @@
 import { header_with_token } from "./Auth";
+import routes from "utilities/routes";
 
 /**
  * Returns all exercise owned by the user. In case of error in response, empty
  * array is returned.
  *
- * @param {string} endpoint_url - URL of exercises list.
  * @param {number} userId - User primary key.
  * @param {boolean} discover - Determines if querystring should include discover
  * flag.
  */
-export const fetchExercises = async function (
-  endpoint_url,
-  userId,
-  discover = false
-) {
+export const fetchExercises = async function (userId, discover = false) {
   const response = await fetch(
-    `${endpoint_url}/?user=${userId}${discover ? "&discover=True" : ""}`,
+    `${routes.api.exercises.self}/?user=${userId}${
+      discover ? "&discover=True" : ""
+    }`,
     {
       headers: header_with_token(),
     }
@@ -28,18 +26,34 @@ export const fetchExercises = async function (
 };
 
 /**
- * Returns exercise object wrapped in array or empty array if exercise is not
- * found.
+ * Fetch exercise object with detailed information.
  *
- * @param {string} api_url - REST API url.
  * @param {number} exerciseId - Exercise primary key.
  */
-export const fetchExercise = async function (api_url, exerciseId) {
-  const response = await fetch(`${api_url}/exercises/${exerciseId}`, {
+export const fetchExercise = async function (exerciseId) {
+  const response = await fetch(`${routes.api.exercises.self}/${exerciseId}`, {
     headers: header_with_token(),
   });
   if (response.status !== 200) {
     return {};
   }
   return await response.json();
+};
+
+/**
+ * Delete exercise object.
+ *
+ * Returns true if delete is successful and false otherwise.
+ *
+ * @param {number} exerciseId
+ */
+export const deleteExercise = async function (exerciseId) {
+  const response = await fetch(`${routes.api.exercises.self}/${exerciseId}`, {
+    method: "delete",
+    headers: header_with_token(),
+  });
+  if (response.status === 204) {
+    return true;
+  }
+  return false;
 };
