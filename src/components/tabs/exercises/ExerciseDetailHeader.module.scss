@@ -1,0 +1,22 @@
+.header {
+  font-size: 1rem;
+
+  &__subtitle {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 3px;
+  }
+
+  &__title {
+    font-size: 2.25rem;
+    margin-bottom: 6px;
+  }
+
+  &__kind {
+    color: var(--col-gray-3);
+    font-weight: 400;
+    font-size: 0.9rem;
+  }
+}

@@ -3,10 +3,10 @@
  *
  * @param {Object} obj
  */
-export function isEmpty(obj) {
+export const isEmpty = (obj) => {
   for (var i in obj) return false;
   return true;
-}
+};
 
 /**
  * Gets last part of the url address.

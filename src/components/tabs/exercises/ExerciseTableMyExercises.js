@@ -46,12 +46,13 @@ function ExerciseTableMyExercises({
   useEffect(fetchData, [userId]);
 
   function handleDelete(exerciseId) {
-    const success = deleteExercise(exerciseId);
-    if (success) {
-      setExercises((prevExercises) =>
-        prevExercises.filter((exercise) => exercise.pk !== exerciseId)
-      );
-    }
+    deleteExercise(exerciseId).then((success) => {
+      if (success) {
+        setExercises((prevExercises) =>
+          prevExercises.filter((exercise) => exercise.pk !== exerciseId)
+        );
+      }
+    });
   }
 
   function handleEdit(exerciseId) {

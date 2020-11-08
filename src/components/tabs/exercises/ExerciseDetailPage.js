@@ -9,9 +9,10 @@ import ExerciseDetailHeader from "./ExerciseDetailHeader";
 import ExerciseDetailMuscleDiagram from "./ExerciseDetailMuscleDiagram";
 import ExerciseDetailList from "./ExerciseDetailList";
 import ExerciseDetailButtons from "./ExerciseDetailButtons";
+import ExerciseDetailParagraph from "./ExerciseDetailParagraph";
 import LeftArrow from "icons/LeftArrow";
 import Spinner from "icons/Spinner";
-import "./ExerciseDetailPage.scss";
+import styles from "./ExerciseDetailPage.module.scss";
 
 function ExerciseDetailPage() {
   const [exercise, setExercise] = useState(null);
@@ -35,23 +36,24 @@ function ExerciseDetailPage() {
     }
   };
 
+  console.log(exercise);
   useEffect(fetchData, [userId]);
 
   let exerciseDetailPageContent;
   if (exercise === null) {
     exerciseDetailPageContent = (
-      <div className="exercise-detail-spinner-wrapper">
+      <div className={styles["spinner-wrapped"]}>
         <Spinner></Spinner>
       </div>
     );
-  } else if (exercise.isEmpty) {
+  } else if (isEmpty(exercise)) {
     exerciseDetailPageContent = <h1>404 Not Found</h1>;
   } else {
     exerciseDetailPageContent = (
-      <>
+      <div className={styles["page"]}>
         <LeftArrow onClick={handleReturn}></LeftArrow>
-        <div className="exercise-detail-wrapper">
-          <div className="exercise-detail-info">
+        <div className={styles["content"]}>
+          <div className={styles["content__info"]}>
             <ExerciseDetailHeader
               exerciseName={exercise.name}
               exerciseKind={exercise.kind_display}
@@ -62,9 +64,14 @@ function ExerciseDetailPage() {
             <ExerciseDetailList exercise={exercise}></ExerciseDetailList>
             <ExerciseDetailButtons exercise={exercise}></ExerciseDetailButtons>
           </div>
-          <div className="exercise-detail-instructions"></div>
+          <div className={styles["content__more"]}>
+            <ExerciseDetailParagraph
+              title="Instructions"
+              content={exercise.instructions}
+            ></ExerciseDetailParagraph>
+          </div>
         </div>
-      </>
+      </div>
     );
   }
 

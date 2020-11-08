@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+
+import { UserContext } from "components/App";
+import Button from "components/reusable/Button";
+import Burger from "./Burger";
 import "./Header.scss";
-import Burger from "../other/Burger";
-import { UserContext } from "../App";
 
 function Header({ handleLogout, setIsSidebarOpened }) {
   const user = useContext(UserContext);
@@ -21,10 +23,10 @@ function Header({ handleLogout, setIsSidebarOpened }) {
     headerNav = (
       <>
         <Link to="/login">
-          <button className="btn btn--light">Login</button>
+          <Button label="Login"></Button>
         </Link>
         <Link to="/signup">
-          <button className="btn btn--light mx-1">Sign Up</button>
+          <Button label="Sign up" extraClasses="mx-1"></Button>
         </Link>
       </>
     );
@@ -33,12 +35,11 @@ function Header({ handleLogout, setIsSidebarOpened }) {
       <>
         <span>Hello, {user.username}.</span>
         <Link to="/">
-          <button
-            className="btn btn--light mx-2"
-            onClick={() => handleLogout()}
-          >
-            Logout
-          </button>
+          <Button
+            handleClick={handleLogout}
+            label="Logout"
+            extraClasses="mx-2"
+          ></Button>
         </Link>
         <Burger setIsSidebarOpened={setIsSidebarOpened}></Burger>
       </>

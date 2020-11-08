@@ -9,6 +9,7 @@ const routes = {
       myExercises: "/my-exercises",
       discover: "/discover",
       exercise: "/exercise",
+      new: "/new",
     },
     routines: {
       self: "/routines",

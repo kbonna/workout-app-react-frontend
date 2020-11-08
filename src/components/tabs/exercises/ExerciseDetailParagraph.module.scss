@@ -1,0 +1,16 @@
+.paragraph {
+  &__title {
+    font-size: 1em;
+    margin-bottom: 1.5em;
+  }
+
+  &__content {
+    line-height: 2;
+    font-size: 0.95em;
+  }
+
+  &__content--error {
+    color: var(--col-gray-3);
+    font-style: italic;
+  }
+}

@@ -33,23 +33,6 @@ body {
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
-.btn {
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 0.5em 1em;
-  border: 2px solid transparent;
-  font-size: 1em;
-
-  &--light {
-    border-color: var(--col-gray-1);
-    background-color: var(--col-gray-6);
-  }
-
-  &--light:hover {
-    border-color: var(--col-gray-6);
-  }
-}
-
 // Utility classes
 .position-fixed-center {
   position: fixed;

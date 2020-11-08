@@ -1,4 +1,4 @@
-.exercise-table-page-nav {
+.nav {
   --separator-width: 2px;
 
   display: flex;
@@ -39,14 +39,27 @@
   }
 
   &__btn-add {
-    background-color: transparent;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    cursor: pointer;
     width: 2rem;
     height: 2rem;
-    line-height: 0.5;
-    border-radius: 100vh;
-    border: 2px solid var(--col-gray-1);
-    font-weight: bold;
-    font-size: 1em;
     margin-left: 1em;
+
+    background-color: var(--col-gray-6);
+    border: 1px solid var(--col-gray-5);
+    border-radius: 100vh;
+    font-size: 1em;
+
+    &:hover {
+      background-color: var(--col-gray-5);
+    }
+
+    &::after {
+      content: "\FF0B";
+      border: 1px solid red;
+    }
   }
 }

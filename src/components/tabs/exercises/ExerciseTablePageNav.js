@@ -1,44 +1,46 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import { stripParentPath } from "utilities/misc";
+import { useLocation, Link } from "react-router-dom";
+import routes from "utilities/routes";
 
 import LinkHighlighedIfMatch from "components/hoc/LinkHighlighedIfMatch";
-import "./ExerciseTablePageNav.scss";
+import styles from "./ExerciseTablePageNav.module.scss";
 
 function ExerciseTablePageNav({ setExercisesFilterString }) {
   let location = useLocation();
-  const parentUrl = stripParentPath(location.pathname);
 
   return (
-    <div className="exercise-table-page-nav">
-      <div className="exercise-table-page-nav__links">
+    <div className={styles["nav"]}>
+      <div className={styles["nav__links"]}>
         <LinkHighlighedIfMatch
-          classNameBase="exercise-table-page-nav__link"
-          classNameActive="exercise-table-page-nav__link--active"
+          classNameBase={styles["nav__link"]}
+          classNameActive={styles["nav__link--active"]}
           location={location}
-          to={`${parentUrl}/my-exercises`}
+          to={routes.app.exercises.myExercises}
         >
           My Exercises
         </LinkHighlighedIfMatch>
         <LinkHighlighedIfMatch
-          classNameBase="exercise-table-page-nav__link"
-          classNameActive="exercise-table-page-nav__link--active"
+          classNameBase={styles["nav__link"]}
+          classNameActive={styles["nav__link--active"]}
           location={location}
-          to={`${parentUrl}/discover`}
+          to={routes.app.exercises.discover}
         >
           Discover
         </LinkHighlighedIfMatch>
       </div>
-      <div className="exercise-table-page-nav__control">
+      <div className={styles["nav__control"]}>
         <input
-          className="exercise-table-page-nav__search"
+          className={styles["nav__search"]}
           type="text"
           placeholder="Search..."
           onChange={(e) => {
             setExercisesFilterString(e.target.value);
           }}
         ></input>
-        <button className="exercise-table-page-nav__btn-add">+</button>
+        <Link
+          to={routes.app.exercises.new}
+          className={styles["nav__btn-add"]}
+        ></Link>
       </div>
     </div>
   );

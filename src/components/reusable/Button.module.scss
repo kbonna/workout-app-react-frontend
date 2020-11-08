@@ -1,0 +1,21 @@
+.btn {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0.4em 0.8em;
+  border: none;
+  font-size: 1em;
+  background-color: var(--col-gray-6);
+  border: 1px solid var(--col-gray-5);
+
+  &:hover {
+    background-color: var(--col-gray-5);
+  }
+
+  &--red {
+    background-color: red;
+  }
+
+  &--red:hover {
+    background-color: brown;
+  }
+}

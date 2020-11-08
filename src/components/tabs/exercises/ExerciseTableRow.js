@@ -1,7 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+import Button from "components/reusable/Button";
 import routes from "utilities/routes";
 
+/**
+ * Actions property can be either:
+ *  - handleFork
+ *  - handleEdit
+ *  - handleDelete
+ */
 function ExerciseTableRow({ exercise, ...actions }) {
   const buttons = Object.keys(actions).map((actionName) => {
     if (actionName === "handleFork" && !exercise.can_be_forked) {
@@ -12,13 +20,12 @@ function ExerciseTableRow({ exercise, ...actions }) {
       );
     }
     return (
-      <button
-        className="btn mx-1"
-        onClick={() => actions[actionName](exercise.pk)}
-        key={`${actionName}-${exercise.pk}`}
-      >
-        {actionName.replace("handle", "")}
-      </button>
+      <Button
+        key={actionName}
+        label={actionName.replace("handle", "")}
+        handleClick={() => actions[actionName](exercise.pk)}
+        extraClasses="mx-1"
+      ></Button>
     );
   });
 
