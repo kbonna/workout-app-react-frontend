@@ -1,0 +1,38 @@
+.nav {
+  display: flex;
+  align-items: center;
+
+  &__btn {
+    cursor: pointer;
+    border: none;
+    display: grid;
+    place-items: center;
+  }
+
+  &__chevron-svg {
+    width: 0.8em;
+    height: 0.8em;
+  }
+
+  &__chevron-path {
+    fill: var(--col-gray-4);
+  }
+
+  &__btn:hover .nav__chevron-path {
+    fill: var(--col-gray-3);
+  }
+
+  &__regular-digit,
+  &__currentpage-digit {
+    margin: 0 0.5em;
+  }
+
+  &__currentpage-digit {
+    display: inline-block;
+    color: var(--col-gray-2);
+  }
+
+  &__dots {
+    margin: 0 0.75em;
+  }
+}

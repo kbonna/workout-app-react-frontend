@@ -1,7 +1,8 @@
 import React from "react";
+import styles from "./ExerciseTableError.module.scss";
 
 function ExerciseTableError() {
-  return <div className="exercise-table__error">No exercises found.</div>;
+  return <div className={styles["div"]}>No exercises found</div>;
 }
 
 export default ExerciseTableError;

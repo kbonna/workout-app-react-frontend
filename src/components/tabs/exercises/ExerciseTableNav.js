@@ -1,4 +1,7 @@
 import React from "react";
+import styles from "./ExerciseTableNav.module.scss";
+import ChevronLeft from "icons/ChevronLeft";
+import ChevronRight from "icons/ChevronRight";
 
 function ExerciseTableNav({
   currentPage,
@@ -7,21 +10,28 @@ function ExerciseTableNav({
   decrementPage,
 }) {
   return (
-    <div className="exercise-table__nav">
-      <button className="exercise-table__nav-btn" onClick={decrementPage}>
-        {"<"}
+    <div className={styles["nav"]}>
+      <button className={styles["nav__btn"]} onClick={decrementPage}>
+        <ChevronLeft
+          onClick={decrementPage}
+          svgClassName={styles["nav__chevron-svg"]}
+          pathClassName={styles["nav__chevron-path"]}
+        ></ChevronLeft>
       </button>
       <p>
         {exerciseTableNavDigits(
           currentPage,
           nPages,
-          "exercise-table__nav-regular-digit",
-          "exercise-table__nav-currentpage-digit",
-          "exercise-table__nav-dots"
+          styles["nav__regular-digit"],
+          styles["nav__currentpage-digit"],
+          styles["nav__dots"]
         )}
       </p>
-      <button className="exercise-table__nav-btn" onClick={incrementPage}>
-        {">"}
+      <button className={styles["nav__btn"]} onClick={incrementPage}>
+        <ChevronRight
+          svgClassName={styles["nav__chevron-svg"]}
+          pathClassName={styles["nav__chevron-path"]}
+        ></ChevronRight>
       </button>
     </div>
   );

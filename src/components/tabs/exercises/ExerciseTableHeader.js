@@ -1,11 +1,12 @@
 import React from "react";
+import styles from "./ExerciseTableHeader.module.scss";
 
 function ExerciseTableHeader({ columnNames }) {
   return (
-    <thead>
-      <tr className="exercise-table__header-row">
+    <thead className={styles["header"]}>
+      <tr className={styles["header__row"]}>
         {columnNames.map((columnName, idx) => (
-          <th className="exercise-table__header-cell" key={idx}>
+          <th className={styles["header__cell"]} key={idx}>
             {columnName}
           </th>
         ))}

@@ -1,0 +1,18 @@
+.header {
+  font-weight: bold;
+
+  &__row {
+    color: var(--col-gray-3);
+    background-color: var(--col-gray-6);
+  }
+
+  &__cell {
+    text-align: left;
+    padding: 1em;
+  }
+
+  &__cell:last-child {
+    width: 50%;
+    text-align: right;
+  }
+}

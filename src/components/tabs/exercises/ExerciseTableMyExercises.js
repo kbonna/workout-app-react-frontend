@@ -5,7 +5,7 @@ import ExerciseTableHeader from "./ExerciseTableHeader";
 import ExerciseTableBody from "./ExerciseTableBody";
 import ExerciseTableFooter from "./ExerciseTableFooter";
 import ExerciseTableError from "./ExerciseTableError";
-import "./ExerciseTable.scss";
+import styles from "./ExerciseTableMyExercises.module.scss";
 
 import { UserContext } from "components/App";
 import { getPaginatedRange, filterPropertyWithString } from "utilities/misc";
@@ -61,7 +61,7 @@ function ExerciseTableMyExercises({
 
   if (exercises === null) {
     return (
-      <div className="exercise-table__spinner-wrapper">
+      <div className={styles["spinner-wrapper"]}>
         <Spinner></Spinner>
       </div>
     );
@@ -75,7 +75,7 @@ function ExerciseTableMyExercises({
     );
     const nPages = Math.ceil(exercises.length / nExercisesPerPage);
     return (
-      <table className="exercise-table">
+      <table className={styles["table"]}>
         <ExerciseTableHeader
           columnNames={["Name", "Type", null]}
         ></ExerciseTableHeader>

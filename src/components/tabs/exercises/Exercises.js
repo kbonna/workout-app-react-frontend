@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 
 import ExerciseTablePage from "./ExerciseTablePage";
 import ExerciseDetailPage from "./ExerciseDetailPage";
+import ExerciseNewPage from "./ExerciseNewPage";
+
 import routes from "utilities/routes";
 
 function Exercises() {
@@ -19,6 +21,9 @@ function Exercises() {
         </Route>
         <Route path={`${routes.app.exercises.exercise}/:id`}>
           <ExerciseDetailPage></ExerciseDetailPage>
+        </Route>
+        <Route path={routes.app.exercises.new}>
+          <ExerciseNewPage></ExerciseNewPage>
         </Route>
       </Switch>
     </>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import Button from "components/reusable/Button";
 import routes from "utilities/routes";
+import styles from "./ExerciseTableRow.module.scss";
 
 /**
  * Actions property can be either:
@@ -14,7 +15,10 @@ function ExerciseTableRow({ exercise, ...actions }) {
   const buttons = Object.keys(actions).map((actionName) => {
     if (actionName === "handleFork" && !exercise.can_be_forked) {
       return (
-        <span className="exercise-table__span " key={`span-${exercise.pk}`}>
+        <span
+          className={styles["row__span--error"]}
+          key={`span-${exercise.pk}`}
+        >
           You already own this
         </span>
       );
@@ -30,22 +34,22 @@ function ExerciseTableRow({ exercise, ...actions }) {
   });
 
   return (
-    <tr className="exercise-table__row">
-      <td className="exercise-table__cell">
+    <tr className={styles["row"]}>
+      <td className={styles["row__cell"]}>
         <Link
-          className="exercise-table__link"
+          className={styles["row__link"]}
           to={`${routes.app.exercises.exercise}/${exercise.pk}`}
         >
           {exercise.name}
         </Link>
       </td>
-      <td className="exercise-table__cell">{exercise.kind_display}</td>
+      <td className={styles["row__cell"]}>{exercise.kind_display}</td>
       {actions.hasOwnProperty("handleFork") ? (
-        <td className="exercise-table__cell">
+        <td className={styles["row__cell"]}>
           {exercise.forks_count ? `${exercise.forks_count} ★` : "-"}
         </td>
       ) : null}
-      <td className="exercise-table__cell">{buttons}</td>
+      <td className={styles["row__cell"]}>{buttons}</td>
     </tr>
   );
 }
