@@ -11,7 +11,7 @@ import routes from "utilities/routes";
  */
 export const fetchExercises = async function (userId, discover = false) {
   const response = await fetch(
-    `${routes.api.exercises.self}/?user=${userId}${
+    `${routes.api.exercises.self}?user=${userId}${
       discover ? "&discover=True" : ""
     }`,
     {
@@ -31,7 +31,7 @@ export const fetchExercises = async function (userId, discover = false) {
  * @param {number} exerciseId - Exercise primary key.
  */
 export const fetchExercise = async function (exerciseId) {
-  const response = await fetch(`${routes.api.exercises.self}/${exerciseId}`, {
+  const response = await fetch(`${routes.api.exercises.self}${exerciseId}`, {
     headers: header_with_token(),
   });
   if (response.status !== 200) {
@@ -48,7 +48,7 @@ export const fetchExercise = async function (exerciseId) {
  * @param {number} exerciseId
  */
 export const deleteExercise = async function (exerciseId) {
-  const response = await fetch(`${routes.api.exercises.self}/${exerciseId}`, {
+  const response = await fetch(`${routes.api.exercises.self}${exerciseId}`, {
     method: "delete",
     headers: header_with_token(),
   });
@@ -56,4 +56,13 @@ export const deleteExercise = async function (exerciseId) {
     return true;
   }
   return false;
+};
+
+export const createExercise = async function (data) {
+  const response = await fetch(routes.api.exercises.self, {
+    method: "post",
+    headers: { ...header_with_token(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  return response.json();
 };

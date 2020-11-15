@@ -16,6 +16,12 @@ function Textarea({ title, name, placeholder, value, handleChange }) {
   );
 }
 
-Textarea.propTypes = {};
+Textarea.propTypes = {
+  title: PropTypes.string,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  handleChange: PropTypes.func,
+};
 
 export default Textarea;

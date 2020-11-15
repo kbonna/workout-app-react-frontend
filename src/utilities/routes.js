@@ -33,7 +33,7 @@ const createFullRoutesRecursively = (obj, prevPath = "") => {
       createFullRoutesRecursively(obj[key], prevPath + obj[key].self);
     } else {
       if (key === "self") {
-        obj[key] = prevPath;
+        obj[key] = prevPath + "/";
       } else {
         obj[key] = prevPath + obj[key];
       }

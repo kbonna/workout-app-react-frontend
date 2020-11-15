@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
 import Input from "./Input";
-import Select from "./Select";
 import Textarea from "./Textarea";
-import SelectWithList from "./SelectWithList";
+import MultiSelect from "./MultiSelect";
+import MultiInput from "./MultiInput";
+import Select from "./Select";
+import { createExercise } from "services/Exercises";
 
 import {
   EXERCISE_TYPES,
@@ -12,41 +14,109 @@ import {
   MUSCLES_DISPLAY,
 } from "utilities/models";
 
-// console.log(EXERCISE_TYPES);
+const letters = "0123456789abcdefghijklmnopqrstuvwxyz ";
+
+const fieldProps = {
+  exerciseName: {
+    title: "Name",
+    name: "exercise_name",
+    placeholder: "exercise name",
+  },
+  exerciseType: {
+    title: "Type",
+    name: "exercise_type",
+    placeholder: "exercise type",
+  },
+  exerciseTags: {
+    title: "Tags",
+    name: "exercise_name",
+    placeholder: "add tags (optional)",
+  },
+  exerciseDesc: {
+    title: "Description",
+    name: "exercise_desc",
+    placeholder: "add instructions (optional)",
+  },
+  exerciseMuscles: {
+    title: "Muscles",
+    name: "exercise_muscles",
+    placeholder: "add muscles (optional)",
+  },
+  exerciseTutorials: {
+    title: "Tutorials",
+    name: "exercise_tutorials",
+    placeholder: "add tutorials (optional)",
+  },
+};
+
+const initialStateString = { value: "", error: "" };
+const initialStateArray = { value: [], error: "" };
 
 function ExerciseNewPage(props) {
-  const [exerciseName, setExerciseName] = useState("");
-  const [exerciseType, setExerciseType] = useState("");
-  const [exerciseTags, setExerciseTags] = useState("");
-  const [exerciseDesc, setExerciseDesc] = useState("");
-  const [exerciseMuscles, setExerciseMuscles] = useState([]);
-  // const [exerciseTutorials, setExerciseTutorials] = useState([]);
+  const [exerciseName, setExerciseName] = useState({
+    value: "Exercise",
+    error: "",
+  });
+  const [exerciseType, setExerciseType] = useState({ value: "rew", error: "" });
+  const [exerciseTags, setExerciseTags] = useState({
+    value: "tag1 tag2 tag3 ",
+    error: "",
+  });
+  const [exerciseDesc, setExerciseDesc] = useState({
+    value: "Lorem ipsummmm",
+    error: "",
+  });
+  const [exerciseMuscles, setExerciseMuscles] = useState({
+    value: ["cal", "pec"],
+    error: "",
+  });
+  const [exerciseTutorials, setExerciseTutorials] = useState({
+    value: ["www.tutorial1.pl", "www.tutorial2.com"],
+    error: "",
+  });
 
   const handleExerciseName = (e) => {
-    setExerciseName(e.target.value);
+    e.persist();
+    setExerciseName((prevState) => ({ ...prevState, value: e.target.value }));
   };
 
   const handleExerciseType = (e) => {
-    setExerciseType(e.target.value);
+    e.persist();
+    setExerciseType((prevState) => ({ ...prevState, value: e.target.value }));
   };
 
   const handleExerciseTags = (e) => {
-    const tagString = e.target.value;
-
-    let delimiter = " ";
-    if (tagString.includes(",")) delimiter = ",";
-    else if (tagString.includes(";")) delimiter = ";";
-
-    setExerciseTags(tagString.split(delimiter).map((tag) => tag.trim()));
+    e.persist();
+    setExerciseTags((prevState) => ({
+      ...prevState,
+      value: e.target.value
+        .split("")
+        .filter((ch) => letters.includes(ch.toLowerCase()))
+        .join("")
+        .replace(/\s+/g, " "),
+    }));
   };
 
   const handleExerciseDesc = (e) => {
-    setExerciseDesc(e.target.value);
+    e.persist();
+    setExerciseDesc((prevState) => ({ ...prevState, value: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitting form...", e);
+    const exerciseTagsArray = exerciseTags.value
+      .split(" ")
+      .filter((tag) => tag.length !== 0);
+
+    const data = {
+      name: exerciseName.value,
+      kind: exerciseType.value,
+      instructions: exerciseDesc.value,
+      tags: exerciseTagsArray.map((name) => ({ name })),
+      tutorials: exerciseTutorials.value.map((url) => ({ url })),
+      muscles: exerciseMuscles.value.map((name) => ({ name })),
+    };
+    createExercise(data).then((json) => console.log(json));
   };
 
   return (
@@ -54,48 +124,69 @@ function ExerciseNewPage(props) {
       <fieldset>
         <legend>Create new exercise</legend>
         <Input
-          title={"Name"}
-          name={"exercise_name"}
+          title={fieldProps.exerciseName.title}
+          name={fieldProps.exerciseName.name}
           type={"text"}
-          placeholder={"Exercise name..."}
-          value={exerciseName}
+          placeholder={fieldProps.exerciseName.placeholder}
+          value={exerciseName.value}
           handleChange={handleExerciseName}
+          error={exerciseName.error}
         ></Input>
         <Select
-          title={"Type"}
-          name={"exercise_type"}
+          title={fieldProps.exerciseType.title}
+          name={fieldProps.exerciseType.name}
           options={EXERCISE_TYPES}
           optionsDisplay={EXERCISE_TYPES_DISPLAY}
-          value={exerciseType}
-          placeholder={"Exercise type..."}
+          value={exerciseType.value}
+          placeholder={fieldProps.exerciseType.placeholder}
           handleChange={handleExerciseType}
+          error={exerciseType.error}
         ></Select>
         <Input
-          title={"Tags"}
-          name={"exercise_tags"}
+          title={fieldProps.exerciseTags.title}
+          name={fieldProps.exerciseTags.name}
           type={"text"}
-          placeholder={"Exercise tags..."}
-          value={exerciseTags}
+          placeholder={fieldProps.exerciseTags.placeholder}
+          value={exerciseTags.value}
           handleChange={handleExerciseTags}
+          error={exerciseTags.error}
         ></Input>
         <Textarea
-          title={"Description"}
-          name={"exercise_description"}
-          placeholder={"Exercise description..."}
-          value={exerciseDesc}
+          title={fieldProps.exerciseDesc.title}
+          name={fieldProps.exerciseDesc.name}
+          placeholder={fieldProps.exerciseDesc.placeholder}
+          value={exerciseDesc.value}
           handleChange={handleExerciseDesc}
           rows={4}
           cols={50}
+          error={exerciseDesc.error}
         ></Textarea>
-        <SelectWithList
-          title={"Muscles"}
-          name={"exercise_muscles"}
-          placeholder={"Choose muscles"}
-          values={exerciseMuscles}
-          setValues={setExerciseMuscles}
+        <MultiSelect
+          title={fieldProps.exerciseMuscles.title}
+          name={fieldProps.exerciseMuscles.name}
+          placeholder={fieldProps.exerciseMuscles.placeholder}
+          values={exerciseMuscles.value}
+          setValues={(fn) => {
+            setExerciseMuscles((prevState) => ({
+              ...prevState,
+              value: fn(prevState.value),
+            }));
+          }}
           options={MUSCLES}
           optionsDisplay={MUSCLES_DISPLAY}
-        ></SelectWithList>
+        ></MultiSelect>
+        <MultiInput
+          title={fieldProps.exerciseTutorials.title}
+          name={fieldProps.exerciseTutorials.name}
+          placeholder={fieldProps.exerciseTutorials.placeholder}
+          values={exerciseTutorials.value}
+          setValues={(fn) => {
+            setExerciseTutorials((prevState) => ({
+              ...prevState,
+              value: fn(prevState.value),
+            }));
+          }}
+        ></MultiInput>
       </fieldset>
       <button type="submit" onClick={handleSubmit}>
         Submit

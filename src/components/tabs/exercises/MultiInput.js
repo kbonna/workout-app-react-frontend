@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-function SelectWithList({
-  title,
-  name,
-  values,
-  setValues,
-  placeholder,
-  options,
-  optionsDisplay,
-}) {
+function MultiInput({ title, name, values, setValues, placeholder }) {
   const [currentValue, setCurrentValue] = useState("");
 
   const handleChange = (e) => {
@@ -25,29 +17,19 @@ function SelectWithList({
     setValues((prevValues) => prevValues.filter((v) => v !== value));
   };
 
-  // Remove options that are already part of the form state
-  const optionsFiltered = options.filter((option) => !values.includes(option));
-  const optionsDisplayFiltered = optionsDisplay.filter(
-    (_, i) => !values.includes(options[i])
-  );
-
   return (
     <>
       <div>
         <label htmlFor={name}>{title}</label>
-        <select value={currentValue} name={name} onChange={handleChange}>
-          <option disabled value="">
-            {placeholder}
-          </option>
-          {optionsFiltered.map((option, i) => (
-            <option
-              value={option}
-              key={option}
-              label={optionsDisplayFiltered[i]}
-            ></option>
-          ))}
-        </select>
-        {currentValue && (
+        <input
+          name={name}
+          id={name}
+          type={"text"}
+          value={currentValue}
+          onChange={handleChange}
+          placeholder={placeholder}
+        ></input>
+        {currentValue && !values.includes(currentValue) && (
           <button onClick={() => handleAddToList(currentValue)}>+</button>
         )}
         <ul>
@@ -56,7 +38,7 @@ function SelectWithList({
             .reverse()
             .map((value) => (
               <li key={value}>
-                <span>{optionsDisplay[options.indexOf(value)]}</span>
+                <span>{value}</span>
                 <button onClick={() => handleRemoveFromList(value)}>x</button>
               </li>
             ))}
@@ -66,14 +48,12 @@ function SelectWithList({
   );
 }
 
-SelectWithList.propTypes = {
+MultiInput.propTypes = {
   title: PropTypes.string,
   name: PropTypes.string,
   values: PropTypes.arrayOf(PropTypes.string),
   setValues: PropTypes.func,
   placeholder: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.string),
-  optionsDisplay: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default SelectWithList;
+export default MultiInput;
