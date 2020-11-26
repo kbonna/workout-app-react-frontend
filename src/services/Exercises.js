@@ -37,7 +37,8 @@ export const fetchExercise = async function (exerciseId) {
   if (response.status !== 200) {
     return {};
   }
-  return await response.json();
+  const exercise = await response.json();
+  return exercise;
 };
 
 /**
@@ -58,11 +59,40 @@ export const deleteExercise = async function (exerciseId) {
   return false;
 };
 
+/**
+ *
+ * @param {object} data - Object containing exercise data.
+ *
+ * Returns array of two elements: first is the decision if creation was
+ * successful, second is the associated object. If new instance was created
+ * this object contains validated data, otherwise it cointains error messages
+ * for incorrect fields.
+ */
 export const createExercise = async function (data) {
   const response = await fetch(routes.api.exercises.self, {
     method: "post",
     headers: { ...header_with_token(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return response.json();
+  const json = await response.json();
+  if (response.status === 201) {
+    return [true, json];
+  }
+  return [false, json];
+};
+
+export const editExercise = async function (data, exerciseId) {
+  const response = await fetch(`${routes.api.exercises.self}${exerciseId}`, {
+    method: "put",
+    headers: { ...header_with_token(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  return response;
+
+  // const json = await response.json();
+  // if (response.status === 201) {
+  //   return [true, json];
+  // }
+  // return [false, json];
 };

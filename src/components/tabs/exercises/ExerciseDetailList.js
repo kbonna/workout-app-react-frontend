@@ -16,7 +16,9 @@ function ExerciseDetailList({ exercise }) {
       <ExerciseDetailListItem
         icon={<Tag />}
         inner={
-          tags.length === 0 ? "No tags defined" : tags.map((tag) => `#${tag} `)
+          tags.length === 0
+            ? "No tags defined"
+            : tags.map((tag) => `#${tag.name} `)
         }
         isError={tags.length === 0}
       ></ExerciseDetailListItem>

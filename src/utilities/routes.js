@@ -35,7 +35,7 @@ const createFullRoutesRecursively = (obj, prevPath = "") => {
       if (key === "self") {
         obj[key] = prevPath + "/";
       } else {
-        obj[key] = prevPath + obj[key];
+        obj[key] = prevPath + obj[key] + "/";
       }
     }
   });

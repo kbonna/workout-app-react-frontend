@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import ExerciseTablePage from "./ExerciseTablePage";
 import ExerciseDetailPage from "./ExerciseDetailPage";
 import ExerciseNewPage from "./ExerciseNewPage";
+import ExerciseEditPage from "./ExerciseEditPage";
 
 import routes from "utilities/routes";
 
@@ -19,8 +20,11 @@ function Exercises() {
         >
           <ExerciseTablePage></ExerciseTablePage>
         </Route>
-        <Route path={`${routes.app.exercises.exercise}/:id`}>
+        <Route exact path={`${routes.app.exercises.exercise}:id`}>
           <ExerciseDetailPage></ExerciseDetailPage>
+        </Route>
+        <Route path={`${routes.app.exercises.exercise}:id/edit`}>
+          <ExerciseEditPage></ExerciseEditPage>
         </Route>
         <Route path={routes.app.exercises.new}>
           <ExerciseNewPage></ExerciseNewPage>

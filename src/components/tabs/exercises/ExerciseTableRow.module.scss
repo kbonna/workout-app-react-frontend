@@ -11,14 +11,6 @@
     padding: 1em;
   }
 
-  &__span {
-    &--error {
-      color: var(--col-gray-3);
-      font-style: italic;
-      font-size: 0.95em;
-    }
-  }
-
   &__link {
     text-decoration: none;
     color: inherit;

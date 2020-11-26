@@ -2,11 +2,11 @@
   font-weight: bold;
 
   &__row {
-    color: var(--col-gray-3);
     background-color: var(--col-gray-6);
   }
 
   &__cell {
+    color: var(--col-gray-3);
     text-align: left;
     padding: 1em;
   }

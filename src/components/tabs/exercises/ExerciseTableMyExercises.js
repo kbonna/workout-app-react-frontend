@@ -1,33 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import Spinner from "icons/Spinner";
-import ExerciseTableHeader from "./ExerciseTableHeader";
-import ExerciseTableBody from "./ExerciseTableBody";
-import ExerciseTableFooter from "./ExerciseTableFooter";
-import ExerciseTableError from "./ExerciseTableError";
-import styles from "./ExerciseTableMyExercises.module.scss";
+import ExerciseTable from "./ExerciseTable";
 
+import routes from "utilities/routes";
 import { UserContext } from "components/App";
-import { getPaginatedRange, filterPropertyWithString } from "utilities/misc";
 import { fetchExercises, deleteExercise } from "services/Exercises";
+import LinkButton from "components/reusable/LinkButton";
+import Button from "components/reusable/Button";
 
-/**
- * State:
- *  exercises:
- *    Array representing fetched list of exercises. In case of fetching single
- *    exercise using detail endpoint, array will contain single element. Empty
- *    array represents cases in which exercises were not found (due to either
- *    incorrectly requesting non existing resource or in the case when user did
- *    not defined or forked any exercises yet). During fetching, exercises is
- *    null to inform child compontents that they should render loaders instead
- *    of missing resources information.
- */
-function ExerciseTableMyExercises({
-  exercisesFilterString,
-  nExercisesPerPage,
-}) {
+function ExerciseTableMyExercises({ exercisesFilterString }) {
   const [exercises, setExercises] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const { userId } = useContext(UserContext);
 
   const fetchData = () => {
@@ -55,68 +37,32 @@ function ExerciseTableMyExercises({
     });
   }
 
-  function handleEdit(exerciseId) {
-    console.log(`editing exercise ${exerciseId}`);
+  let exercisesButtons = [];
+  if (exercises) {
+    exercisesButtons = exercises.map((exercise) => [
+      <LinkButton
+        key={"edit"}
+        label={"Edit"}
+        to={`${routes.app.exercises.exercise}${exercise.pk}/edit`}
+        extraClasses="mx-1"
+      ></LinkButton>,
+      <Button
+        key={"delete"}
+        label={"Delete"}
+        handleClick={() => handleDelete(exercise.pk)}
+        extraClasses="mx-1"
+      ></Button>,
+    ]);
   }
 
-  if (exercises === null) {
-    return (
-      <div className={styles["spinner-wrapper"]}>
-        <Spinner></Spinner>
-      </div>
-    );
-  } else if (!exercises.length) {
-    return <ExerciseTableError></ExerciseTableError>;
-  } else {
-    const [firstExerciseIndex, lastExerciseIndex] = getPaginatedRange(
-      currentPage,
-      nExercisesPerPage,
-      exercises.length
-    );
-    const nPages = Math.ceil(exercises.length / nExercisesPerPage);
-    return (
-      <table className={styles["table"]}>
-        <ExerciseTableHeader
-          columnNames={["Name", "Type", null]}
-        ></ExerciseTableHeader>
-        <ExerciseTableBody
-          exercises={exercises
-            .filter(filterPropertyWithString(exercisesFilterString, "name"))
-            .slice(firstExerciseIndex, lastExerciseIndex)}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        ></ExerciseTableBody>
-        <ExerciseTableFooter
-          currentPage={currentPage}
-          nPages={nPages}
-          decrementPage={() => decrementPage(currentPage, setCurrentPage)}
-          incrementPage={() =>
-            incrementPage(currentPage, setCurrentPage, nPages)
-          }
-          nExercises={exercises.length}
-          firstExerciseIndex={firstExerciseIndex}
-          lastExerciseIndex={lastExerciseIndex}
-          nColumns={3}
-        ></ExerciseTableFooter>
-      </table>
-    );
-  }
+  return (
+    <ExerciseTable
+      columnNames={["Name", "Type", null]}
+      exercises={exercises}
+      exercisesButtons={exercisesButtons}
+      exercisesFilterString={exercisesFilterString}
+    ></ExerciseTable>
+  );
 }
 
-const decrementPage = (currentPage, setCurrentPage) => {
-  if (currentPage > 1) {
-    setCurrentPage((prevPage) => prevPage - 1);
-  }
-};
-
-const incrementPage = (currentPage, setCurrentPage, nPages) => {
-  if (currentPage < nPages) {
-    setCurrentPage((prevPage) => prevPage + 1);
-  }
-};
-
 export default ExerciseTableMyExercises;
-
-ExerciseTableMyExercises.defaultProps = {
-  nExercisesPerPage: 7,
-};

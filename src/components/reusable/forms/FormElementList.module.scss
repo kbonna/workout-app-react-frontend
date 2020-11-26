@@ -1,0 +1,26 @@
+.list {
+  --font-size: 0.8rem;
+  --padding-x: 5px;
+  --list-item-gap: 10px;
+  list-style: none;
+  font-size: var(--font-size);
+}
+
+.list-item {
+  margin-bottom: var(--list-item-gap);
+  padding: 0 var(--padding-x) 0 var(--padding-x);
+}
+
+.list-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 1rem;
+  line-height: var(--font-size);
+}

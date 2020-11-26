@@ -1,0 +1,66 @@
+.form {
+  font-size: 1rem;
+  display: grid;
+  gap: 15px 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "name kind"
+    "tags tags"
+    "instructions instructions"
+    "muscles tutorials";
+
+  @media screen and (max-width: 675px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "name"
+      "kind"
+      "tags"
+      "instructions"
+      "muscles"
+      "tutorials";
+  }
+}
+
+.fieldset {
+  border: none;
+  border: 1px solid red;
+  display: contents;
+}
+
+.input {
+  &--name {
+    grid-area: name;
+  }
+  &--kind {
+    grid-area: kind;
+  }
+  &--tags {
+    grid-area: tags;
+  }
+  &--instructions {
+    grid-area: instructions;
+  }
+  &--muscles {
+    grid-area: muscles;
+  }
+  &--tutorials {
+    grid-area: tutorials;
+  }
+
+  &--name,
+  &--kind,
+  &--tags,
+  &--instructions,
+  &--tutorials,
+  &--muscles {
+    font-size: 1rem;
+  }
+}
+
+.buttons {
+  margin-top: 1rem;
+
+  button {
+    margin-right: 0.5em;
+  }
+}

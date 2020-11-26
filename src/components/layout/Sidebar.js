@@ -2,6 +2,7 @@ import React from "react";
 import { useRouteMatch, useLocation } from "react-router-dom";
 import "./Sidebar.scss";
 import LinkHighlighedIfMatch from "../hoc/LinkHighlighedIfMatch";
+import routes from "utilities/routes";
 
 function Sidebar({ isSidebarOpened }) {
   let { url } = useRouteMatch();
@@ -27,7 +28,7 @@ function Sidebar({ isSidebarOpened }) {
             classNameBase="sidebar__link"
             classNameActive="sidebar__link--active"
             location={location}
-            to={`${url}/inbox`}
+            to={`${url}/inbox/`}
           >
             Inbox
           </LinkHighlighedIfMatch>
@@ -38,7 +39,7 @@ function Sidebar({ isSidebarOpened }) {
             classNameBase="sidebar__link"
             classNameActive="sidebar__link--active"
             location={location}
-            to={`${url}/exercises/my-exercises`}
+            to={routes.app.exercises.myExercises}
             matchActive={`${url}/exercises`}
           >
             Exercises

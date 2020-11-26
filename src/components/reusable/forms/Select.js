@@ -1,24 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styles from "./Select.module.scss";
 
 function Select({
-  title,
   name,
-  options,
-  optionsDisplay,
   value,
   placeholder,
-  handleChange,
+  onChange,
+  options,
+  optionsDisplay,
 }) {
   return (
-    <div>
-      <label htmlFor={name}>{title}</label>
-      <select name={name} value={value} onChange={handleChange}>
-        <option value="" disabled>
+    <div className={styles.wrapper}>
+      <select
+        className={styles.select}
+        name={name}
+        value={value}
+        onChange={onChange}
+      >
+        <option className={styles.option} value="" disabled>
           {placeholder}
         </option>
         {options.map((option, i) => (
           <option
+            className={styles.option}
             value={option}
             key={option}
             label={optionsDisplay[i]}
@@ -30,13 +35,12 @@ function Select({
 }
 
 Select.propTypes = {
-  title: PropTypes.string,
   name: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.string),
-  optionsDisplay: PropTypes.arrayOf(PropTypes.string),
   value: PropTypes.string,
   placeholder: PropTypes.string,
-  handleChange: PropTypes.func,
+  onChange: PropTypes.func,
+  options: PropTypes.arrayOf(PropTypes.string),
+  optionsDisplay: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default Select;

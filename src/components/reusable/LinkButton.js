@@ -2,8 +2,9 @@ import React from "react";
 import styles from "./Button.module.scss";
 import PropTypes from "prop-types";
 import { classNames } from "utilities/misc";
+import { Link } from "react-router-dom";
 
-function Button({ handleClick, label, buttonType, extraClasses, ...rest }) {
+function LinkButton({ to, label, buttonType, extraClasses, ...rest }) {
   const className = classNames({
     [styles["btn"]]: true,
     [styles[`btn--${buttonType}`]]: Boolean(buttonType),
@@ -11,22 +12,22 @@ function Button({ handleClick, label, buttonType, extraClasses, ...rest }) {
   });
 
   return (
-    <button onClick={handleClick} className={className} {...rest}>
+    <Link to={to} className={className} {...rest}>
       {label}
-    </button>
+    </Link>
   );
 }
 
-Button.defaultProps = {
+LinkButton.defaultProps = {
   extraClasses: "",
   buttonType: "",
 };
 
-Button.propTypes = {
-  handleClick: PropTypes.func,
+LinkButton.propTypes = {
+  to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
   label: PropTypes.string,
   buttonType: PropTypes.string,
   extraClasses: PropTypes.string,
 };
 
-export default Button;
+export default LinkButton;

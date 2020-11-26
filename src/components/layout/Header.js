@@ -33,7 +33,7 @@ function Header({ handleLogout, setIsSidebarOpened }) {
   } else {
     headerNav = (
       <>
-        <span>Hello, {user.username}.</span>
+        <span className="header__span">Hello, {user.username}.</span>
         <Link to="/">
           <Button
             handleClick={handleLogout}

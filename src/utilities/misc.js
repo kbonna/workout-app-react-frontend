@@ -58,7 +58,7 @@ export const getPaginatedRange = (currentPage, nItemsPerPage, nItems) => {
     currentPage * nItemsPerPage + 1 > nItems
       ? nItems
       : currentPage * nItemsPerPage;
-  return [firstItemIndex, lastItemIndex];
+  return [firstItemIndex, lastItemIndex, Math.ceil(nItems / nItemsPerPage)];
 };
 
 /**

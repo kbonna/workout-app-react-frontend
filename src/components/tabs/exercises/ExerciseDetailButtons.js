@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { UserContext } from "components/App";
 import { useHistory } from "react-router-dom";
+
 import Button from "components/reusable/Button";
-import { deleteExercise } from "services/Exercises";
+import LinkButton from "components/reusable/LinkButton";
 import styles from "./ExerciseDetailButtons.module.scss";
+
+import { UserContext } from "components/App";
+import { deleteExercise } from "services/Exercises";
+import routes from "utilities/routes";
 
 function ExerciseDetailButtons({ exercise }) {
   const { userId } = useContext(UserContext);
   const history = useHistory();
-
-  function handleEdit(e) {
-    console.log(`editing exercise ${exercise.pk}`);
-  }
 
   function handleDelete(e) {
     deleteExercise(exercise.pk).then((success) => {
@@ -20,6 +20,7 @@ function ExerciseDetailButtons({ exercise }) {
       }
     });
   }
+
   function handleFork(e) {
     console.log(`forking exercise ${exercise.pk}`);
   }
@@ -27,11 +28,11 @@ function ExerciseDetailButtons({ exercise }) {
   return (
     <div className={styles["buttons"]}>
       {exercise.owner === userId && (
-        <Button
+        <LinkButton
+          to={`${routes.app.exercises.exercise}${exercise.pk}/edit`}
           label="Edit"
-          handleClick={handleEdit}
           extraClasses={styles["buttons__btn"]}
-        ></Button>
+        ></LinkButton>
       )}
       {exercise.owner === userId && (
         <Button

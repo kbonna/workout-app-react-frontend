@@ -36,7 +36,6 @@ function ExerciseDetailPage() {
     }
   };
 
-  console.log(exercise);
   useEffect(fetchData, [userId]);
 
   let exerciseDetailPageContent;
@@ -59,7 +58,7 @@ function ExerciseDetailPage() {
               exerciseKind={exercise.kind_display}
             ></ExerciseDetailHeader>
             <ExerciseDetailMuscleDiagram
-              muscleList={exercise.muscles}
+              muscleList={exercise.muscles.map((muscle) => muscle.name)}
             ></ExerciseDetailMuscleDiagram>
             <ExerciseDetailList exercise={exercise}></ExerciseDetailList>
             <ExerciseDetailButtons exercise={exercise}></ExerciseDetailButtons>

@@ -22,6 +22,10 @@
     fill: var(--col-gray-3);
   }
 
+  &__regular-digit {
+    color: var(--col-gray-3);
+  }
+
   &__regular-digit,
   &__currentpage-digit {
     margin: 0 0.5em;
