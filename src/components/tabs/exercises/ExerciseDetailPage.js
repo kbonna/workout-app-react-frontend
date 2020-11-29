@@ -31,6 +31,7 @@ function ExerciseDetailPage() {
           setExercise({});
         } else {
           setExercise(exercise);
+          console.log(exercise);
         }
       });
     }

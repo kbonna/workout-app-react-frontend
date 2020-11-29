@@ -87,12 +87,9 @@ export const editExercise = async function (data, exerciseId) {
     headers: { ...header_with_token(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-
-  return response;
-
-  // const json = await response.json();
-  // if (response.status === 201) {
-  //   return [true, json];
-  // }
-  // return [false, json];
+  const json = await response.json();
+  if (response.status === 200) {
+    return [true, json];
+  }
+  return [false, json];
 };
