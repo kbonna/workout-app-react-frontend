@@ -1,29 +1,14 @@
 import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
 
 import Button from "components/reusable/Button";
 import LinkButton from "components/reusable/LinkButton";
 import styles from "./ExerciseDetailButtons.module.scss";
 
 import { UserContext } from "components/App";
-import { deleteExercise } from "services/Exercises";
 import routes from "utilities/routes";
 
-function ExerciseDetailButtons({ exercise }) {
+function ExerciseDetailButtons({ exercise, handleDelete, handleFork }) {
   const { userId } = useContext(UserContext);
-  const history = useHistory();
-
-  function handleDelete(e) {
-    deleteExercise(exercise.pk).then((success) => {
-      if (success) {
-        history.goBack();
-      }
-    });
-  }
-
-  function handleFork(e) {
-    console.log(`forking exercise ${exercise.pk}`);
-  }
 
   return (
     <div className={styles["buttons"]}>

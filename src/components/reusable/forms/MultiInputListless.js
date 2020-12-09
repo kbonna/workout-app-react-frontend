@@ -18,16 +18,20 @@ function MultiInputListless({
   const [isNextValue, setIsNextValue] = useState(false);
 
   const handleChange = (e) => {
-    setIsNextValue(e.target.value.slice(-1) === " ");
-    setValue(
-      e.target.value
-        .trim()
-        .replace(/\s+/g, " ")
-        .split("")
-        .filter((ch) => allowedChars.includes(ch.toLowerCase()) || ch === " ")
-        .join("")
-        .split(" ")
-    );
+    if (e.target.value === "") {
+      setValue([]);
+    } else {
+      setIsNextValue(e.target.value.slice(-1) === " ");
+      setValue(
+        e.target.value
+          .trim()
+          .replace(/\s+/g, " ")
+          .split("")
+          .filter((ch) => allowedChars.includes(ch.toLowerCase()) || ch === " ")
+          .join("")
+          .split(" ")
+      );
+    }
   };
 
   return (

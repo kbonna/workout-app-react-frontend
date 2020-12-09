@@ -10,6 +10,7 @@ import ProtectedRoute from "./hoc/ProtectedRoute";
 import PublicRoute from "./hoc/PublicRoute";
 import LandingPage from "./layout/LandingPage";
 import { login, signup, current_user } from "services/Auth";
+import NotificationProvider from "./context/NotificationProvider";
 
 export const BASE_URL = "http://localhost:8000";
 export const API_URL = BASE_URL + "/api";
@@ -77,39 +78,41 @@ function App() {
   } else {
     return (
       <>
-        <UserContext.Provider value={user}>
-          <Router>
-            <Header
-              handleLogout={handleLogout}
-              setIsSidebarOpened={setIsSidebarOpened}
-            />
-            <Switch>
-              {/* Landing page */}
-              <Route exact path="/">
-                <LandingPage></LandingPage>
-              </Route>
-              {/* App */}
-              <ProtectedRoute path="/app" loggedIn={loggedIn}>
-                <Body isSidebarOpened={isSidebarOpened}></Body>
-              </ProtectedRoute>
-              {/* Login & Signup */}
-              <PublicRoute path="/login" loggedIn={loggedIn}>
-                <LoginForm
-                  handleLogin={handleLogin}
-                  loginErrorMsg={loginErrorMsg}
-                  setLoginErrorMsg={setLoginErrorMsg}
-                ></LoginForm>
-              </PublicRoute>
-              <PublicRoute path="/signup" loggedIn={loggedIn}>
-                <SignupForm
-                  handleSignup={handleSignup}
-                  signupErrorMsg={signupErrorMsg}
-                  setSignupErrorMsg={setSignupErrorMsg}
-                ></SignupForm>
-              </PublicRoute>
-            </Switch>
-          </Router>
-        </UserContext.Provider>
+        <NotificationProvider>
+          <UserContext.Provider value={user}>
+            <Router>
+              <Header
+                handleLogout={handleLogout}
+                setIsSidebarOpened={setIsSidebarOpened}
+              />
+              <Switch>
+                {/* Landing page */}
+                <Route exact path="/">
+                  <LandingPage></LandingPage>
+                </Route>
+                {/* App */}
+                <ProtectedRoute path="/app" loggedIn={loggedIn}>
+                  <Body isSidebarOpened={isSidebarOpened}></Body>
+                </ProtectedRoute>
+                {/* Login & Signup */}
+                <PublicRoute path="/login" loggedIn={loggedIn}>
+                  <LoginForm
+                    handleLogin={handleLogin}
+                    loginErrorMsg={loginErrorMsg}
+                    setLoginErrorMsg={setLoginErrorMsg}
+                  ></LoginForm>
+                </PublicRoute>
+                <PublicRoute path="/signup" loggedIn={loggedIn}>
+                  <SignupForm
+                    handleSignup={handleSignup}
+                    signupErrorMsg={signupErrorMsg}
+                    setSignupErrorMsg={setSignupErrorMsg}
+                  ></SignupForm>
+                </PublicRoute>
+              </Switch>
+            </Router>
+          </UserContext.Provider>
+        </NotificationProvider>
       </>
     );
   }

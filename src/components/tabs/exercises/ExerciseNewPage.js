@@ -30,6 +30,10 @@ function ExerciseNewPage() {
    * backend.
    */
   const setErrors = (errors) => {
+    if ("non_field_errors" in errors) {
+      (errors.name = errors.name || []).push(errors.non_field_errors.join(" "));
+    }
+    console.log(errors);
     for (const field of Object.keys(formData)) {
       let error;
       if (typeof formData[field].value === "string") {

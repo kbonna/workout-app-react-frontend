@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import { UserContext } from "components/App";
-import { fetchExercises } from "services/Exercises";
-import { header_with_token } from "services/Auth";
-import routes from "utilities/routes";
+import { fetchExercises, forkExercise } from "services/Exercises";
 import Button from "components/reusable/Button";
 import ExerciseTable from "./ExerciseTable";
+import { useNotification } from "components/context/NotificationProvider";
 
 function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
   const [exercises, setExercises] = useState(null);
   const { userId } = useContext(UserContext);
+  const notify = useNotification();
 
   const fetchData = () => {
     if (userId) {
@@ -25,13 +25,21 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
 
   useEffect(fetchData, [userId]);
 
-  // TODO: move into servives
-  function handleFork(exerciseId) {
-    fetch(`${routes.api.exercises.self}${exerciseId}`, {
-      method: "post",
-      headers: header_with_token(),
-    }).then((res) => {
-      console.log(res);
+  function handleFork(exercise) {
+    forkExercise(exercise.pk).then((success) => {
+      if (success) {
+        setExercises(null);
+        fetchData();
+        notify({
+          message: `Successfully forked ${exercise.name} exercise.`,
+          type: "success",
+        });
+      } else {
+        notify({
+          message: `Cannot fork ${exercise.name} exercise.`,
+          type: "error",
+        });
+      }
     });
   }
 
@@ -47,7 +55,7 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
         <Button
           key={"fork"}
           label={"Fork"}
-          handleClick={() => handleFork(exercise.pk)}
+          handleClick={() => handleFork(exercise)}
           extraClasses="mx-1"
         ></Button>
       ),

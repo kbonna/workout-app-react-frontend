@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Dashboard from "../tabs/Dashboard";
@@ -7,17 +7,23 @@ import Routines from "../tabs/Routines";
 import Workouts from "../tabs/Workouts";
 import Samples from "../tabs/Samples";
 import Statistics from "../tabs/Statistics";
+import { NotificationContext } from "components/context/NotificationProvider";
+import Notifications from "components/context/Notifications";
 
 import Inbox from "../tabs/Inbox";
 import "./Body.scss";
 
 function Body({ isSidebarOpened }) {
   let { path } = useRouteMatch();
-
+  let { notifications, dispatch } = useContext(NotificationContext);
   return (
     <>
-      <Sidebar isSidebarOpened={isSidebarOpened}></Sidebar>
       <div className="app-content">
+        <Sidebar isSidebarOpened={isSidebarOpened}></Sidebar>
+        <Notifications
+          notifications={notifications}
+          dispatch={dispatch}
+        ></Notifications>
         <Switch>
           <Route path={`${path}/dashboard`}>
             <Dashboard></Dashboard>

@@ -4,6 +4,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { isEmpty } from "utilities/misc";
 import { editExercise, fetchExercise } from "services/Exercises";
 
+import { useNotification } from "components/context/NotificationProvider";
+import routes from "utilities/routes";
 import { UserContext } from "components/App";
 import ExerciseForm from "./ExerciseForm";
 import styles from "./ExerciseNewPage.module.scss";
@@ -12,10 +14,39 @@ function ExerciseEditPage() {
   const [formData, setFormData] = useState(null);
   const { userId } = useContext(UserContext);
   const { id: exerciseId } = useParams();
+  const notify = useNotification();
   const history = useHistory();
 
   const handleCancel = (e) => {
     history.goBack();
+  };
+
+  /**
+   * Set error messages for all inputs using component state.
+   *
+   * @param {object} errors – Error object parsed from JSON returned from
+   * backend.
+   */
+  const setErrors = (errors) => {
+    if ("non_field_errors" in errors) {
+      (errors.name = errors.name || []).push(errors.non_field_errors.join(" "));
+    }
+    console.log(errors);
+    for (const field of Object.keys(formData)) {
+      let error;
+      if (typeof formData[field].value === "string") {
+        error = field in errors ? errors[field].join("") : "";
+      } else {
+        error =
+          field in errors
+            ? errors[field].map((obj) => Object.values(obj).join(" "))
+            : [];
+      }
+      setFormData((prevState) => ({
+        ...prevState,
+        [field]: { ...prevState[field], error },
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -30,8 +61,20 @@ function ExerciseEditPage() {
       tutorials: formData.tutorials.value.map((url) => ({ url })),
     };
 
-    editExercise(data, exerciseId).then((result) => {
-      console.log(result);
+    editExercise(data, exerciseId).then(([isEdited, json]) => {
+      if (isEdited) {
+        history.push(`${routes.app.exercises.exercise}${exerciseId}`);
+        notify({
+          message: `Successfully edited ${data.name} exercise.`,
+          type: "success",
+        });
+      } else {
+        notify({
+          message: "Form has errors. Fix them and resubmit again.",
+          type: "error",
+        });
+        setErrors(json);
+      }
     });
   };
 

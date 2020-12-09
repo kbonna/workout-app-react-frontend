@@ -60,6 +60,7 @@ export const deleteExercise = async function (exerciseId) {
 };
 
 /**
+ * Create new exercise.
  *
  * @param {object} data - Object containing exercise data.
  *
@@ -81,6 +82,17 @@ export const createExercise = async function (data) {
   return [false, json];
 };
 
+/**
+ * Edit exercise using specified data.
+ *
+ * @param {object} data - Object containing exercise data.
+ * @param {number} exerciseId
+ *
+ * Returns array of two elements: first is the decision if creation was
+ * successful, second is the associated object. If new instance was created
+ * this object contains validated data, otherwise it cointains error messages
+ * for incorrect fields.
+ */
 export const editExercise = async function (data, exerciseId) {
   const response = await fetch(`${routes.api.exercises.self}${exerciseId}`, {
     method: "put",
@@ -89,6 +101,24 @@ export const editExercise = async function (data, exerciseId) {
   });
   const json = await response.json();
   if (response.status === 200) {
+    return [true, json];
+  }
+  return [false, json];
+};
+
+/**
+ * Create a perfect copy of certain exercise and attach it to user that made request. It should fail
+ * whenever user already have exercise with same name.
+ *
+ * @param {number} exerciseId - Exercise primary key.
+ */
+export const forkExercise = async function (exerciseId) {
+  const response = await fetch(`${routes.api.exercises.self}${exerciseId}`, {
+    method: "post",
+    headers: header_with_token(),
+  });
+  const json = await response.json();
+  if (response.status === 201) {
     return [true, json];
   }
   return [false, json];

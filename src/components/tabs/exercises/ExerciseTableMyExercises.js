@@ -7,10 +7,12 @@ import { UserContext } from "components/App";
 import { fetchExercises, deleteExercise } from "services/Exercises";
 import LinkButton from "components/reusable/LinkButton";
 import Button from "components/reusable/Button";
+import { useNotification } from "components/context/NotificationProvider";
 
 function ExerciseTableMyExercises({ exercisesFilterString }) {
   const [exercises, setExercises] = useState(null);
   const { userId } = useContext(UserContext);
+  const notify = useNotification();
 
   const fetchData = () => {
     if (userId) {
@@ -27,12 +29,16 @@ function ExerciseTableMyExercises({ exercisesFilterString }) {
   // TODO: Do I need userId in every useEffect???
   useEffect(fetchData, [userId]);
 
-  function handleDelete(exerciseId) {
-    deleteExercise(exerciseId).then((success) => {
+  function handleDelete(exercise) {
+    deleteExercise(exercise.pk).then((success) => {
       if (success) {
         setExercises((prevExercises) =>
-          prevExercises.filter((exercise) => exercise.pk !== exerciseId)
+          prevExercises.filter((ex) => ex.pk !== exercise.pk)
         );
+        notify({
+          message: `Successfully deleted ${exercise.name} exercise.`,
+          type: "success",
+        });
       }
     });
   }
@@ -49,7 +55,7 @@ function ExerciseTableMyExercises({ exercisesFilterString }) {
       <Button
         key={"delete"}
         label={"Delete"}
-        handleClick={() => handleDelete(exercise.pk)}
+        handleClick={() => handleDelete(exercise)}
         extraClasses="mx-1"
       ></Button>,
     ]);
