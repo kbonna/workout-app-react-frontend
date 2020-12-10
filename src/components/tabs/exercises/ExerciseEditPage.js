@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useReducer } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 import { isEmpty } from "utilities/misc";
@@ -10,8 +10,52 @@ import { UserContext } from "components/App";
 import ExerciseForm from "./ExerciseForm";
 import styles from "./ExerciseNewPage.module.scss";
 
+export const ACTIONS = {
+  SET_STATE: "set_state",
+  SET_ERRORS: "set_errors",
+  SET_FIELD: "set_field",
+  ADD_TO_FIELD: "add_to_field",
+  REMOVE_FROM_FIELD: "remove_from_field",
+};
+
+const formReducer = (state, action) => {
+  switch (action.type) {
+    case ACTIONS.SET_ERRORS:
+      return { ...state, errors: { ...state.errors, ...action.errors } };
+    case ACTIONS.SET_FIELD:
+      return {
+        ...state,
+        values: { ...state.values, [action.field]: action.value },
+      };
+    case ACTIONS.ADD_TO_FIELD:
+      console.log("adding to field", action.field, action.value);
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [action.field]: [...state.values[action.field], action.value],
+        },
+      };
+    case ACTIONS.REMOVE_FROM_FIELD:
+      const newValues = state.values[action.field];
+      newValues.splice(action.index);
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [action.field]: newValues,
+        },
+      };
+    case ACTIONS.SET_STATE:
+      return action.state;
+    default:
+      return state;
+  }
+};
+
 function ExerciseEditPage() {
-  const [formData, setFormData] = useState(null);
+  const [formData, dispatch] = useReducer(formReducer);
+
   const { userId } = useContext(UserContext);
   const { id: exerciseId } = useParams();
   const notify = useNotification();
@@ -21,44 +65,16 @@ function ExerciseEditPage() {
     history.goBack();
   };
 
-  /**
-   * Set error messages for all inputs using component state.
-   *
-   * @param {object} errors – Error object parsed from JSON returned from
-   * backend.
-   */
-  const setErrors = (errors) => {
-    if ("non_field_errors" in errors) {
-      (errors.name = errors.name || []).push(errors.non_field_errors.join(" "));
-    }
-    console.log(errors);
-    for (const field of Object.keys(formData)) {
-      let error;
-      if (typeof formData[field].value === "string") {
-        error = field in errors ? errors[field].join("") : "";
-      } else {
-        error =
-          field in errors
-            ? errors[field].map((obj) => Object.values(obj).join(" "))
-            : [];
-      }
-      setFormData((prevState) => ({
-        ...prevState,
-        [field]: { ...prevState[field], error },
-      }));
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = {
-      name: formData.name.value,
-      ...(formData.kind.value !== "" && { kind: formData.kind.value }),
-      instructions: formData.instructions.value,
-      tags: formData.tags.value.map((name) => ({ name })),
-      muscles: formData.muscles.value.map((name) => ({ name })),
-      tutorials: formData.tutorials.value.map((url) => ({ url })),
+      name: formData.values.name,
+      ...(formData.values.kind !== "" && { kind: formData.values.kind }),
+      instructions: formData.values.instructions,
+      tags: formData.values.tags,
+      muscles: formData.values.muscles,
+      tutorials: formData.values.tutorials,
     };
 
     editExercise(data, exerciseId).then(([isEdited, json]) => {
@@ -73,7 +89,8 @@ function ExerciseEditPage() {
           message: "Form has errors. Fix them and resubmit again.",
           type: "error",
         });
-        setErrors(json);
+        dispatch({ type: ACTIONS.SET_ERRORS, errors: json });
+        console.log(formData);
       }
     });
   };
@@ -84,18 +101,25 @@ function ExerciseEditPage() {
         if (isEmpty(exercise)) {
           console.log("404!"); // TODO: redirect to 404
         } else {
-          setFormData({
-            name: { value: exercise.name, error: "" },
-            kind: { value: exercise.kind, error: "" },
-            instructions: { value: exercise.instructions, error: "" },
-            tags: { value: exercise.tags.map((tag) => tag.name), error: [] },
-            muscles: {
-              value: exercise.muscles.map((muscle) => muscle.name),
-              error: [],
-            },
-            tutorials: {
-              value: exercise.tutorials.map((tutorial) => tutorial.url),
-              error: [],
+          dispatch({
+            type: ACTIONS.SET_STATE,
+            state: {
+              values: {
+                name: exercise.name,
+                kind: exercise.kind,
+                instructions: exercise.instructions,
+                tags: exercise.tags,
+                muscles: exercise.muscles,
+                tutorials: exercise.tutorials,
+              },
+              errors: {
+                name: [],
+                kind: [],
+                instructions: [],
+                tags: [],
+                muscles: [],
+                tutorials: [],
+              },
             },
           });
         }
@@ -111,7 +135,7 @@ function ExerciseEditPage() {
       {formData && (
         <ExerciseForm
           formData={formData}
-          setFormData={setFormData}
+          dispatch={dispatch}
           handleSubmit={handleSubmit}
           handleCancel={handleCancel}
         ></ExerciseForm>

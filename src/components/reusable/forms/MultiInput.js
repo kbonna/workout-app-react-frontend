@@ -10,7 +10,8 @@ function MultiInput({
   title,
   name,
   value,
-  setValue,
+  handleAddToField,
+  handleRemoveFromField,
   placeholder,
   error,
 }) {
@@ -20,13 +21,13 @@ function MultiInput({
     setCurrentValue(e.target.value);
   };
 
-  const handleAddToList = (currentValue) => {
-    setValue((prevValue) => [...prevValue, currentValue]);
+  const handleAdd = () => {
+    handleAddToField(name, currentValue);
     setCurrentValue("");
   };
 
-  const handleRemoveFromList = (value) => {
-    setValue((prevValue) => prevValue.filter((v) => v !== value));
+  const handleRemove = (index) => {
+    handleRemoveFromField(name, index);
   };
 
   return (
@@ -37,7 +38,7 @@ function MultiInput({
         shouldRenderAddBtn={Boolean(
           currentValue && !value.includes(currentValue)
         )}
-        onClick={() => handleAddToList(currentValue)}
+        onClick={handleAdd}
       ></FormElementLabelWithBtn>
       <Input
         name={name}
@@ -49,7 +50,7 @@ function MultiInput({
       <FormElementList
         value={value}
         displayValue={value}
-        handleRemoveFromList={handleRemoveFromList}
+        handleRemove={handleRemove}
         error={error}
       ></FormElementList>
     </div>
@@ -60,7 +61,6 @@ MultiInput.propTypes = {
   title: PropTypes.string,
   name: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.string),
-  setValue: PropTypes.func,
   placeholder: PropTypes.string,
 };
 

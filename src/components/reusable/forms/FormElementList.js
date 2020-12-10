@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styles from "./FormElementList.module.scss";
 import FormElementError from "./FormElementError";
 
-function FormElementList({ value, displayValue, handleRemoveFromList, error }) {
+function FormElementList({ value, displayValue, handleRemove, error }) {
   return (
     <ul className={styles.list}>
       {value.map((value, idx) => (
@@ -14,7 +14,7 @@ function FormElementList({ value, displayValue, handleRemoveFromList, error }) {
             <button
               type="button"
               className={styles.btn}
-              onClick={() => handleRemoveFromList(value)}
+              onClick={() => handleRemove(idx)}
             >
               &times;
             </button>

@@ -5,10 +5,10 @@ import SimpleSelect from "components/reusable/forms/SimpleSelect";
 import SimpleTextarea from "components/reusable/forms/SimpleTextarea";
 import MultiInput from "components/reusable/forms/MultiInput";
 import MultiSelect from "components/reusable/forms/MultiSelect";
-import MultiInputListless from "components/reusable/forms/MultiInputListless";
 import Button from "components/reusable/Button";
 
 import styles from "./ExerciseForm.module.scss";
+import { ACTIONS } from "./ExerciseEditPage";
 
 import {
   EXERCISE_TYPES,
@@ -17,7 +17,6 @@ import {
   MUSCLES_DISPLAY,
 } from "utilities/models";
 
-const letters = "0123456789abcdefghijklmnopqrstuvwxyz";
 const fieldProps = {
   name: {
     title: "Name",
@@ -51,32 +50,40 @@ const fieldProps = {
   },
 };
 
-function ExerciseForm({ formData, setFormData, handleSubmit, handleCancel }) {
+function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
   const handleChange = (e) => {
     e.persist();
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: { ...prevState[e.target.name], value: e.target.value },
-    }));
+    dispatch({
+      type: ACTIONS.SET_FIELD,
+      field: e.target.name,
+      value: e.target.value,
+    });
   };
 
-  /**
-   * Acts like setFormData function for simple type, but works on nested object.
-   *
-   * @param {string} prop - Name of the field. Must match state key.
-   * @param {string|function} fn_or_value - Update function or updated value.
-   */
-  const setValue = (prop, fn_or_value) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [prop]: {
-        ...prevState[prop],
-        value:
-          typeof fn_or_value === "function"
-            ? fn_or_value(prevState[prop].value)
-            : fn_or_value,
-      },
-    }));
+  const handleAddToField = (field, value) => {
+    let valueObject;
+    switch (field) {
+      case fieldProps.tags.name:
+      case fieldProps.muscles.name:
+        valueObject = { name: value };
+        break;
+      case fieldProps.tutorials.name:
+        valueObject = { url: value };
+        break;
+    }
+    dispatch({
+      type: ACTIONS.ADD_TO_FIELD,
+      field,
+      value: valueObject,
+    });
+  };
+
+  const handleRemoveFromField = (field, index) => {
+    dispatch({
+      type: ACTIONS.REMOVE_FROM_FIELD,
+      field,
+      index,
+    });
   };
 
   return (
@@ -89,9 +96,9 @@ function ExerciseForm({ formData, setFormData, handleSubmit, handleCancel }) {
             name={fieldProps.name.name}
             type={"text"}
             placeholder={fieldProps.name.placeholder}
-            value={formData.name.value}
+            value={formData.values.name}
             handleChange={handleChange}
-            error={formData.name.error}
+            error={formData.errors.name}
           ></SimpleInput>
           <SimpleSelect
             className={styles["input--kind"]}
@@ -99,57 +106,51 @@ function ExerciseForm({ formData, setFormData, handleSubmit, handleCancel }) {
             name={fieldProps.kind.name}
             options={EXERCISE_TYPES}
             optionsDisplay={EXERCISE_TYPES_DISPLAY}
-            value={formData.kind.value}
+            value={formData.values.kind}
             placeholder={fieldProps.kind.placeholder}
             handleChange={handleChange}
-            error={formData.kind.error}
+            error={formData.errors.kind}
           ></SimpleSelect>
-          <MultiInputListless
+          <MultiInput
             className={styles["input--tags"]}
             title={fieldProps.tags.title}
             name={fieldProps.tags.name}
             placeholder={fieldProps.tags.placeholder}
-            value={formData.tags.value}
-            setValue={(fn_or_value) => {
-              setValue("tags", fn_or_value);
-            }}
-            error={formData.tags.error}
-            allowedChars={letters}
-          ></MultiInputListless>
+            value={formData.values.tags.map((tag) => tag.name)}
+            error={formData.errors.tags.map((tag) => tag.name)}
+            handleAddToField={handleAddToField}
+            handleRemoveFromField={handleRemoveFromField}
+          ></MultiInput>
           <SimpleTextarea
             className={styles["input--instructions"]}
             title={fieldProps.instructions.title}
             name={fieldProps.instructions.name}
             placeholder={fieldProps.instructions.placeholder}
-            value={formData.instructions.value}
+            value={formData.values.instructions}
             handleChange={handleChange}
             rows={4}
             cols={50}
-            error={formData.instructions.error}
+            error={formData.errors.instructions}
           ></SimpleTextarea>
           <MultiSelect
             className={styles["input--muscles"]}
             title={fieldProps.muscles.title}
             name={fieldProps.muscles.name}
             placeholder={fieldProps.muscles.placeholder}
-            value={formData.muscles.value}
-            setValue={(fn_or_value) => {
-              setValue("muscles", fn_or_value);
-            }}
+            value={formData.values.muscles.map((muscle) => muscle.name)}
+            error={formData.errors.muscles.map((muscle) => muscle.name)}
             options={MUSCLES}
             optionsDisplay={MUSCLES_DISPLAY}
-            error={formData.muscles.error}
           ></MultiSelect>
           <MultiInput
             className={styles["input--tutorials"]}
             title={fieldProps.tutorials.title}
             name={fieldProps.tutorials.name}
             placeholder={fieldProps.tutorials.placeholder}
-            value={formData.tutorials.value}
-            setValue={(fn_or_value) => {
-              setValue("tutorials", fn_or_value);
-            }}
-            error={formData.tutorials.error}
+            value={formData.values.tutorials.map((tutorial) => tutorial.url)}
+            error={formData.errors.tutorials.map((tutorial) => tutorial.url)}
+            handleAddToField={handleAddToField}
+            handleRemoveFromField={handleRemoveFromField}
           ></MultiInput>
         </fieldset>
         <div className={styles.buttons}>
