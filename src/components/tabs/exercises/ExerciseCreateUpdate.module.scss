@@ -1,4 +1,8 @@
 .title {
   font-size: 1.75em;
   margin-bottom: 1.5rem;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }

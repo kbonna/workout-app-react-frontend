@@ -5,16 +5,19 @@ import Select from "./Select";
 import FormElementLabelWithBtn from "./FormElementLabelWithBtn";
 import FormElementList from "./FormElementList";
 
+import { ACTIONS } from "components/tabs/exercises/ExerciseCreateUpdate";
+
 function MultiSelect({
   className,
   title,
   name,
-  value,
-  setValue,
   placeholder,
+  value,
+  error,
   options,
   optionsDisplay,
-  error,
+  dispatch,
+  jsonKey,
 }) {
   const [currentValue, setCurrentValue] = useState("");
 
@@ -22,13 +25,14 @@ function MultiSelect({
     setCurrentValue(e.target.value);
   };
 
-  const handleAddToList = (currentValue) => {
-    setValue((prevValue) => [...prevValue, currentValue]);
+  const handleAdd = () => {
+    dispatch({
+      type: ACTIONS.ADD_TO_FIELD,
+      field: name,
+      value: currentValue,
+      jsonKey: jsonKey,
+    });
     setCurrentValue("");
-  };
-
-  const handleRemoveFromList = (value) => {
-    setValue((prevValue) => prevValue.filter((v) => v !== value));
   };
 
   // Remove options that are already part of the form state
@@ -43,7 +47,7 @@ function MultiSelect({
         name={name}
         title={title}
         shouldRenderAddBtn={Boolean(currentValue)}
-        onClick={() => handleAddToList(currentValue)}
+        onClick={handleAdd}
       ></FormElementLabelWithBtn>
       <Select
         name={name}
@@ -54,9 +58,10 @@ function MultiSelect({
         optionsDisplay={optionsDisplayFiltered}
       ></Select>
       <FormElementList
+        name={name}
         value={value}
         displayValue={value.map((v) => optionsDisplay[options.indexOf(v)])}
-        handleRemoveFromList={handleRemoveFromList}
+        dispatch={dispatch}
         error={error}
       ></FormElementList>
     </div>

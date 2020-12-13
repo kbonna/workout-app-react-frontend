@@ -25,25 +25,25 @@ function Body({ isSidebarOpened }) {
           dispatch={dispatch}
         ></Notifications>
         <Switch>
-          <Route path={`${path}/dashboard`}>
+          <Route path={`${path}dashboard`}>
             <Dashboard></Dashboard>
           </Route>
-          <Route path={`${path}/inbox`}>
+          <Route path={`${path}inbox`}>
             <Inbox></Inbox>
           </Route>
-          <Route path={`${path}/exercises`}>
+          <Route path={`${path}exercises`}>
             <Exercises></Exercises>
           </Route>
-          <Route path={`${path}/routines`}>
+          <Route path={`${path}routines`}>
             <Routines></Routines>
           </Route>
-          <Route path={`${path}/workouts`}>
+          <Route path={`${path}workouts`}>
             <Workouts></Workouts>
           </Route>
-          <Route path={`${path}/samples`}>
+          <Route path={`${path}samples`}>
             <Samples></Samples>
           </Route>
-          <Route path={`${path}/statistics`}>
+          <Route path={`${path}statistics`}>
             <Statistics></Statistics>
           </Route>
         </Switch>

@@ -35,7 +35,7 @@ function ExerciseDetailPage() {
     if (userId) {
       fetchExercise(exerciseId).then((exercise) => {
         if (isEmpty(exercise)) {
-          setExercise({});
+          history.push(routes.notFound);
         } else {
           setExercise(exercise);
         }
@@ -82,8 +82,6 @@ function ExerciseDetailPage() {
         <Spinner></Spinner>
       </div>
     );
-  } else if (isEmpty(exercise)) {
-    exerciseDetailPageContent = <h1>404 Not Found</h1>;
   } else {
     exerciseDetailPageContent = (
       <div className={styles["page"]}>

@@ -5,15 +5,17 @@ import FormElementLabelWithBtn from "./FormElementLabelWithBtn";
 import FormElementList from "./FormElementList";
 import Input from "./Input";
 
+import { ACTIONS } from "components/tabs/exercises/ExerciseCreateUpdate";
+
 function MultiInput({
   className,
   title,
   name,
   value,
-  handleAddToField,
-  handleRemoveFromField,
   placeholder,
   error,
+  dispatch,
+  jsonKey,
 }) {
   const [currentValue, setCurrentValue] = useState("");
 
@@ -22,12 +24,13 @@ function MultiInput({
   };
 
   const handleAdd = () => {
-    handleAddToField(name, currentValue);
+    dispatch({
+      type: ACTIONS.ADD_TO_FIELD,
+      field: name,
+      value: currentValue,
+      jsonKey: jsonKey,
+    });
     setCurrentValue("");
-  };
-
-  const handleRemove = (index) => {
-    handleRemoveFromField(name, index);
   };
 
   return (
@@ -48,9 +51,10 @@ function MultiInput({
         placeholder={placeholder}
       ></Input>
       <FormElementList
+        name={name}
         value={value}
         displayValue={value}
-        handleRemove={handleRemove}
+        dispatch={dispatch}
         error={error}
       ></FormElementList>
     </div>

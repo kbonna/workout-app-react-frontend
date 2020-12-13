@@ -8,7 +8,7 @@ import MultiSelect from "components/reusable/forms/MultiSelect";
 import Button from "components/reusable/Button";
 
 import styles from "./ExerciseForm.module.scss";
-import { ACTIONS } from "./ExerciseEditPage";
+import { ACTIONS } from "components/tabs/exercises/ExerciseCreateUpdate";
 
 import {
   EXERCISE_TYPES,
@@ -32,6 +32,7 @@ const fieldProps = {
     title: "Tags",
     name: "tags",
     placeholder: "add tags (optional)",
+    jsonKey: "name",
   },
   instructions: {
     title: "Description",
@@ -42,47 +43,24 @@ const fieldProps = {
     title: "Muscles",
     name: "muscles",
     placeholder: "add muscles (optional)",
+    jsonKey: "name",
   },
   tutorials: {
     title: "Tutorials",
     name: "tutorials",
     placeholder: "add tutorials (optional)",
+    jsonKey: "url",
   },
 };
 
 function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
+  // REMOVE???
   const handleChange = (e) => {
     e.persist();
     dispatch({
       type: ACTIONS.SET_FIELD,
       field: e.target.name,
       value: e.target.value,
-    });
-  };
-
-  const handleAddToField = (field, value) => {
-    let valueObject;
-    switch (field) {
-      case fieldProps.tags.name:
-      case fieldProps.muscles.name:
-        valueObject = { name: value };
-        break;
-      case fieldProps.tutorials.name:
-        valueObject = { url: value };
-        break;
-    }
-    dispatch({
-      type: ACTIONS.ADD_TO_FIELD,
-      field,
-      value: valueObject,
-    });
-  };
-
-  const handleRemoveFromField = (field, index) => {
-    dispatch({
-      type: ACTIONS.REMOVE_FROM_FIELD,
-      field,
-      index,
     });
   };
 
@@ -118,8 +96,8 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
             placeholder={fieldProps.tags.placeholder}
             value={formData.values.tags.map((tag) => tag.name)}
             error={formData.errors.tags.map((tag) => tag.name)}
-            handleAddToField={handleAddToField}
-            handleRemoveFromField={handleRemoveFromField}
+            dispatch={dispatch}
+            jsonKey={fieldProps.tags.jsonKey}
           ></MultiInput>
           <SimpleTextarea
             className={styles["input--instructions"]}
@@ -127,10 +105,10 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
             name={fieldProps.instructions.name}
             placeholder={fieldProps.instructions.placeholder}
             value={formData.values.instructions}
+            error={formData.errors.instructions}
             handleChange={handleChange}
             rows={4}
             cols={50}
-            error={formData.errors.instructions}
           ></SimpleTextarea>
           <MultiSelect
             className={styles["input--muscles"]}
@@ -141,6 +119,8 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
             error={formData.errors.muscles.map((muscle) => muscle.name)}
             options={MUSCLES}
             optionsDisplay={MUSCLES_DISPLAY}
+            dispatch={dispatch}
+            jsonKey={fieldProps.muscles.jsonKey}
           ></MultiSelect>
           <MultiInput
             className={styles["input--tutorials"]}
@@ -149,8 +129,8 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
             placeholder={fieldProps.tutorials.placeholder}
             value={formData.values.tutorials.map((tutorial) => tutorial.url)}
             error={formData.errors.tutorials.map((tutorial) => tutorial.url)}
-            handleAddToField={handleAddToField}
-            handleRemoveFromField={handleRemoveFromField}
+            dispatch={dispatch}
+            jsonKey={fieldProps.tutorials.jsonKey}
           ></MultiInput>
         </fieldset>
         <div className={styles.buttons}>

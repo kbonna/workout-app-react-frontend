@@ -25,6 +25,9 @@ const routes = {
       self: "/exercises",
     },
   },
+  notFound: "/404",
+  login: "/login",
+  signup: "/signup",
 };
 
 const createFullRoutesRecursively = (obj, prevPath = "") => {

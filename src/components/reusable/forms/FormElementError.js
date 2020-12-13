@@ -7,7 +7,7 @@ function FormElementError({ error }) {
 }
 
 FormElementError.propTypes = {
-  error: PropTypes.string,
+  error: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default FormElementError;

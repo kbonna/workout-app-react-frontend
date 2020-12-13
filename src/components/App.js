@@ -9,8 +9,11 @@ import SignupForm from "./forms/SignupForm";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 import PublicRoute from "./hoc/PublicRoute";
 import LandingPage from "./layout/LandingPage";
-import { login, signup, current_user } from "services/Auth";
+import NotFoundPage from "./layout/NotFoundPage";
+
 import NotificationProvider from "./context/NotificationProvider";
+import routes from "utilities/routes";
+import { login, signup, current_user } from "services/Auth";
 
 export const BASE_URL = "http://localhost:8000";
 export const API_URL = BASE_URL + "/api";
@@ -91,23 +94,27 @@ function App() {
                   <LandingPage></LandingPage>
                 </Route>
                 {/* App */}
-                <ProtectedRoute path="/app" loggedIn={loggedIn}>
+                <ProtectedRoute path={routes.app.self} loggedIn={loggedIn}>
                   <Body isSidebarOpened={isSidebarOpened}></Body>
                 </ProtectedRoute>
                 {/* Login & Signup */}
-                <PublicRoute path="/login" loggedIn={loggedIn}>
+                <PublicRoute path={routes.login} loggedIn={loggedIn}>
                   <LoginForm
                     handleLogin={handleLogin}
                     loginErrorMsg={loginErrorMsg}
                     setLoginErrorMsg={setLoginErrorMsg}
                   ></LoginForm>
                 </PublicRoute>
-                <PublicRoute path="/signup" loggedIn={loggedIn}>
+                <PublicRoute path={routes.signup} loggedIn={loggedIn}>
                   <SignupForm
                     handleSignup={handleSignup}
                     signupErrorMsg={signupErrorMsg}
                     setSignupErrorMsg={setSignupErrorMsg}
                   ></SignupForm>
+                </PublicRoute>
+                {/* Not found page */}
+                <PublicRoute path={routes.notFound}>
+                  <NotFoundPage></NotFoundPage>
                 </PublicRoute>
               </Switch>
             </Router>

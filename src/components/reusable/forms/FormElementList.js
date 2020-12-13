@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import styles from "./FormElementList.module.scss";
 import FormElementError from "./FormElementError";
 
-function FormElementList({ value, displayValue, handleRemove, error }) {
+import { ACTIONS } from "components/tabs/exercises/ExerciseCreateUpdate";
+
+function FormElementList({ name, value, displayValue, dispatch, error }) {
   return (
     <ul className={styles.list}>
       {value.map((value, idx) => (
@@ -12,9 +14,16 @@ function FormElementList({ value, displayValue, handleRemove, error }) {
           <div className={styles["list-value"]}>
             <span className={styles.span}>{displayValue[idx]}</span>
             <button
+              id={idx}
               type="button"
               className={styles.btn}
-              onClick={() => handleRemove(idx)}
+              onClick={() => {
+                dispatch({
+                  type: ACTIONS.REMOVE_FROM_FIELD,
+                  field: name,
+                  index: idx,
+                });
+              }}
             >
               &times;
             </button>
@@ -27,10 +36,11 @@ function FormElementList({ value, displayValue, handleRemove, error }) {
 }
 
 FormElementList.propTypes = {
+  name: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.string),
   displayValue: PropTypes.arrayOf(PropTypes.string),
-  handleRemoveFromList: PropTypes.func,
-  error: PropTypes.arrayOf(PropTypes.string),
+  dispatch: PropTypes.func,
+  error: PropTypes.array,
 };
 
 export default FormElementList;
