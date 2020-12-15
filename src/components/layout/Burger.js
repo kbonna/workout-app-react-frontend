@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Burger.scss";
 
-function Burger({ setIsSidebarOpened }) {
-  const [isBurgerOpened, setIsBurgerOpened] = useState(false);
-
-  const onClick = () => {
-    setIsBurgerOpened((prevIsBurgerOpened) => !prevIsBurgerOpened);
-    setIsSidebarOpened((prevIsSidebarOpened) => !prevIsSidebarOpened);
-  };
-
+function Burger({ handleClick, isOpened }) {
   return (
-    <div className="burger-wrapper" onClick={onClick}>
-      <div
-        className={`burger burger--${isBurgerOpened ? "opened" : "closed"}`}
-      ></div>
+    <div className="burger-wrapper" onClick={handleClick}>
+      <div className={`burger burger--${isOpened ? "opened" : "closed"}`}></div>
     </div>
   );
 }

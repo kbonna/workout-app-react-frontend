@@ -1,33 +1,30 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import ExerciseTable from "./ExerciseTable";
 
 import routes from "utilities/routes";
-import { UserContext } from "components/App";
 import { fetchExercises, deleteExercise } from "services/Exercises";
 import LinkButton from "components/reusable/LinkButton";
 import Button from "components/reusable/Button";
 import { useNotification } from "components/context/NotificationProvider";
+import { useUser } from "components/context/UserProvider";
 
 function ExerciseTableMyExercises({ exercisesFilterString }) {
   const [exercises, setExercises] = useState(null);
-  const { userId } = useContext(UserContext);
+  const user = useUser();
   const notify = useNotification();
 
   const fetchData = () => {
-    if (userId) {
-      fetchExercises(userId).then((exercises) => {
-        if (exercises.length) {
-          setExercises(exercises);
-        } else {
-          setExercises([]);
-        }
-      });
-    }
+    fetchExercises(user.pk).then((exercises) => {
+      if (exercises.length) {
+        setExercises(exercises);
+      } else {
+        setExercises([]);
+      }
+    });
   };
 
-  // TODO: Do I need userId in every useEffect???
-  useEffect(fetchData, [userId]);
+  useEffect(fetchData, []);
 
   function handleDelete(exercise) {
     deleteExercise(exercise.pk).then((success) => {

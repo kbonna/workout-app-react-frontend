@@ -1,29 +1,27 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
-import { UserContext } from "components/App";
 import { fetchExercises, forkExercise } from "services/Exercises";
 import Button from "components/reusable/Button";
 import ExerciseTable from "./ExerciseTable";
 import { useNotification } from "components/context/NotificationProvider";
+import { useUser } from "components/context/UserProvider";
 
 function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
   const [exercises, setExercises] = useState(null);
-  const { userId } = useContext(UserContext);
+  const user = useUser();
   const notify = useNotification();
 
   const fetchData = () => {
-    if (userId) {
-      fetchExercises(userId, true).then((exercises) => {
-        if (exercises.length) {
-          setExercises(exercises);
-        } else {
-          setExercises([]);
-        }
-      });
-    }
+    fetchExercises(user.pk, true).then((exercises) => {
+      if (exercises.length) {
+        setExercises(exercises);
+      } else {
+        setExercises([]);
+      }
+    });
   };
 
-  useEffect(fetchData, [userId]);
+  useEffect(fetchData, []);
 
   function handleFork(exercise) {
     forkExercise(exercise.pk).then((success) => {

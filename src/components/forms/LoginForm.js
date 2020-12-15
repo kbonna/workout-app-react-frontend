@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import { useAuth } from "components/context/AuthProvider";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import routes from "utilities/routes";
 import "./LoginForm.scss";
 
-function LoginForm({ handleLogin, loginErrorMsg, setLoginErrorMsg }) {
+const LoginForm = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  let history = useHistory();
+  const [error, setError] = useState("");
+  const { login } = useAuth();
+  const history = useHistory();
 
   function isValidUsername(username) {
     if (!username) {
-      setLoginErrorMsg("Please provide username.");
+      setError("Please provide username.");
       return false;
     }
     return true;
@@ -18,35 +21,28 @@ function LoginForm({ handleLogin, loginErrorMsg, setLoginErrorMsg }) {
 
   function isValidPassword(password) {
     if (!password) {
-      setLoginErrorMsg("Please provide password.");
+      setError("Please provide password.");
       return false;
     }
     return true;
   }
 
-  let errorSpan;
-  if (!loginErrorMsg) {
-    errorSpan = null;
-  } else {
-    errorSpan = (
-      <>
-        <span className="login-form__error">{loginErrorMsg}</span>
-        <br></br>
-      </>
-    );
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValidUsername(username) && isValidPassword(password)) {
+      login(username, password)
+        .then((user) => {
+          // change location
+        })
+        .catch((error) => {
+          setError(error.message);
+        });
+    }
+  };
 
   return (
     <div className="position-fixed-center">
-      <form
-        className="login-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (isValidUsername(username) && isValidPassword(password)) {
-            handleLogin(e, username, password, history);
-          }
-        }}
-      >
+      <form className="login-form" onSubmit={handleSubmit}>
         <h3 style={{ textAlign: "center" }}>Log In</h3>
         <label htmlFor="username">Username</label>
         <br></br>
@@ -70,11 +66,12 @@ function LoginForm({ handleLogin, loginErrorMsg, setLoginErrorMsg }) {
           }}
         />
         <br></br>
-        {errorSpan}
+        <span className="login-form__error">{error}</span>
+        <br></br>
         <input type="submit" value="Login" />
       </form>
     </div>
   );
-}
+};
 
 export default LoginForm;

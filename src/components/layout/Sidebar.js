@@ -3,14 +3,18 @@ import { useRouteMatch, useLocation } from "react-router-dom";
 import "./Sidebar.scss";
 import LinkHighlighedIfMatch from "../hoc/LinkHighlighedIfMatch";
 import routes from "utilities/routes";
+import { useFlags } from "components/context/FlagsProvider";
 
-function Sidebar({ isSidebarOpened }) {
-  let { url } = useRouteMatch();
-  let location = useLocation();
+function Sidebar() {
+  const { url } = useRouteMatch();
+  const location = useLocation();
+  const { flags } = useFlags();
 
   return (
     <div
-      className={`sidebar sidebar--${isSidebarOpened ? "opened" : "closed"}`}
+      className={`sidebar sidebar--${
+        flags.isSidebarOpen ? "opened" : "closed"
+      }`}
     >
       <ul className="sidebar__list">
         <li className="sidebar__list-item">

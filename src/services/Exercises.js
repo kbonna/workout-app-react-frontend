@@ -5,13 +5,13 @@ import routes from "utilities/routes";
  * Returns all exercise owned by the user. In case of error in response, empty
  * array is returned.
  *
- * @param {number} userId - User primary key.
+ * @param {number} userPk - User primary key.
  * @param {boolean} discover - Determines if querystring should include discover
  * flag.
  */
-export const fetchExercises = async function (userId, discover = false) {
+export const fetchExercises = async function (userPk, discover = false) {
   const response = await fetch(
-    `${routes.api.exercises.self}?user=${userId}${
+    `${routes.api.exercises.self}?user=${userPk}${
       discover ? "&discover=True" : ""
     }`,
     {

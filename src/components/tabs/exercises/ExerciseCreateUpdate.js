@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useNotification } from "components/context/NotificationProvider";
-import { UserContext } from "components/App";
 
 import routes from "utilities/routes";
 import { isEmpty } from "utilities/misc";
@@ -99,7 +98,6 @@ const formDataFromExercise = (exercise) => ({
 
 function ExerciseCreateUpdate({ operation }) {
   const [formData, dispatch] = useReducer(formReducer, null);
-  const { userId } = useContext(UserContext);
   const { id: exerciseId } = useParams();
   const notify = useNotification();
   const history = useHistory();
@@ -156,18 +154,16 @@ function ExerciseCreateUpdate({ operation }) {
   };
 
   const fetchData = () => {
-    if (userId) {
-      fetchExercise(exerciseId).then((exercise) => {
-        if (isEmpty(exercise)) {
-          history.push(routes.notFound);
-        } else {
-          dispatch({
-            type: ACTIONS.SET_STATE,
-            state: formDataFromExercise(exercise),
-          });
-        }
-      });
-    }
+    fetchExercise(exerciseId).then((exercise) => {
+      if (isEmpty(exercise)) {
+        history.push(routes.notFound);
+      } else {
+        dispatch({
+          type: ACTIONS.SET_STATE,
+          state: formDataFromExercise(exercise),
+        });
+      }
+    });
   };
 
   const populateFormData = () => {
@@ -178,7 +174,7 @@ function ExerciseCreateUpdate({ operation }) {
     }
   };
 
-  useEffect(populateFormData, [userId]);
+  useEffect(populateFormData, []);
 
   return (
     <>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { UserContext } from "components/App";
 import { isEmpty } from "utilities/misc";
 import {
   fetchExercise,
@@ -22,7 +21,6 @@ import routes from "utilities/routes";
 
 function ExerciseDetailPage() {
   const [exercise, setExercise] = useState(null);
-  const { userId } = useContext(UserContext);
   const { id: exerciseId } = useParams();
   const history = useHistory();
   const notify = useNotification();
@@ -32,15 +30,13 @@ function ExerciseDetailPage() {
   };
 
   const fetchData = () => {
-    if (userId) {
-      fetchExercise(exerciseId).then((exercise) => {
-        if (isEmpty(exercise)) {
-          history.push(routes.notFound);
-        } else {
-          setExercise(exercise);
-        }
-      });
-    }
+    fetchExercise(exerciseId).then((exercise) => {
+      if (isEmpty(exercise)) {
+        history.push(routes.notFound);
+      } else {
+        setExercise(exercise);
+      }
+    });
   };
 
   function handleDelete(exercise) {
@@ -73,7 +69,7 @@ function ExerciseDetailPage() {
     });
   }
 
-  useEffect(fetchData, [userId]);
+  useEffect(fetchData, []);
 
   let exerciseDetailPageContent;
   if (exercise === null) {

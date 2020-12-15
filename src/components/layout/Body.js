@@ -8,18 +8,18 @@ import Workouts from "../tabs/Workouts";
 import Samples from "../tabs/Samples";
 import Statistics from "../tabs/Statistics";
 import { NotificationContext } from "components/context/NotificationProvider";
-import Notifications from "components/context/Notifications";
+import Notifications from "components/reusable/Notifications";
 
 import Inbox from "../tabs/Inbox";
 import "./Body.scss";
 
-function Body({ isSidebarOpened }) {
+function Body() {
   let { path } = useRouteMatch();
   let { notifications, dispatch } = useContext(NotificationContext);
   return (
     <>
       <div className="app-content">
-        <Sidebar isSidebarOpened={isSidebarOpened}></Sidebar>
+        <Sidebar></Sidebar>
         <Notifications
           notifications={notifications}
           dispatch={dispatch}

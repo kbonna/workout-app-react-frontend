@@ -1,13 +1,24 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "components/context/UserProvider";
+import { useAuth } from "components/context/AuthProvider";
+import { useFlags } from "components/context/FlagsProvider";
 
-import { UserContext } from "components/App";
 import Button from "components/reusable/Button";
 import Burger from "./Burger";
 import "./Header.scss";
 
-function Header({ handleLogout, setIsSidebarOpened }) {
-  const user = useContext(UserContext);
+function Header(props) {
+  const { logout } = useAuth();
+  const user = useUser();
+  const { flags, setFlags } = useFlags();
+
+  const handleBurgerClick = () => {
+    setFlags((prevFlags) => ({
+      ...prevFlags,
+      isSidebarOpen: !prevFlags.isSidebarOpen,
+    }));
+  };
 
   // Left-sied logo based on login status
   let homePath;
@@ -36,23 +47,29 @@ function Header({ handleLogout, setIsSidebarOpened }) {
         <span className="header__span">Hello, {user.username}.</span>
         <Link to="/">
           <Button
-            handleClick={handleLogout}
+            handleClick={logout}
             label="Logout"
             extraClasses="mx-2"
           ></Button>
         </Link>
-        <Burger setIsSidebarOpened={setIsSidebarOpened}></Burger>
+        <Burger
+          handleClick={handleBurgerClick}
+          isOpened={flags.isSidebarOpen}
+        ></Burger>
       </>
     );
   }
 
   return (
-    <nav className="header">
-      <Link to={homePath} className="header__logo">
-        Workout App
-      </Link>
-      <div className="header__nav">{headerNav}</div>
-    </nav>
+    <>
+      <nav className="header">
+        <Link to={homePath} className="header__logo">
+          Workout App
+        </Link>
+        <div className="header__nav">{headerNav}</div>
+      </nav>
+      {props.children}
+    </>
   );
 }
 

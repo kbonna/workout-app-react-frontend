@@ -12,7 +12,7 @@ import { BASE_URL, API_URL } from "../components/App";
  * @param {string} username
  * @param {string} password
  */
-export async function login(username, password) {
+export async function loginUser(username, password) {
   const response = await fetch(`${BASE_URL}/token-auth/`, {
     method: "POST",
     headers: {
@@ -24,6 +24,7 @@ export async function login(username, password) {
     const json = await response.json();
     localStorage.setItem("token-access", json.access);
     localStorage.setItem("token-refresh", json.refresh);
+    return;
   } else {
     throw new Error("Incorrect username or password");
   }
@@ -40,7 +41,7 @@ export async function login(username, password) {
  * @param {string} username
  * @param {string} password
  */
-export async function signup(username, password) {
+export async function signupUser(username, password) {
   const response = await fetch(`${API_URL}/users/`, {
     method: "POST",
     headers: {
@@ -69,7 +70,7 @@ export async function signup(username, password) {
  *  username: 
       User username.
  */
-export async function current_user() {
+export async function currentUser() {
   if (localStorage.getItem("token-access")) {
     const response = await fetch(`${API_URL}/current_user`, {
       headers: header_with_token(),
