@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import { useAuth } from "components/context/AuthProvider";
-import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import routes from "utilities/routes";
 import "./LoginForm.scss";
@@ -32,7 +32,7 @@ const LoginForm = (props) => {
     if (isValidUsername(username) && isValidPassword(password)) {
       login(username, password)
         .then((user) => {
-          // change location
+          history.push(routes.app.exercises.myExercises);
         })
         .catch((error) => {
           setError(error.message);

@@ -1,4 +1,4 @@
-import { BASE_URL, API_URL } from "../components/App";
+import { BASE_URL, API_URL } from "utilities/routes";
 
 /**
  * Login function using JWT authorization endpoint.

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 
 import {
   BrowserRouter as Router,
@@ -16,16 +16,8 @@ import PublicRoute from "./hoc/PublicRoute";
 import LandingPage from "./layout/LandingPage";
 import NotFoundPage from "./layout/NotFoundPage";
 
-import { useAuth } from "./context/AuthProvider";
 import { useUser } from "./context/UserProvider";
-
-import NotificationProvider from "./context/NotificationProvider";
 import routes from "utilities/routes";
-import AppProviders from "./context/AppProviders";
-import { useFlags } from "./context/FlagsProvider";
-
-export const BASE_URL = "http://localhost:8000";
-export const API_URL = BASE_URL + "/api";
 
 function App() {
   const user = useUser();
@@ -50,9 +42,9 @@ function App() {
           <SignupForm />
         </PublicRoute>
         {/* Not found page */}
-        <PublicRoute path={routes.notFound} loggedIn={user.loggedIn}>
+        <Route path={routes.notFound} loggedIn={user.loggedIn}>
           <NotFoundPage></NotFoundPage>
-        </PublicRoute>
+        </Route>
         {/* Fallback */}
         <Redirect to={routes.notFound} />
       </Switch>

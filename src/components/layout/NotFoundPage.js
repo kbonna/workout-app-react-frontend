@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import PropTypes from "prop-types";
 import styles from "./NotFoundPage.module.scss";
 import routes from "utilities/routes";
 
@@ -26,7 +25,5 @@ function NotFoundPage(props) {
     </div>
   );
 }
-
-NotFoundPage.propTypes = {};
 
 export default NotFoundPage;

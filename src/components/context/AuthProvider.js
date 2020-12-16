@@ -39,7 +39,11 @@ function AuthProvider(props) {
   };
 
   if (user === null) {
-    return <Spinner></Spinner>;
+    return (
+      <div className={"position-fixed-center"}>
+        <Spinner></Spinner>
+      </div>
+    );
   } else {
     return (
       <AuthContext.Provider

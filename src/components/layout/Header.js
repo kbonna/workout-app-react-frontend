@@ -1,24 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "components/context/UserProvider";
 import { useAuth } from "components/context/AuthProvider";
-import { useFlags } from "components/context/FlagsProvider";
+import { FLAGS_ACTIONS, useFlags } from "components/context/FlagsProvider";
 
 import Button from "components/reusable/Button";
 import Burger from "./Burger";
 import "./Header.scss";
 
 function Header(props) {
+  const [flags, dispatchFlags] = useFlags();
   const { logout } = useAuth();
   const user = useUser();
-  const { flags, setFlags } = useFlags();
-
-  const handleBurgerClick = () => {
-    setFlags((prevFlags) => ({
-      ...prevFlags,
-      isSidebarOpen: !prevFlags.isSidebarOpen,
-    }));
-  };
 
   // Left-sied logo based on login status
   let homePath;
@@ -53,7 +46,9 @@ function Header(props) {
           ></Button>
         </Link>
         <Burger
-          handleClick={handleBurgerClick}
+          handleClick={() => {
+            dispatchFlags({ type: FLAGS_ACTIONS.TOGGLE_SIDEBAR });
+          }}
           isOpened={flags.isSidebarOpen}
         ></Burger>
       </>
