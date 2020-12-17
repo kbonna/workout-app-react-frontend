@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useUser } from "components/context/UserProvider";
-import { useAuth } from "components/context/AuthProvider";
-import { FLAGS_ACTIONS, useFlags } from "components/context/FlagsProvider";
+import { useUser } from "context/UserProvider";
+import { useAuth } from "context/AuthProvider";
+import { FLAGS_ACTIONS, useFlags } from "context/FlagsProvider";
 
 import Button from "components/reusable/Button";
 import Burger from "./Burger";

@@ -1,0 +1,11 @@
+@import "../../variables.scss";
+
+.body {
+  position: relative;
+  top: var(--header-height);
+  color: var(--col-gray-1);
+  min-height: calc(100vh - var(--header-height));
+
+  // Make children 100% height
+  display: flex;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import AppProviders from "components/context/AppProviders";
+import AppProviders from "context/AppProviders";
 import App from "./components/App";
 
 import "./index.scss";

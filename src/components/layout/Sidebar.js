@@ -1,9 +1,9 @@
 import React from "react";
 import { useRouteMatch, useLocation } from "react-router-dom";
 import "./Sidebar.scss";
-import LinkHighlighedIfMatch from "../hoc/LinkHighlighedIfMatch";
+import LinkHighlighedIfMatch from "../../hoc/LinkHighlighedIfMatch";
 import routes from "utilities/routes";
-import { useFlagsState } from "components/context/FlagsProvider";
+import { useFlagsState } from "context/FlagsProvider";
 
 function Sidebar() {
   const { url } = useRouteMatch();

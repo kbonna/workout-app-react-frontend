@@ -1,0 +1,13 @@
+@import "../../variables.scss";
+
+.app-content {
+  position: relative;
+  left: var(--sidebar-width);
+  width: calc(100vw - var(--sidebar-width));
+  padding: 2rem;
+
+  @media screen and (max-width: $sidebar-breakpoint) {
+    left: 0;
+    width: 100%;
+  }
+}
