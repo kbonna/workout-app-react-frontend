@@ -24,10 +24,13 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
   useEffect(fetchData, []);
 
   function handleFork(exercise) {
+    console.log("forking", exercise);
     forkExercise(exercise.pk).then((success) => {
       if (success) {
         setExercises(null);
         fetchData();
+        console.log("notify", exercise);
+
         notify({
           message: `Successfully forked ${exercise.name} exercise.`,
           type: "success",
@@ -65,7 +68,7 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
 
   return (
     <ExerciseTable
-      columnNames={["Name", "Type", null, null]}
+      columnNames={["Name", "Type", "Stars", null]}
       exercises={exercises}
       exercisesButtons={exercisesButtons}
       exercisesExtraColumns={exercisesExtraColumns}

@@ -10,15 +10,15 @@ import {
 import Header from "components/layout/Header";
 import Body from "components/layout/Body";
 import LoginPage from "components/common/LoginPage";
-import SignupForm from "components/common/SignupForm";
 import ProtectedRoute from "hoc/ProtectedRoute";
 import PublicRoute from "hoc/PublicRoute";
 import LandingPage from "components/common/LandingPage";
 import NotFoundPage from "components/common/NotFoundPage";
+import SignupPage from "./common/SignupPage";
+import Application from "components/layout/Application";
 
 import { useUser } from "context/UserProvider";
 import routes from "utilities/routes";
-import Application from "components/layout/Application";
 
 function App() {
   const user = useUser();
@@ -41,7 +41,7 @@ function App() {
             <LoginPage></LoginPage>
           </PublicRoute>
           <PublicRoute path={routes.signup} loggedIn={user.loggedIn}>
-            <SignupForm></SignupForm>
+            <SignupPage></SignupPage>
           </PublicRoute>
           {/* Not found page */}
           <Route path={routes.notFound} loggedIn={user.loggedIn}>
