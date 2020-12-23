@@ -47,13 +47,13 @@ function ExerciseTableMyExercises({ exercisesFilterString }) {
         key={"edit"}
         label={"Edit"}
         to={`${routes.app.exercises.exercise}${exercise.pk}/edit`}
-        extraClasses="mx-1"
+        className="mx-1"
       ></LinkButton>,
       <Button
         key={"delete"}
         label={"Delete"}
         handleClick={() => handleDelete(exercise)}
-        extraClasses="mx-1"
+        className="mx-1"
       ></Button>,
     ]);
   }

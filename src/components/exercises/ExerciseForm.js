@@ -1,14 +1,9 @@
 import React from "react";
 
-import SimpleInput from "components/forms/SimpleInput";
-import SimpleSelect from "components/forms/SimpleSelect";
-import SimpleTextarea from "components/forms/SimpleTextarea";
-import MultiInput from "components/forms/MultiInput";
-import MultiSelect from "components/forms/MultiSelect";
-import Button from "components/reusable/Button";
-
 import styles from "./ExerciseForm.module.scss";
-import { ACTIONS } from "components/exercises/ExerciseCreateUpdate";
+import { FORM_ACTIONS } from "reducers/form";
+import { v4 } from "uuid";
+import { zip } from "utilities/misc";
 
 import {
   EXERCISE_TYPES,
@@ -17,50 +12,99 @@ import {
   MUSCLES_DISPLAY,
 } from "utilities/models";
 
+import Input from "components/forms/Input";
+import Button from "components/reusable/Button";
+import IconButton from "components/reusable/IconButton";
+import Select from "components/forms/Select";
+import Label from "components/forms/Label";
+import Trash from "components/icons/Trash";
+import Textarea from "components/forms/Textarea";
+
 const fieldProps = {
   name: {
-    title: "Name",
-    name: "name",
+    label: "Name",
+    htmlName: "name",
     placeholder: "exercise name",
   },
   kind: {
-    title: "Type",
-    name: "kind",
+    label: "Type",
+    htmlName: "kind",
     placeholder: "exercise type",
   },
-  tags: {
-    title: "Tags",
-    name: "tags",
-    placeholder: "add tags (optional)",
-    jsonKey: "name",
-  },
   instructions: {
-    title: "Description",
-    name: "instructions",
-    placeholder: "add instructions (optional)",
+    label: "Instructions",
+    htmlName: "instructions",
+    placeholder: "exercise instructions",
+  },
+  tags: {
+    name: {
+      label: null,
+      htmlName: "tags__name",
+      placeholder: "enter tag",
+    },
   },
   muscles: {
-    title: "Muscles",
-    name: "muscles",
-    placeholder: "add muscles (optional)",
-    jsonKey: "name",
-  },
-  tutorials: {
-    title: "Tutorials",
-    name: "tutorials",
-    placeholder: "add tutorials (optional)",
-    jsonKey: "url",
+    name: {
+      label: null,
+      htmlName: "muscles__name",
+      placeholder: "select muscle",
+    },
   },
 };
 
 function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
-  // REMOVE???
+  console.log(formData);
+
   const handleChange = (e) => {
-    e.persist();
+    e.preventDefault();
     dispatch({
-      type: ACTIONS.SET_FIELD,
-      field: e.target.name,
+      type: FORM_ACTIONS.CHANGE_FIELD,
+      name: e.target.name,
       value: e.target.value,
+    });
+  };
+
+  const handleListChange = (e, index) => {
+    e.preventDefault();
+    dispatch({
+      type: FORM_ACTIONS.CHANGE_LIST_FIELD,
+      name: e.target.name,
+      value: e.target.value,
+      index: index,
+    });
+  };
+
+  const handleAddTag = (e) => {
+    if (formData.values.tags.length <= 5) {
+      dispatch({
+        type: FORM_ACTIONS.APPEND_TO_LIST,
+        name: "tags",
+        object: { key: v4(), name: "" },
+      });
+    }
+  };
+
+  const handleRemoveTag = (e, index) => {
+    dispatch({
+      type: FORM_ACTIONS.REMOVE_FROM_LIST,
+      name: "tags",
+      index: index,
+    });
+  };
+
+  const handleAddMuscle = (e) => {
+    dispatch({
+      type: FORM_ACTIONS.APPEND_TO_LIST,
+      name: "muscles",
+      object: { key: v4(), name: "" },
+    });
+  };
+
+  const handleRemoveMuscle = (e, index) => {
+    dispatch({
+      type: FORM_ACTIONS.REMOVE_FROM_LIST,
+      name: "muscles",
+      index: index,
     });
   };
 
@@ -68,70 +112,100 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
         <fieldset className={styles.fieldset}>
-          <SimpleInput
-            className={styles["input--name"]}
-            title={fieldProps.name.title}
-            name={fieldProps.name.name}
+          <Input
+            className={styles.field}
+            label={fieldProps.name.label}
+            name={fieldProps.name.htmlName}
             type={"text"}
             placeholder={fieldProps.name.placeholder}
+            onChange={handleChange}
             value={formData.values.name}
-            handleChange={handleChange}
             error={formData.errors.name}
-          ></SimpleInput>
-          <SimpleSelect
-            className={styles["input--kind"]}
-            title={fieldProps.kind.title}
-            name={fieldProps.kind.name}
+          />
+          <Select
+            className={styles.field}
+            label={fieldProps.kind.label}
+            name={fieldProps.kind.htmlName}
             options={EXERCISE_TYPES}
             optionsDisplay={EXERCISE_TYPES_DISPLAY}
-            value={formData.values.kind}
             placeholder={fieldProps.kind.placeholder}
-            handleChange={handleChange}
+            onChange={handleChange}
+            value={formData.values.kind}
             error={formData.errors.kind}
-          ></SimpleSelect>
-          <MultiInput
-            className={styles["input--tags"]}
-            title={fieldProps.tags.title}
-            name={fieldProps.tags.name}
-            placeholder={fieldProps.tags.placeholder}
-            value={formData.values.tags.map((tag) => tag.name)}
-            error={formData.errors.tags.map((tag) => tag.name)}
-            dispatch={dispatch}
-            jsonKey={fieldProps.tags.jsonKey}
-          ></MultiInput>
-          <SimpleTextarea
-            className={styles["input--instructions"]}
-            title={fieldProps.instructions.title}
-            name={fieldProps.instructions.name}
+          />
+          <Textarea
+            className={styles.field}
+            label={fieldProps.instructions.label}
+            name={fieldProps.instructions.htmlName}
             placeholder={fieldProps.instructions.placeholder}
+            onChange={handleChange}
             value={formData.values.instructions}
             error={formData.errors.instructions}
-            handleChange={handleChange}
-            rows={4}
-            cols={50}
-          ></SimpleTextarea>
-          <MultiSelect
-            className={styles["input--muscles"]}
-            title={fieldProps.muscles.title}
-            name={fieldProps.muscles.name}
-            placeholder={fieldProps.muscles.placeholder}
-            value={formData.values.muscles.map((muscle) => muscle.name)}
-            error={formData.errors.muscles.map((muscle) => muscle.name)}
-            options={MUSCLES}
-            optionsDisplay={MUSCLES_DISPLAY}
-            dispatch={dispatch}
-            jsonKey={fieldProps.muscles.jsonKey}
-          ></MultiSelect>
-          <MultiInput
-            className={styles["input--tutorials"]}
-            title={fieldProps.tutorials.title}
-            name={fieldProps.tutorials.name}
-            placeholder={fieldProps.tutorials.placeholder}
-            value={formData.values.tutorials.map((tutorial) => tutorial.url)}
-            error={formData.errors.tutorials.map((tutorial) => tutorial.url)}
-            dispatch={dispatch}
-            jsonKey={fieldProps.tutorials.jsonKey}
-          ></MultiInput>
+          />
+
+          {/* Tags dynamic inputs */}
+          <Label label={"Tags"}></Label>
+          {zip(formData.values.tags, formData.errors.tags).map(
+            ([tag, tagError], index) => (
+              <div key={tag.key} className={styles.multiline}>
+                <Input
+                  className={styles.field}
+                  name={fieldProps.tags.name.htmlName}
+                  placeholder={fieldProps.tags.name.placeholder}
+                  type={"text"}
+                  onChange={(e) => handleListChange(e, index)}
+                  value={tag.name}
+                  error={tagError.name}
+                />
+                <IconButton
+                  handleClick={(e) => handleRemoveTag(e, index)}
+                  aria-label={"delete"}
+                  className={styles["delete-btn"]}
+                >
+                  <Trash size={22} />
+                </IconButton>
+              </div>
+            )
+          )}
+          <Button
+            label="Add tag"
+            buttonSize="small"
+            handleClick={handleAddTag}
+            type="button"
+            disabled={formData.values.tags.length >= 5}
+          />
+
+          {/* Muscles dynamic select */}
+          <Label label={"Muscles"}></Label>
+          {zip(formData.values.muscles, formData.errors.muscles).map(
+            ([muscle, muscleError], index) => (
+              <div key={muscle.key} className={styles.multiline}>
+                <Select
+                  className={styles.field}
+                  name={fieldProps.muscles.name.htmlName}
+                  options={MUSCLES}
+                  optionsDisplay={MUSCLES_DISPLAY}
+                  placeholder={fieldProps.muscles.name.placeholder}
+                  onChange={(e) => handleListChange(e, index)}
+                  value={muscle.name}
+                  error={muscleError.name}
+                />
+                <IconButton
+                  handleClick={(e) => handleRemoveMuscle(e, index)}
+                  aria-label={"delete"}
+                  className={styles["delete-btn"]}
+                >
+                  <Trash size={22} />
+                </IconButton>
+              </div>
+            )
+          )}
+          <Button
+            label="Add muscle"
+            buttonSize="small"
+            handleClick={handleAddMuscle}
+            type="button"
+          />
         </fieldset>
         <div className={styles.buttons}>
           <Button

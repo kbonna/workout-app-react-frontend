@@ -1,24 +1,65 @@
 .btn {
   cursor: pointer;
-  border-radius: 3px;
-  padding: 0.4em 0.8em;
-  font-size: 1em;
-  background-color: var(--col-gray-6);
-  border: 1px solid var(--col-gray-5);
   text-decoration: none;
   text-align: center;
 
-  &:hover {
+  &--normal {
+    border-radius: 3px;
+    padding: 0.4em 0.8em;
+    font-size: 1em;
+  }
+
+  &--small {
+    border-radius: 2px;
+    padding: 0.32em 0.64em;
+    font-size: 0.8em;
+  }
+
+  &--light {
+    background-color: var(--col-gray-6);
+    border: 1px solid var(--col-gray-5);
+    color: var(--col-gray-1);
+    &:disabled {
+      color: var(--col-gray-4);
+    }
+  }
+
+  &--light:hover {
     background-color: var(--col-gray-5);
+    &:disabled {
+      background-color: var(--col-gray-6);
+    }
   }
 
   &--dark {
     border: 1px solid var(--col-gray-1);
     background-color: var(--col-gray-2);
     color: var(--col-white);
+    &:disabled {
+      color: var(--col-gray-3);
+    }
   }
 
   &--dark:hover {
     background-color: var(--col-gray-1);
+    &:disabled {
+      background-color: var(--col-gray-2);
+    }
+  }
+
+  &--error {
+    border: 1px solid var(--col-error-5);
+    background-color: var(--col-error-6);
+    color: var(--col-error-1);
+    &:disabled {
+      color: var(--col-error-3);
+    }
+  }
+
+  &--error:hover {
+    background-color: var(--col-error-5);
+    &:disabled {
+      background-color: var(--col-error-6);
+    }
   }
 }

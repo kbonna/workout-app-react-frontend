@@ -57,7 +57,7 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
           key={"fork"}
           label={"Fork"}
           handleClick={() => handleFork(exercise)}
-          extraClasses="mx-1"
+          className="mx-1"
         ></Button>
       ),
     ]);

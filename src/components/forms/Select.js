@@ -1,46 +1,70 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import styles from "./Select.module.scss";
 
 function Select({
+  className,
+  label,
   name,
-  value,
-  placeholder,
-  onChange,
   options,
   optionsDisplay,
+  placeholder,
+  onChange,
+  value,
+  error,
 }) {
   return (
-    <div className={styles.wrapper}>
-      <select
-        className={styles.select}
-        name={name}
-        value={value}
-        onChange={onChange}
-      >
-        <option className={styles.option} value="" disabled>
-          {placeholder}
-        </option>
-        {options.map((option, i) => (
-          <option
-            className={styles.option}
-            value={option}
-            key={option}
-            label={optionsDisplay[i]}
-          ></option>
-        ))}
-      </select>
+    <div className={className}>
+      {label ? (
+        <label className={styles.label} htmlFor={name}>
+          {label}
+        </label>
+      ) : (
+        label
+      )}
+      <div className={styles.wrapper}>
+        <select
+          className={styles.select}
+          name={name}
+          value={value}
+          onChange={onChange}
+        >
+          <option className={styles.option} value="" disabled>
+            {placeholder}
+          </option>
+          {options.map((option, i) => (
+            <option
+              className={styles.option}
+              value={option}
+              key={option}
+              label={optionsDisplay[i]}
+            ></option>
+          ))}
+        </select>
+      </div>
+      {error.length ? (
+        <div className={styles.error}>{error.join(" ")}</div>
+      ) : null}
     </div>
   );
 }
 
 Select.propTypes = {
+  className: PropTypes.string,
+  label: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.string,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.string),
   optionsDisplay: PropTypes.arrayOf(PropTypes.string),
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.node,
+  error: PropTypes.arrayOf(PropTypes.string),
+};
+
+Select.defaultProps = {
+  label: null,
+  error: [],
 };
 
 export default Select;

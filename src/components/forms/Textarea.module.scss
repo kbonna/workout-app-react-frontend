@@ -1,3 +1,8 @@
+.label {
+  display: block;
+  margin-bottom: 0.35em;
+}
+
 .textarea {
   width: 100%;
   border: 1px solid var(--col-gray-3);
@@ -14,4 +19,9 @@
 .textarea {
   height: 7em;
   resize: vertical;
+}
+
+.error {
+  color: var(--col-error-1);
+  font-size: 0.8em;
 }

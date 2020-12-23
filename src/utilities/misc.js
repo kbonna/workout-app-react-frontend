@@ -80,3 +80,10 @@ export const classNames = (classes) =>
     .filter((entry) => entry[1])
     .map((entry) => entry[0])
     .join(" ");
+
+/**
+ * Given two arrays a and b, return zipped array with corresponding elements from a and b. Works
+ * also when arrays have different length. Rough equivalent of Python zip function.
+ */
+export const zip = (a, b) =>
+  Array.from(Array(Math.max(b.length, a.length)), (_, i) => [a[i], b[i]]);

@@ -5,7 +5,7 @@ import Select from "./Select";
 import FormElementLabelWithBtn from "./FormElementLabelWithBtn";
 import FormElementList from "./FormElementList";
 
-import { ACTIONS } from "components/exercises/ExerciseCreateUpdate";
+import { FORM_ACTIONS } from "reducers/form";
 
 function MultiSelect({
   className,
@@ -27,7 +27,7 @@ function MultiSelect({
 
   const handleAdd = () => {
     dispatch({
-      type: ACTIONS.ADD_TO_FIELD,
+      type: FORM_ACTIONS.ADD_TO_FIELD,
       field: name,
       value: currentValue,
       jsonKey: jsonKey,

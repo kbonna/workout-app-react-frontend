@@ -11,60 +11,7 @@ import {
   createExercise,
   fetchExercise,
 } from "services/Exercises";
-
-export const ACTIONS = {
-  SET_STATE: "set_state",
-  SET_ERRORS: "set_errors",
-  SET_FIELD: "set_field",
-  ADD_TO_FIELD: "add_to_field",
-  REMOVE_FROM_FIELD: "remove_from_field",
-};
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case ACTIONS.SET_ERRORS:
-      return { ...state, errors: { ...state.errors, ...action.errors } };
-    case ACTIONS.SET_FIELD:
-      return {
-        ...state,
-        values: { ...state.values, [action.field]: action.value },
-      };
-    case ACTIONS.ADD_TO_FIELD:
-      return {
-        ...state,
-        values: {
-          ...state.values,
-          [action.field]: [
-            ...state.values[action.field],
-            { [action.jsonKey]: action.value },
-          ],
-        },
-      };
-    case ACTIONS.REMOVE_FROM_FIELD:
-      return {
-        errors: {
-          ...state.errors,
-          [action.field]: [
-            ...state.errors[action.field].filter(
-              (e, idx) => idx !== action.index
-            ),
-          ],
-        },
-        values: {
-          ...state.values,
-          [action.field]: [
-            ...state.values[action.field].filter(
-              (v, idx) => idx !== action.index
-            ),
-          ],
-        },
-      };
-    case ACTIONS.SET_STATE:
-      return action.state;
-    default:
-      return state;
-  }
-};
+import { formReducer, FORM_ACTIONS } from "reducers/form";
 
 const formDataInitial = () => ({
   values: {
@@ -85,16 +32,25 @@ const formDataInitial = () => ({
   },
 });
 
-const formDataFromExercise = (exercise) => ({
-  values: Object.entries(exercise).reduce(
-    (o, [k, v]) => ({ ...o, [k]: v }),
-    {}
-  ),
-  errors: Object.entries(exercise).reduce(
-    (o, [k, v]) => ({ ...o, [k]: [] }),
-    {}
-  ),
-});
+const formDataFromExercise = (exercise) => {
+  const values = {
+    name: exercise.name,
+    kind: exercise.kind,
+    instructions: exercise.instructions,
+    tags: exercise.tags,
+    muscles: exercise.muscles,
+    tutorials: exercise.tutorials,
+  };
+  const errors = {
+    name: [],
+    kind: [],
+    instructions: [],
+    tags: Array(exercise.tags.length).fill({}),
+    muscles: Array(exercise.muscles.length).fill({}),
+    tutorials: Array(exercise.tutorials.length).fill({}),
+  };
+  return { values, errors, isValid: true };
+};
 
 function ExerciseCreateUpdate({ operation }) {
   const [formData, dispatch] = useReducer(formReducer, null);
@@ -109,21 +65,12 @@ function ExerciseCreateUpdate({ operation }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
-      name: formData.values.name,
-      ...(formData.values.kind !== "" && { kind: formData.values.kind }),
-      instructions: formData.values.instructions,
-      tags: formData.values.tags,
-      muscles: formData.values.muscles,
-      tutorials: formData.values.tutorials,
-    };
-
     if (operation === "create") {
-      createExercise(data).then(([isCreated, json]) => {
+      createExercise(formData.values).then(([isCreated, json]) => {
         if (isCreated) {
           history.push(`${routes.app.exercises.myExercises}`);
           notify({
-            message: `Successfully created ${data.name} exercise.`,
+            message: `Successfully created ${formData.values.name} exercise.`,
             type: "success",
           });
         } else {
@@ -131,15 +78,15 @@ function ExerciseCreateUpdate({ operation }) {
             message: "Form has errors. Fix them and resubmit again.",
             type: "error",
           });
-          dispatch({ type: ACTIONS.SET_ERRORS, errors: json });
+          dispatch({ type: FORM_ACTIONS.SET_ERRORS, errors: json });
         }
       });
     } else if (operation === "edit") {
-      editExercise(data, exerciseId).then(([isEdited, json]) => {
+      editExercise(formData.values, exerciseId).then(([isEdited, json]) => {
         if (isEdited) {
           history.push(`${routes.app.exercises.exercise}${exerciseId}`);
           notify({
-            message: `Successfully edited ${data.name} exercise.`,
+            message: `Successfully edited ${formData.values.name} exercise.`,
             type: "success",
           });
         } else {
@@ -147,7 +94,7 @@ function ExerciseCreateUpdate({ operation }) {
             message: "Form has errors. Fix them and resubmit again.",
             type: "error",
           });
-          dispatch({ type: ACTIONS.SET_ERRORS, errors: json });
+          dispatch({ type: FORM_ACTIONS.SET_ERRORS, errors: json });
         }
       });
     }
@@ -159,7 +106,7 @@ function ExerciseCreateUpdate({ operation }) {
         history.push(routes.notFound);
       } else {
         dispatch({
-          type: ACTIONS.SET_STATE,
+          type: FORM_ACTIONS.SET_STATE,
           state: formDataFromExercise(exercise),
         });
       }
@@ -168,7 +115,7 @@ function ExerciseCreateUpdate({ operation }) {
 
   const populateFormData = () => {
     if (operation === "create") {
-      dispatch({ type: ACTIONS.SET_STATE, state: formDataInitial() });
+      dispatch({ type: FORM_ACTIONS.SET_STATE, state: formDataInitial() });
     } else if (operation === "edit") {
       fetchData();
     }

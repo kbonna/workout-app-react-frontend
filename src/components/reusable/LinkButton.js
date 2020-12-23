@@ -4,30 +4,44 @@ import PropTypes from "prop-types";
 import { classNames } from "utilities/misc";
 import { Link } from "react-router-dom";
 
-function LinkButton({ to, label, buttonType, extraClasses, ...rest }) {
-  const className = classNames({
+function LinkButton({
+  to,
+  label,
+  buttonType,
+  buttonSize,
+  disabled,
+  className,
+  ...rest
+}) {
+  const classList = classNames({
     [styles["btn"]]: true,
+    [styles["btn--disabled"]]: disabled,
     [styles[`btn--${buttonType}`]]: Boolean(buttonType),
-    [extraClasses]: Boolean(extraClasses),
+    [styles[`btn--${buttonSize}`]]: Boolean(buttonSize),
+    [className]: Boolean(className),
   });
 
   return (
-    <Link to={to} className={className} {...rest}>
+    <Link to={to} className={classList} {...rest}>
       {label}
     </Link>
   );
 }
 
 LinkButton.defaultProps = {
-  extraClasses: "",
-  buttonType: "",
+  className: "",
+  buttonType: "light",
+  buttonSize: "normal",
+  disabled: false,
 };
 
 LinkButton.propTypes = {
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
   label: PropTypes.string,
   buttonType: PropTypes.string,
-  extraClasses: PropTypes.string,
+  buttonSize: PropTypes.string,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default LinkButton;

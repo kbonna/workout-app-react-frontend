@@ -30,7 +30,7 @@ function Header(props) {
           <Button label="Login"></Button>
         </Link>
         <Link to="/signup">
-          <Button label="Sign up" extraClasses="mx-1"></Button>
+          <Button label="Sign up" className="mx-1"></Button>
         </Link>
       </>
     );
@@ -39,11 +39,7 @@ function Header(props) {
       <>
         <span className="header__span">Hello, {user.username}.</span>
         <Link to="/">
-          <Button
-            handleClick={logout}
-            label="Logout"
-            extraClasses="mx-2"
-          ></Button>
+          <Button handleClick={logout} label="Logout" className="mx-2"></Button>
         </Link>
         <Burger
           handleClick={() => {

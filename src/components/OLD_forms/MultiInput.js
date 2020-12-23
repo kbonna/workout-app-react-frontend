@@ -5,7 +5,7 @@ import FormElementLabelWithBtn from "./FormElementLabelWithBtn";
 import FormElementList from "./FormElementList";
 import Input from "./Input";
 
-import { ACTIONS } from "components/exercises/ExerciseCreateUpdate";
+import { FORM_ACTIONS } from "reducers/form";
 
 function MultiInput({
   className,
@@ -18,14 +18,13 @@ function MultiInput({
   jsonKey,
 }) {
   const [currentValue, setCurrentValue] = useState("");
-
   const handleChange = (e) => {
     setCurrentValue(e.target.value);
   };
 
   const handleAdd = () => {
     dispatch({
-      type: ACTIONS.ADD_TO_FIELD,
+      type: FORM_ACTIONS.ADD_TO_FIELD,
       field: name,
       value: currentValue,
       jsonKey: jsonKey,

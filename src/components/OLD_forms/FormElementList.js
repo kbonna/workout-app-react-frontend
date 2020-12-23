@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styles from "./FormElementList.module.scss";
 import FormElementError from "./FormElementError";
 
-import { ACTIONS } from "components/exercises/ExerciseCreateUpdate";
+import { FORM_ACTIONS } from "reducers/form";
 
 function FormElementList({ name, value, displayValue, dispatch, error }) {
   return (
@@ -19,7 +19,7 @@ function FormElementList({ name, value, displayValue, dispatch, error }) {
               className={styles.btn}
               onClick={() => {
                 dispatch({
-                  type: ACTIONS.REMOVE_FROM_FIELD,
+                  type: FORM_ACTIONS.REMOVE_FROM_FIELD,
                   field: name,
                   index: idx,
                 });

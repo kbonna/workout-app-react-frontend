@@ -16,21 +16,21 @@ function ExerciseDetailButtons({ exercise, handleDelete, handleFork }) {
         <LinkButton
           to={`${routes.app.exercises.exercise}${exercise.pk}/edit`}
           label="Edit"
-          extraClasses={styles["buttons__btn"]}
+          className={styles["buttons__btn"]}
         ></LinkButton>
       )}
       {exercise.owner === user.pk && (
         <Button
           label="Delete"
           handleClick={handleDelete}
-          extraClasses={styles["buttons__btn"]}
+          className={styles["buttons__btn"]}
         ></Button>
       )}
       {exercise.owner !== user.pk && exercise.can_be_forked && (
         <Button
           label="Fork"
           handleClick={handleFork}
-          extraClasses={styles["buttons__btn"]}
+          className={styles["buttons__btn"]}
         ></Button>
       )}
       {exercise.owner !== user.pk && !exercise.can_be_forked && (

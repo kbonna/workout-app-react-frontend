@@ -3,7 +3,7 @@ import { useAuth } from "context/AuthProvider";
 import { useHistory } from "react-router-dom";
 import routes from "utilities/routes";
 import styles from "./LoginForm.module.scss";
-import SimpleInput from "components/forms/SimpleInput";
+import SimpleInput from "components/OLD_forms/SimpleInput";
 import Button from "components/reusable/Button";
 
 const fieldProps = {
@@ -96,7 +96,7 @@ const LoginForm = (props) => {
       </fieldset>
       <div className={styles.buttons}>
         <Button
-          extraClasses={styles["buttons__login"]}
+          className={styles["buttons__login"]}
           type="submit"
           buttonType="dark"
           handleClick={handleSubmit}

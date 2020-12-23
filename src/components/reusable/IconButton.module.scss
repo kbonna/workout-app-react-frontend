@@ -1,0 +1,19 @@
+.icon-button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  padding: 3px;
+}
+
+.icon-button:hover {
+  animation: wiggle 150ms ease-in-out alternate infinite;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(10deg);
+  }
+}
