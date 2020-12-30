@@ -5,56 +5,21 @@ import { FORM_ACTIONS } from "reducers/form";
 import { v4 } from "uuid";
 import { zip } from "utilities/misc";
 
-import {
-  EXERCISE_TYPES,
-  EXERCISE_TYPES_DISPLAY,
-  MUSCLES,
-  MUSCLES_DISPLAY,
-} from "utilities/models";
-
-import Input from "components/forms/Input";
+import Input from "components/form-elements/Input";
 import Button from "components/reusable/Button";
 import IconButton from "components/reusable/IconButton";
-import Select from "components/forms/Select";
-import Label from "components/forms/Label";
+import Select from "components/form-elements/Select";
+import Label from "components/form-elements/Label";
 import Trash from "components/icons/Trash";
-import Textarea from "components/forms/Textarea";
+import Textarea from "components/form-elements/Textarea";
 
-const fieldProps = {
-  name: {
-    label: "Name",
-    htmlName: "name",
-    placeholder: "exercise name",
-  },
-  kind: {
-    label: "Type",
-    htmlName: "kind",
-    placeholder: "exercise type",
-  },
-  instructions: {
-    label: "Instructions",
-    htmlName: "instructions",
-    placeholder: "exercise instructions",
-  },
-  tags: {
-    name: {
-      label: null,
-      htmlName: "tags__name",
-      placeholder: "enter tag",
-    },
-  },
-  muscles: {
-    name: {
-      label: null,
-      htmlName: "muscles__name",
-      placeholder: "select muscle",
-    },
-  },
-};
-
-function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
-  console.log(formData);
-
+function ExerciseForm({
+  fieldProps,
+  formData,
+  dispatch,
+  handleSubmit,
+  handleCancel,
+}) {
   const handleChange = (e) => {
     e.preventDefault();
     dispatch({
@@ -75,7 +40,7 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
   };
 
   const handleAddTag = (e) => {
-    if (formData.values.tags.length <= 5) {
+    if (formData.values.tags.length <= fieldProps.tags._limit) {
       dispatch({
         type: FORM_ACTIONS.APPEND_TO_LIST,
         name: "tags",
@@ -93,11 +58,13 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
   };
 
   const handleAddMuscle = (e) => {
-    dispatch({
-      type: FORM_ACTIONS.APPEND_TO_LIST,
-      name: "muscles",
-      object: { key: v4(), name: "" },
-    });
+    if (formData.values.muscles.length <= fieldProps.muscles._limit) {
+      dispatch({
+        type: FORM_ACTIONS.APPEND_TO_LIST,
+        name: "muscles",
+        object: { key: v4(), name: "" },
+      });
+    }
   };
 
   const handleRemoveMuscle = (e, index) => {
@@ -108,12 +75,30 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
     });
   };
 
+  const handleAddTutorial = (e) => {
+    if (formData.values.tutorials.length <= fieldProps.tutorials._limit) {
+      dispatch({
+        type: FORM_ACTIONS.APPEND_TO_LIST,
+        name: "tutorials",
+        object: { key: v4(), url: "" },
+      });
+    }
+  };
+
+  const handleRemoveTutorial = (e, index) => {
+    dispatch({
+      type: FORM_ACTIONS.REMOVE_FROM_LIST,
+      name: "tutorials",
+      index: index,
+    });
+  };
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
         <fieldset className={styles.fieldset}>
           <Input
-            className={styles.field}
+            className={`${styles.field} ${styles["field--name"]}`}
             label={fieldProps.name.label}
             name={fieldProps.name.htmlName}
             type={"text"}
@@ -123,18 +108,18 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
             error={formData.errors.name}
           />
           <Select
-            className={styles.field}
+            className={`${styles.field} ${styles["field--kind"]}`}
             label={fieldProps.kind.label}
             name={fieldProps.kind.htmlName}
-            options={EXERCISE_TYPES}
-            optionsDisplay={EXERCISE_TYPES_DISPLAY}
+            options={fieldProps.kind.options}
+            optionsDisplay={fieldProps.kind.optionsDisplay}
             placeholder={fieldProps.kind.placeholder}
             onChange={handleChange}
             value={formData.values.kind}
             error={formData.errors.kind}
           />
           <Textarea
-            className={styles.field}
+            className={`${styles.field} ${styles["field--instructions"]}`}
             label={fieldProps.instructions.label}
             name={fieldProps.instructions.htmlName}
             placeholder={fieldProps.instructions.placeholder}
@@ -143,71 +128,114 @@ function ExerciseForm({ formData, dispatch, handleSubmit, handleCancel }) {
             error={formData.errors.instructions}
           />
 
-          {/* Tags dynamic inputs */}
-          <Label label={"Tags"}></Label>
-          {zip(formData.values.tags, formData.errors.tags).map(
-            ([tag, tagError], index) => (
-              <div key={tag.key} className={styles.multiline}>
-                <Input
-                  className={styles.field}
-                  name={fieldProps.tags.name.htmlName}
-                  placeholder={fieldProps.tags.name.placeholder}
-                  type={"text"}
-                  onChange={(e) => handleListChange(e, index)}
-                  value={tag.name}
-                  error={tagError.name}
-                />
-                <IconButton
-                  handleClick={(e) => handleRemoveTag(e, index)}
-                  aria-label={"delete"}
-                  className={styles["delete-btn"]}
-                >
-                  <Trash size={22} />
-                </IconButton>
-              </div>
-            )
-          )}
-          <Button
-            label="Add tag"
-            buttonSize="small"
-            handleClick={handleAddTag}
-            type="button"
-            disabled={formData.values.tags.length >= 5}
-          />
+          <div className={styles.tags}>
+            <Label label={"Tags"}></Label>
+            {zip(formData.values.tags, formData.errors.tags).map(
+              ([tag, tagError], index) => (
+                <div key={tag.key} className={styles.multiline}>
+                  <Input
+                    className={`${styles.field} ${styles["field--tag"]}`}
+                    name={fieldProps.tags.name.htmlName}
+                    placeholder={fieldProps.tags.name.placeholder}
+                    type={"text"}
+                    onChange={(e) => handleListChange(e, index)}
+                    value={tag.name}
+                    error={tagError.name}
+                  />
+                  <IconButton
+                    handleClick={(e) => handleRemoveTag(e, index)}
+                    aria-label={"delete"}
+                    className={styles["btn--delete"]}
+                  >
+                    <Trash size={22} />
+                  </IconButton>
+                </div>
+              )
+            )}
+            <Button
+              className={styles["btn--add"]}
+              label="Add tag"
+              buttonSize="small"
+              handleClick={handleAddTag}
+              type="button"
+              disabled={formData.values.tags.length >= fieldProps.tags._limit}
+            />
+          </div>
 
-          {/* Muscles dynamic select */}
-          <Label label={"Muscles"}></Label>
-          {zip(formData.values.muscles, formData.errors.muscles).map(
-            ([muscle, muscleError], index) => (
-              <div key={muscle.key} className={styles.multiline}>
-                <Select
-                  className={styles.field}
-                  name={fieldProps.muscles.name.htmlName}
-                  options={MUSCLES}
-                  optionsDisplay={MUSCLES_DISPLAY}
-                  placeholder={fieldProps.muscles.name.placeholder}
-                  onChange={(e) => handleListChange(e, index)}
-                  value={muscle.name}
-                  error={muscleError.name}
-                />
-                <IconButton
-                  handleClick={(e) => handleRemoveMuscle(e, index)}
-                  aria-label={"delete"}
-                  className={styles["delete-btn"]}
-                >
-                  <Trash size={22} />
-                </IconButton>
-              </div>
-            )
-          )}
-          <Button
-            label="Add muscle"
-            buttonSize="small"
-            handleClick={handleAddMuscle}
-            type="button"
-          />
+          <div className={styles.muscles}>
+            <Label label={"Muscles"}></Label>
+            {zip(formData.values.muscles, formData.errors.muscles).map(
+              ([muscle, muscleError], index) => (
+                <div key={muscle.key} className={styles.multiline}>
+                  <Select
+                    className={`${styles.field} ${styles["field--muscle"]}`}
+                    name={fieldProps.muscles.name.htmlName}
+                    options={fieldProps.muscles.name.options}
+                    optionsDisplay={fieldProps.muscles.name.optionsDisplay}
+                    placeholder={fieldProps.muscles.name.placeholder}
+                    onChange={(e) => handleListChange(e, index)}
+                    value={muscle.name}
+                    error={muscleError.name}
+                  />
+                  <IconButton
+                    handleClick={(e) => handleRemoveMuscle(e, index)}
+                    aria-label={"delete"}
+                    className={styles["btn--delete"]}
+                  >
+                    <Trash size={22} />
+                  </IconButton>
+                </div>
+              )
+            )}
+            <Button
+              className={styles["btn--add"]}
+              label="Add muscle"
+              buttonSize="small"
+              handleClick={handleAddMuscle}
+              type="button"
+              disabled={
+                formData.values.muscles.length >= fieldProps.muscles._limit
+              }
+            />
+          </div>
+
+          <div className={styles.tutorials}>
+            <Label label={"Tutorials"}></Label>
+            {zip(formData.values.tutorials, formData.errors.tutorials).map(
+              ([tutorial, tutorialError], index) => (
+                <div key={tutorial.key} className={styles.multiline}>
+                  <Input
+                    className={`${styles.field} ${styles["field--tutorial"]}`}
+                    name={fieldProps.tutorials.url.htmlName}
+                    placeholder={fieldProps.tutorials.url.placeholder}
+                    type={"text"}
+                    onChange={(e) => handleListChange(e, index)}
+                    value={tutorial.url}
+                    error={tutorialError.url}
+                  />
+                  <IconButton
+                    handleClick={(e) => handleRemoveTutorial(e, index)}
+                    aria-label={"delete"}
+                    className={styles["btn--delete"]}
+                  >
+                    <Trash size={22} />
+                  </IconButton>
+                </div>
+              )
+            )}
+            <Button
+              className={styles["btn--add"]}
+              label="Add tutorial"
+              buttonSize="small"
+              handleClick={handleAddTutorial}
+              type="button"
+              disabled={
+                formData.values.tutorials.length >= fieldProps.tutorials._limit
+              }
+            />
+          </div>
         </fieldset>
-        <div className={styles.buttons}>
+        <div className={styles["form__buttons"]}>
           <Button
             type="submit"
             buttonType="dark"

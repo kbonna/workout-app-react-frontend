@@ -1,98 +1,82 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import { useAuth } from "context/AuthProvider";
 import { useHistory } from "react-router-dom";
 import routes from "utilities/routes";
 import styles from "./LoginForm.module.scss";
-import SimpleInput from "components/OLD_forms/SimpleInput";
 import Button from "components/reusable/Button";
-
-const fieldProps = {
-  username: {
-    title: "Username",
-    name: "username",
-    placeholder: "username",
-    type: "text",
-  },
-  password: {
-    title: "Password",
-    name: "password",
-    placeholder: "password",
-    type: "password",
-  },
-};
+import { fieldProps, formDataInitial } from "forms/login";
+import { useNotify } from "context/NotificationProvider";
+import { formReducer, FORM_ACTIONS, validateForm } from "reducers/form";
+import Input from "components/form-elements/Input";
 
 const LoginForm = (props) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [formData, dispatch] = useReducer(formReducer, formDataInitial);
   const { login } = useAuth();
+  const notify = useNotify();
   const history = useHistory();
 
-  // TODO: move to validators
-  function isValidUsername(username) {
-    if (!username) {
-      setUsernameError("Please provide username.");
-      return false;
-    }
-    return true;
-  }
-
-  function isValidPassword(password) {
-    if (!password) {
-      setPasswordError("Please provide password.");
-      return false;
-    }
-    return true;
-  }
+  console.log(formData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setUsernameError("");
-    setPasswordError("");
-    if (isValidUsername(username) && isValidPassword(password)) {
-      login(username, password)
-        .then((user) => {
-          history.push(routes.app.exercises.myExercises);
-        })
-        .catch((error) => {
-          setPasswordError(error.message);
+    validateForm(fieldProps, formData)
+      .then(() => {
+        login(formData.values.username, formData.values.password)
+          .then(() => {
+            history.push(routes.app.exercises.myExercises);
+            notify({
+              message: "You are logged in!",
+              type: "success",
+            });
+          })
+          .catch((errors) => {
+            dispatch({
+              type: FORM_ACTIONS.UPDATE_ERRORS,
+              errors: { username: [errors.message] },
+            });
+          });
+      })
+      .catch((errors) => {
+        dispatch({
+          type: FORM_ACTIONS.UPDATE_ERRORS,
+          errors: errors,
         });
-    }
+      });
   };
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch({
+      type: FORM_ACTIONS.CHANGE_FIELD,
+      name,
+      value,
+    });
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Log in</h1>
       <fieldset className={styles.fieldset}>
-        <SimpleInput
+        <Input
           className={styles.input}
-          title={fieldProps.username.title}
-          name={fieldProps.username.name}
+          label={fieldProps.username.label}
+          name={fieldProps.username.htmlName}
           type={fieldProps.username.type}
           placeholder={fieldProps.username.placeholder}
-          value={username}
-          handleChange={handleUsernameChange}
-          error={usernameError}
-        ></SimpleInput>
-        <SimpleInput
+          onChange={handleChange}
+          value={formData.values.username}
+          error={formData.errors.username}
+        ></Input>
+        <Input
           className={styles.input}
-          title={fieldProps.password.title}
-          name={fieldProps.password.name}
+          label={fieldProps.password.label}
+          name={fieldProps.password.htmlName}
           type={fieldProps.password.type}
           placeholder={fieldProps.password.placeholder}
-          value={password}
-          handleChange={handlePasswordChange}
-          error={passwordError}
-        ></SimpleInput>
+          onChange={handleChange}
+          value={formData.values.password}
+          error={formData.errors.password}
+        ></Input>
       </fieldset>
       <div className={styles.buttons}>
         <Button

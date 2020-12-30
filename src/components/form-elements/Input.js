@@ -1,16 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "./Textarea.module.scss";
+import styles from "./Input.module.scss";
+import { classNames } from "utilities/misc";
 
-function Textarea({
+function Input({
   className,
   label,
   name,
+  type,
   placeholder,
   onChange,
   value,
   error,
 }) {
+  const inputClassName = classNames({
+    [styles.input]: true,
+    [styles["input--error"]]: error.length,
+  });
+
   return (
     <div className={className}>
       {label ? (
@@ -20,13 +27,14 @@ function Textarea({
       ) : (
         label
       )}
-      <textarea
-        className={styles.textarea}
+      <input
+        className={inputClassName}
         name={name}
+        type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-      ></textarea>
+      ></input>
       {error.length ? (
         <div className={styles.error}>{error.join(" ")}</div>
       ) : null}
@@ -34,19 +42,20 @@ function Textarea({
   );
 }
 
-Textarea.propTypes = {
+Input.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
+  type: PropTypes.oneOf(["text", "password"]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.node,
   error: PropTypes.arrayOf(PropTypes.string),
 };
 
-Textarea.defaultProps = {
+Input.defaultProps = {
   label: null,
   error: [],
 };
 
-export default Textarea;
+export default Input;

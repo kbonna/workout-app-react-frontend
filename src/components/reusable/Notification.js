@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "./Notification.module.scss";
 import { classNames } from "utilities/misc";
+import { NOTIFICATION_ACTIONS } from "context/NotificationProvider";
 
 function Notification(props) {
   const className = classNames({
@@ -11,7 +12,10 @@ function Notification(props) {
 
   const handleCloseNotification = () => {
     setTimeout(() => {
-      props.dispatch({ type: "REMOVE_NOTIFICATION", id: props.id });
+      props.dispatch({
+        type: NOTIFICATION_ACTIONS.REMOVE_NOTIFICATION,
+        id: props.id,
+      });
     }, props.duration);
   };
 
@@ -26,7 +30,7 @@ Notification.propTypes = {
 };
 
 Notification.defaultProps = {
-  duration: 50000,
+  duration: 5000,
   type: false,
 };
 

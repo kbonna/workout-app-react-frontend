@@ -1,7 +1,6 @@
 const validateEmpty = (msg) => {
   msg = typeof msg !== "undefined" ? msg : "This field cannot be empty.";
   const validate = (value) => {
-    console.log("validating empty", value);
     if (value === "") {
       throw new Error(msg);
     }
@@ -15,7 +14,6 @@ const validateLength = (minLength, msg) => {
       ? msg
       : `This field should be at least ${minLength} characters long.`;
   const validate = (value) => {
-    console.log("validating length", value);
     if (value.length < minLength) {
       throw new Error(msg);
     }
@@ -23,11 +21,29 @@ const validateLength = (minLength, msg) => {
   return validate;
 };
 
-// const validateTwoFieldsMatching = (value1, value2, msg) => {
-//   msg = typeof msg !== "undefined" ? msg : "Fields are not matching.";
-//   if (value1 !== value2) {
-//     throw new Error(msg);
-//   }
-// };
+const validateOneOf = (options, msg) => {
+  msg = typeof msg !== "undefined" ? msg : `Invalid choice provided.`;
+  const validate = (value) => {
+    if (!options.includes(value)) {
+      throw new Error(msg);
+    }
+  };
+  return validate;
+};
 
-export { validateEmpty, validateLength };
+const validateAllowedCharacters = (allowedCharacters, msg) => {
+  msg = typeof msg !== "undefined" ? msg : "Invalid characters used.";
+  const validate = (value) => {
+    if (![...value].every((ch) => allowedCharacters.includes(ch))) {
+      throw new Error(msg);
+    }
+  };
+  return validate;
+};
+
+export {
+  validateEmpty,
+  validateLength,
+  validateOneOf,
+  validateAllowedCharacters,
+};

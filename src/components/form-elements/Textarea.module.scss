@@ -3,7 +3,7 @@
   margin-bottom: 0.35em;
 }
 
-.input {
+.textarea {
   width: 100%;
   border: 1px solid var(--col-gray-3);
   padding: 0.75em;
@@ -13,6 +13,15 @@
 
   &::placeholder {
     color: var(--col-gray-2);
+  }
+}
+
+.textarea {
+  height: 7em;
+  resize: vertical;
+
+  &--error {
+    background-color: var(--col-error-6);
   }
 }
 

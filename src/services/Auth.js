@@ -72,7 +72,7 @@ export async function signupUser(username, password) {
  */
 export async function currentUser() {
   if (localStorage.getItem("token-access")) {
-    const response = await fetch(`${API_URL}/current_user`, {
+    const response = await fetch(`${API_URL}/current_user/`, {
       headers: header_with_token(),
     });
     if (response.ok) {

@@ -1,3 +1,8 @@
+.label {
+  display: block;
+  margin-bottom: 0.35em;
+}
+
 .input {
   width: 100%;
   border: 1px solid var(--col-gray-3);
@@ -6,7 +11,16 @@
   margin-bottom: 0.5em;
   font-size: 0.85em;
 
+  &--error {
+    background-color: var(--col-error-6);
+  }
+
   &::placeholder {
     color: var(--col-gray-2);
   }
+}
+
+.error {
+  color: var(--col-error-1);
+  font-size: 0.8em;
 }

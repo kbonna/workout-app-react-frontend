@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+
 /**
  * Check if object is empty.
  *
@@ -87,3 +89,39 @@ export const classNames = (classes) =>
  */
 export const zip = (a, b) =>
   Array.from(Array(Math.max(b.length, a.length)), (_, i) => [a[i], b[i]]);
+
+/**
+ * Add random string acting as key prop for react elements.
+ *
+ * @param {Object} obj – Any object.
+ */
+export const randomKey = (obj) => ({ key: v4(), ...obj });
+
+/**
+ * Checks whether something is a string.
+ *
+ * @param {*} obj - Any JS variable
+ */
+export const isString = (obj) =>
+  Object.prototype.toString.call(obj) === "[object String]";
+
+/**
+ * Checks whethere something is a boolean.
+ *
+ * @param {*} obj - Any JS variable
+ */
+export const isNumber = (obj) => Number.isFinite(obj);
+
+/**
+ * Checks whethere something is a boolean.
+ *
+ * @param {*} obj - Any JS variable
+ */
+export const isBoolean = (obj) => "boolean" === typeof obj;
+
+/**
+ * Checks whethere something is an object.
+ *
+ * @param {*} obj - Any JS variable
+ */
+export const isObject = (obj) => !!obj && obj.constructor === Object;

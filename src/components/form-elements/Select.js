@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import styles from "./Select.module.scss";
+import { classNames } from "utilities/misc";
 
 function Select({
   className,
@@ -14,6 +15,10 @@ function Select({
   value,
   error,
 }) {
+  const selectClassName = classNames({
+    [styles["select"]]: true,
+    [styles["select--error"]]: error.length,
+  });
   return (
     <div className={className}>
       {label ? (
@@ -25,7 +30,7 @@ function Select({
       )}
       <div className={styles.wrapper}>
         <select
-          className={styles.select}
+          className={selectClassName}
           name={name}
           value={value}
           onChange={onChange}

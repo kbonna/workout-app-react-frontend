@@ -3,144 +3,66 @@ import { useAuth } from "context/AuthProvider";
 import { useHistory } from "react-router-dom";
 import routes from "utilities/routes";
 
-import SimpleInput from "components/OLD_forms/SimpleInput";
+import Input from "components/form-elements/Input";
 import Button from "components/reusable/Button";
 import styles from "./SignupForm.module.scss";
 
-import { validateEmpty, validateLength } from "utilities/validators";
-
-const fieldProps = {
-  username: {
-    title: "Username",
-    name: "username",
-    placeholder: "username",
-    type: "text",
-    validators: [
-      validateEmpty("Please provide username."),
-      validateLength(3, "Username should be at least 3 characters long."),
-    ],
-  },
-  password: {
-    title: "Password",
-    name: "password",
-    placeholder: "password",
-    type: "password",
-    validators: [
-      validateEmpty("Please provide password."),
-      validateLength(4, "Password should be at least 4 characters long."),
-    ],
-  },
-  repeatedPassword: {
-    title: "Repeat password",
-    name: "repeatedPassword",
-    placeholder: "password",
-    type: "password",
-    validators: [validateEmpty("Please repeat your password.")],
-  },
-};
-
-const formDataInitial = {
-  values: {
-    username: "",
-    password: "",
-    repeatedPassword: "",
-  },
-  errors: {
-    username: "",
-    password: "",
-    repeatedPassword: "",
-  },
-};
-
-export const ACTIONS = {
-  SET_FIELD: "set_field",
-  SET_ERROR: "set_error",
-  RESET_ERRORS: "reset_errors",
-};
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case ACTIONS.SET_FIELD:
-      return {
-        ...state,
-        values: { ...state.values, [action.field]: action.value },
-      };
-    case ACTIONS.SET_ERROR:
-      return {
-        ...state,
-        errors: { ...state.errors, [action.field]: action.error },
-      };
-    case ACTIONS.RESET_ERRORS:
-      return {
-        ...state,
-        errors: formDataInitial.errors,
-      };
-    default:
-      throw new Error(`Unhandled action type: ${action.type}`);
-  }
-};
+import { fieldProps, formDataInitial } from "forms/signup";
+import { formReducer, FORM_ACTIONS, validateForm } from "reducers/form";
+import { useNotify } from "context/NotificationProvider";
 
 function SignupForm(props) {
   const [formData, dispatch] = useReducer(formReducer, formDataInitial);
   const { signup } = useAuth();
+  const notify = useNotify();
   let history = useHistory();
 
-  const validateForm = () => {
-    dispatch({ type: ACTIONS.RESET_ERRORS });
-    let isValid = true;
-
-    for (const props of Object.values(fieldProps)) {
-      try {
-        if ("validators" in props) {
-          props.validators.forEach((validate) => {
-            validate(formData.values[props.name]);
-          });
-        }
-      } catch (error) {
-        isValid = false;
-        dispatch({
-          type: ACTIONS.SET_ERROR,
-          field: props.name,
-          error: error.message,
-        });
+  const validateFormCustom = (formData) =>
+    new Promise((resolve, reject) => {
+      if (formData.values.password === formData.values.repeatPassword) {
+        resolve();
+      } else {
+        reject({ repeatPassword: ["Passwords are not matching."] });
       }
-    }
-
-    if (formData.values.password !== formData.values.repeatedPassword) {
-      isValid = false;
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        field: fieldProps.repeatedPassword.name,
-        error: "Passwords does not match.",
-      });
-    }
-
-    return isValid;
-  };
+    });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      signup(formData.values.username, formData.values.password)
-        .then(() => {
-          history.push(routes.app.self);
-        })
-        .catch((error) => {
-          dispatch({
-            type: ACTIONS.SET_ERROR,
-            field: fieldProps.username.name,
-            error: error.message,
+    const validate = Promise.all([
+      validateForm(fieldProps, formData),
+      validateFormCustom(formData),
+    ]);
+
+    validate
+      .then(() => {
+        signup(formData.values.username, formData.values.password)
+          .then(() => {
+            notify({
+              message: `Account ${formData.values.username} successfully created.`,
+              type: "success",
+            });
+            history.push(routes.app.self);
+          })
+          .catch((errors) => {
+            dispatch({
+              type: FORM_ACTIONS.UPDATE_ERRORS,
+              errors: { username: [errors.message] },
+            });
           });
+      })
+      .catch((errors) => {
+        dispatch({
+          type: FORM_ACTIONS.UPDATE_ERRORS,
+          errors,
         });
-    }
+      });
   };
 
   const handleChange = (e) => {
-    e.persist();
     dispatch({
-      type: ACTIONS.SET_FIELD,
-      field: e.target.name,
+      type: FORM_ACTIONS.CHANGE_FIELD,
+      name: e.target.name,
       value: e.target.value,
     });
   };
@@ -149,36 +71,36 @@ function SignupForm(props) {
     <form className={styles.form} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Register</h1>
       <fieldset className={styles.fieldset}>
-        <SimpleInput
+        <Input
           className={styles.input}
-          title={fieldProps.username.title}
-          name={fieldProps.username.name}
+          label={fieldProps.username.label}
+          name={fieldProps.username.htmlName}
           type={fieldProps.username.type}
           placeholder={fieldProps.username.placeholder}
+          onChange={handleChange}
           value={formData.values.username}
-          handleChange={handleChange}
           error={formData.errors.username}
-        ></SimpleInput>
-        <SimpleInput
+        ></Input>
+        <Input
           className={styles.input}
-          title={fieldProps.password.title}
-          name={fieldProps.password.name}
+          label={fieldProps.password.label}
+          name={fieldProps.password.htmlName}
           type={fieldProps.password.type}
           placeholder={fieldProps.password.placeholder}
+          onChange={handleChange}
           value={formData.values.password}
-          handleChange={handleChange}
           error={formData.errors.password}
-        ></SimpleInput>
-        <SimpleInput
+        ></Input>
+        <Input
           className={styles.input}
-          title={fieldProps.repeatedPassword.title}
-          name={fieldProps.repeatedPassword.name}
-          type={fieldProps.repeatedPassword.type}
-          placeholder={fieldProps.repeatedPassword.placeholder}
-          value={formData.values.repeatedPassword}
-          handleChange={handleChange}
-          error={formData.errors.repeatedPassword}
-        ></SimpleInput>
+          label={fieldProps.repeatPassword.label}
+          name={fieldProps.repeatPassword.htmlName}
+          type={fieldProps.repeatPassword.type}
+          placeholder={fieldProps.repeatPassword.placeholder}
+          onChange={handleChange}
+          value={formData.values.repeatPassword}
+          error={formData.errors.repeatPassword}
+        ></Input>
       </fieldset>
       <div className={styles.buttons}>
         <Button

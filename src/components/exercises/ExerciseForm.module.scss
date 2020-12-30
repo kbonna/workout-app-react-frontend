@@ -1,14 +1,50 @@
-.form {
-  font-size: 1rem;
-}
-
 .fieldset {
   border: none;
-  border: 1px solid red;
   display: contents;
 }
 
-.buttons {
+.form {
+  font-size: 1rem;
+
+  display: grid;
+  grid-template-areas:
+    "name name name"
+    "kind kind kind"
+    "instructions instructions instructions"
+    "muscles tags tutorials";
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+
+  @media screen and (max-width: 678px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "name"
+      "kind"
+      "instructions"
+      "muscles"
+      "tags"
+      "tutorials";
+    grid-gap: 15px;
+  }
+}
+
+.field {
+  width: 100%;
+
+  &--name {
+    grid-area: name;
+  }
+
+  &--kind {
+    grid-area: kind;
+  }
+
+  &--instructions {
+    grid-area: instructions;
+  }
+}
+
+.form__buttons {
   margin-top: 1rem;
 
   button {
@@ -16,21 +52,23 @@
   }
 }
 
-.field {
-  width: 100%;
-  border: 1px solid rgba(255, 0, 0, 0.5);
-}
-
 .multiline {
   display: flex;
   align-items: flex-start;
+  margin-bottom: 5px;
 }
 
-.delete-btn {
-  margin: 5px;
-  margin-right: 0;
-}
+.btn {
+  &--add {
+    margin-top: 6px;
+    width: 100%;
+    @media screen and (max-width: 678px) {
+      margin-top: 0;
+    }
+  }
 
-.button {
-  margin: 5px 0;
+  &--delete {
+    margin: 5px;
+    margin-right: 0;
+  }
 }
