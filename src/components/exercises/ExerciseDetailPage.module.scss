@@ -29,3 +29,11 @@
     border-left: 1px solid var(--col-gray-5);
   }
 }
+
+.goBack {
+  transition: transform 150ms ease-in-out;
+
+  &:hover {
+    transform: translateX(-10px);
+  }
+}

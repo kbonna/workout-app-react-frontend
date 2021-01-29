@@ -1,4 +1,4 @@
-import { header_with_token } from "./Auth";
+import { header_with_token } from "./auth";
 import routes from "utilities/routes";
 
 /**

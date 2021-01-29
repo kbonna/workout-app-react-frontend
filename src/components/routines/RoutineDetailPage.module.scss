@@ -1,0 +1,54 @@
+$musclesSize: 350px;
+
+.columns {
+  // width: 100%;
+  display: flex;
+}
+
+.musclesSvg {
+  width: $musclesSize;
+  height: $musclesSize;
+}
+
+.column {
+  border: 1px solid blue;
+
+  &:first-child {
+    width: $musclesSize;
+    padding-right: 2rem;
+  }
+  &:last-child {
+    flex-grow: 2;
+    padding-left: 2rem;
+  }
+}
+
+.leftArrowSvg {
+  border: 1px solid red;
+}
+
+.goBack {
+  transition: transform 150ms ease-in-out;
+  margin-bottom: 1rem;
+
+  &:hover {
+    transform: translateX(-10px);
+  }
+}
+
+.box {
+  text-align: center;
+  padding: 2rem;
+}
+
+.paragraph {
+  border: 1px solid red;
+}
+
+.routineButtons {
+  border: 1px solid red;
+
+  &Edit {
+    margin-right: 10px;
+  }
+}

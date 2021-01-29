@@ -1,0 +1,66 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.chevronSvg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.chevronPath {
+  fill: var(--col-gray-4);
+}
+
+.iconButton {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0.2em 0;
+
+  &Previous {
+    padding-right: 0.6em;
+  }
+
+  &Next {
+    padding-left: 0.6em;
+  }
+
+  &:hover {
+    .chevronPath {
+      fill: var(--col-gray-3);
+    }
+  }
+
+  &:disabled {
+    cursor: initial;
+    .chevronPath {
+      fill: var(--col-gray-5);
+    }
+  }
+}
+
+.pageButton {
+  border: none;
+  cursor: pointer;
+  margin: 0 0.2em;
+  width: 1.85em;
+  height: 1.85em;
+
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--col-gray-3);
+
+  &Current {
+    color: var(--col-gray-6);
+    background-color: var(--col-gray-3);
+    border-radius: 3px;
+  }
+}
+
+.dots {
+  letter-spacing: 0.2em;
+  margin: 0 0.5em;
+}

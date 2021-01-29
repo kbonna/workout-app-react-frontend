@@ -6,19 +6,20 @@ import {
   fetchExercise,
   deleteExercise,
   forkExercise,
-} from "services/Exercises";
+} from "services/exercises";
 
 import ExerciseDetailHeader from "./ExerciseDetailHeader";
-import ExerciseDetailMuscleDiagram from "./ExerciseDetailMuscleDiagram";
 import ExerciseDetailList from "./ExerciseDetailList";
 import ExerciseDetailButtons from "./ExerciseDetailButtons";
 import ExerciseDetailParagraph from "./ExerciseDetailParagraph";
+import MuscleDiagram from "components/reusable/MuscleDiagram";
 import LeftArrow from "components/icons/LeftArrow";
-import Spinner from "components/icons/Spinner";
+import Spinner from "components/reusable/Spinner";
 import styles from "./ExerciseDetailPage.module.scss";
 import routes from "utilities/routes";
 
 import { useNotify } from "context/NotificationProvider";
+import IconButton from "components/reusable/IconButton";
 
 function ExerciseDetailPage() {
   const [exercise, setExercise] = useState(null);
@@ -81,16 +82,20 @@ function ExerciseDetailPage() {
   } else {
     exerciseDetailPageContent = (
       <div className={styles["page"]}>
-        <LeftArrow onClick={handleReturn}></LeftArrow>
+        <IconButton className={styles.goBack} onClick={handleReturn}>
+          <LeftArrow></LeftArrow>
+        </IconButton>
         <div className={styles["content"]}>
           <div className={styles["content__info"]}>
             <ExerciseDetailHeader
               exerciseName={exercise.name}
               exerciseKind={exercise.kind_display}
             ></ExerciseDetailHeader>
-            <ExerciseDetailMuscleDiagram
-              muscleList={exercise.muscles.map((muscle) => muscle.name)}
-            ></ExerciseDetailMuscleDiagram>
+            <MuscleDiagram
+              muscles={Object.fromEntries(
+                exercise.muscles.map((muscle) => [muscle.name, 3])
+              )}
+            ></MuscleDiagram>
             <ExerciseDetailList exercise={exercise}></ExerciseDetailList>
             <ExerciseDetailButtons
               exercise={exercise}

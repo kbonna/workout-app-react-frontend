@@ -1,0 +1,43 @@
+.table {
+  font-size: 12px;
+  table-layout: fixed;
+  text-align: left;
+  width: 100%;
+
+  thead {
+    font-weight: bold;
+
+    tr {
+      background-color: var(--col-gray-6);
+
+      th {
+        color: var(--col-gray-3);
+        padding: 1em;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--col-gray-6);
+      height: 3.5rem; // works like min-height
+
+      td {
+        padding: 1em;
+      }
+    }
+  }
+
+  tfoot {
+    font-weight: bold;
+
+    tr {
+      background-color: var(--col-gray-6);
+
+      td {
+        color: var(--col-gray-3);
+        padding: 1em;
+      }
+    }
+  }
+}

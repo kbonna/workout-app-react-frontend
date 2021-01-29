@@ -1,0 +1,19 @@
+.svg {
+  display: block;
+}
+
+.svg > * {
+  fill: var(--col-gray-4);
+}
+
+.l1 {
+  fill: var(--col-gray-3);
+}
+
+.l2 {
+  fill: var(--col-gray-2);
+}
+
+.l3 {
+  fill: var(--col-gray-1);
+}

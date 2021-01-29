@@ -44,7 +44,7 @@ function Sidebar() {
             classNameActive="sidebar__link--active"
             location={location}
             to={routes.app.exercises.myExercises}
-            matchActive={`${url}/exercises`}
+            matchActive={routes.app.exercises.self}
           >
             Exercises
           </LinkHighlighedIfMatch>
@@ -54,7 +54,8 @@ function Sidebar() {
             classNameBase="sidebar__link"
             classNameActive="sidebar__link--active"
             location={location}
-            to={`${url}/routines`}
+            to={routes.app.routines.myRoutines}
+            matchActive={routes.app.routines.self}
           >
             Routines
           </LinkHighlighedIfMatch>

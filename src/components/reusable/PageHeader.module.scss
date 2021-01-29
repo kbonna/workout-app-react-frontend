@@ -1,0 +1,23 @@
+.header {
+  font-size: 1rem;
+  border: 1px solid red;
+
+  &Category {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 3px;
+  }
+
+  &Title {
+    font-size: 2.25rem;
+    margin-bottom: 6px;
+  }
+
+  &Subtitle {
+    color: var(--col-gray-3);
+    font-weight: 400;
+    font-size: 0.9rem;
+  }
+}

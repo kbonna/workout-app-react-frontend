@@ -3,7 +3,7 @@ import { useAuth } from "context/AuthProvider";
 import { useHistory } from "react-router-dom";
 import routes from "utilities/routes";
 
-import Input from "components/form-elements/Input";
+import Input from "components/form_elements/Input";
 import Button from "components/reusable/Button";
 import styles from "./SignupForm.module.scss";
 

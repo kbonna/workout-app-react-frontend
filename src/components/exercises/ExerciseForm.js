@@ -5,13 +5,13 @@ import { FORM_ACTIONS } from "reducers/form";
 import { v4 } from "uuid";
 import { zip } from "utilities/misc";
 
-import Input from "components/form-elements/Input";
+import Input from "components/form_elements/Input";
 import Button from "components/reusable/Button";
 import IconButton from "components/reusable/IconButton";
-import Select from "components/form-elements/Select";
-import Label from "components/form-elements/Label";
+import Select from "components/form_elements/Select";
+import Label from "components/form_elements/Label";
 import Trash from "components/icons/Trash";
-import Textarea from "components/form-elements/Textarea";
+import Textarea from "components/form_elements/Textarea";
 
 function ExerciseForm({
   fieldProps,
@@ -143,11 +143,14 @@ function ExerciseForm({
                     error={tagError.name}
                   />
                   <IconButton
-                    handleClick={(e) => handleRemoveTag(e, index)}
+                    onClick={(e) => handleRemoveTag(e, index)}
                     aria-label={"delete"}
-                    className={styles["btn--delete"]}
+                    className={styles.btnDelete}
                   >
-                    <Trash size={22} />
+                    <Trash
+                      svgClassName={styles.trashSvg}
+                      pathClassName={styles.trashPath}
+                    />
                   </IconButton>
                 </div>
               )
@@ -178,11 +181,14 @@ function ExerciseForm({
                     error={muscleError.name}
                   />
                   <IconButton
-                    handleClick={(e) => handleRemoveMuscle(e, index)}
+                    onClick={(e) => handleRemoveMuscle(e, index)}
                     aria-label={"delete"}
-                    className={styles["btn--delete"]}
+                    className={styles.btnDelete}
                   >
-                    <Trash size={22} />
+                    <Trash
+                      svgClassName={styles.trashSvg}
+                      pathClassName={styles.trashPath}
+                    />
                   </IconButton>
                 </div>
               )
@@ -214,11 +220,14 @@ function ExerciseForm({
                     error={tutorialError.url}
                   />
                   <IconButton
-                    handleClick={(e) => handleRemoveTutorial(e, index)}
+                    onClick={(e) => handleRemoveTutorial(e, index)}
                     aria-label={"delete"}
-                    className={styles["btn--delete"]}
+                    className={styles.btnDelete}
                   >
-                    <Trash size={22} />
+                    <Trash
+                      svgClassName={styles.trashSvg}
+                      pathClassName={styles.trashPath}
+                    />
                   </IconButton>
                 </div>
               )

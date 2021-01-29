@@ -10,38 +10,38 @@ import Notifications from "components/reusable/Notifications";
 import { useNotification } from "context/NotificationProvider";
 
 import styles from "./Application.module.scss";
+import routes from "utilities/routes";
 
 function Application() {
-  const { path } = useRouteMatch();
   const [notifications, dispatch] = useNotification();
   return (
     <>
-      <div className={styles["app-content"]}>
+      <div className={styles.appContent}>
         <Sidebar></Sidebar>
         <Notifications
           notifications={notifications}
           dispatch={dispatch}
         ></Notifications>
         <Switch>
-          <Route path={`${path}dashboard`}>
+          <Route path={routes.app.dashboard.self}>
             <Dashboard></Dashboard>
           </Route>
-          <Route path={`${path}inbox`}>
+          <Route path={routes.app.inbox.self}>
             <Dashboard></Dashboard>
           </Route>
-          <Route path={`${path}exercises`}>
+          <Route path={routes.app.exercises.self}>
             <Exercises></Exercises>
           </Route>
-          <Route path={`${path}routines`}>
+          <Route path={routes.app.routines.self}>
             <Routines></Routines>
           </Route>
-          <Route path={`${path}workouts`}>
+          <Route path={routes.app.workouts.self}>
             <Dashboard></Dashboard>
           </Route>
-          <Route path={`${path}samples`}>
+          <Route path={routes.app.samples.self}>
             <Dashboard></Dashboard>
           </Route>
-          <Route path={`${path}statistics`}>
+          <Route path={routes.app.statistics.self}>
             <Dashboard></Dashboard>
           </Route>
         </Switch>

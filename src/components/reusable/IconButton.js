@@ -1,14 +1,16 @@
 import React from "react";
-import styles from "./IconButton.module.scss";
 import PropTypes from "prop-types";
+import styles from "./IconButton.module.scss";
+import { classNames } from "utilities/misc";
 
-function IconButton({ children, handleClick, className, ...rest }) {
+function IconButton({ children, onClick, className, ...rest }) {
+  const buttonClasses = classNames({
+    [styles.button]: true,
+    [className]: className !== undefined,
+  });
+
   return (
-    <button
-      onClick={handleClick}
-      className={`${styles["icon-button"]} ${className}`}
-      {...rest}
-    >
+    <button onClick={onClick} className={buttonClasses} {...rest}>
       {children}
     </button>
   );

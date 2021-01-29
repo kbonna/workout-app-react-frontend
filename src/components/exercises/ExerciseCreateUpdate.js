@@ -10,7 +10,7 @@ import {
   editExercise,
   createExercise,
   fetchExercise,
-} from "services/Exercises";
+} from "services/exercises";
 import {
   fieldProps,
   formDataFromExercise,

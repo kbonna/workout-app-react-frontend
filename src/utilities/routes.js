@@ -13,16 +13,38 @@ const routes = {
     },
     routines: {
       self: "/routines",
+      myRoutines: "/my-routines",
+      discover: "/discover",
+      routine: "/routine",
+      new: "/new",
     },
     users: {
       self: "/users",
       user: "/user",
+    },
+    inbox: {
+      self: "/inbox",
+    },
+    dashboard: {
+      self: "/dashboard",
+    },
+    workouts: {
+      self: "/workouts",
+    },
+    samples: {
+      self: "/samples",
+    },
+    statistics: {
+      self: "/statistics",
     },
   },
   api: {
     self: API_URL,
     exercises: {
       self: "/exercises",
+    },
+    routines: {
+      self: "/routines",
     },
   },
   notFound: "/404",

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { fetchExercises, forkExercise } from "services/Exercises";
+import { fetchExercises, forkExercise } from "services/exercises";
 import Button from "components/reusable/Button";
 import ExerciseTable from "./ExerciseTable";
 import { useNotify } from "context/NotificationProvider";
@@ -24,13 +24,10 @@ function ExerciseTableDiscover({ exercisesFilterString, nExercisesPerPage }) {
   useEffect(fetchData, []);
 
   function handleFork(exercise) {
-    console.log("forking", exercise);
     forkExercise(exercise.pk).then((success) => {
       if (success) {
         setExercises(null);
         fetchData();
-        console.log("notify", exercise);
-
         notify({
           message: `Successfully forked ${exercise.name} exercise.`,
           type: "success",

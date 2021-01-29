@@ -66,9 +66,33 @@
       margin-top: 0;
     }
   }
+}
 
-  &--delete {
-    margin: 5px;
-    margin-right: 0;
+.btn {
+  &Delete {
+    margin-left: 5px;
+    margin-top: 8px;
+
+    &:hover {
+      animation: wiggle 150ms ease-in-out alternate infinite;
+    }
+  }
+}
+
+.trash {
+  &Svg {
+    width: 22px;
+  }
+  &Path {
+    fill: var(--col-gray-1);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(10deg);
   }
 }

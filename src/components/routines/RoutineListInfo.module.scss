@@ -1,0 +1,24 @@
+.ul {
+  list-style-type: none;
+  border: 1px solid red;
+}
+
+.li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.li:last-child {
+  margin-bottom: 0;
+}
+
+.icon {
+  &Svg {
+    width: 20px;
+    margin-right: 10px;
+  }
+  &Path {
+    fill: var(--col-gray-3);
+  }
+}

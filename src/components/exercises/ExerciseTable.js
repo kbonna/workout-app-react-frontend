@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Spinner from "components/icons/Spinner";
+import Spinner from "components/reusable/Spinner";
 import ExerciseTableHeader from "./ExerciseTableHeader";
 import ExerciseTableBody from "./ExerciseTableBody";
 import ExerciseTableFooter from "./ExerciseTableFooter";

@@ -14,7 +14,12 @@ function ExerciseDetailList({ exercise }) {
   return (
     <ul className={styles["list"]}>
       <ExerciseDetailListItem
-        icon={<Tag />}
+        icon={
+          <Tag
+            svgClassName={styles.iconSvg}
+            pathClassName={styles.iconPath}
+          ></Tag>
+        }
         inner={
           tags.length === 0
             ? "No tags defined"
@@ -23,13 +28,23 @@ function ExerciseDetailList({ exercise }) {
         isError={tags.length === 0}
       ></ExerciseDetailListItem>
       <ExerciseDetailListItem
-        icon={<Avatar />}
+        icon={
+          <Avatar
+            svgClassName={styles.iconSvg}
+            pathClassName={styles.iconPath}
+          ></Avatar>
+        }
         inner={
           <Link to={`${routes.app.users.user}/${owner}`}>{owner_username}</Link>
         }
       ></ExerciseDetailListItem>
       <ExerciseDetailListItem
-        icon={<Star />}
+        icon={
+          <Star
+            svgClassName={styles.iconSvg}
+            pathClassName={styles.iconPath}
+          ></Star>
+        }
         inner={
           forks_count === 0 ? "No stars yet" : `forked ${forks_count} times`
         }

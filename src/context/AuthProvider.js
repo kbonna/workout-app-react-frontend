@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-import Spinner from "components/icons/Spinner";
-import { loginUser, signupUser, currentUser } from "services/Auth";
+import Spinner from "components/reusable/Spinner";
+import { loginUser, signupUser, currentUser } from "services/auth";
 
 export const AuthContext = React.createContext();
 

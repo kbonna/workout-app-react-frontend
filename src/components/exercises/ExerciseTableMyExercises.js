@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import ExerciseTable from "./ExerciseTable";
 
 import routes from "utilities/routes";
-import { fetchExercises, deleteExercise } from "services/Exercises";
+import { fetchExercises, deleteExercise } from "services/exercises";
 import LinkButton from "components/reusable/LinkButton";
 import Button from "components/reusable/Button";
 import { useNotify } from "context/NotificationProvider";

@@ -1,0 +1,21 @@
+.div {
+  position: relative;
+  cursor: default;
+}
+
+.div::after {
+  width: max-content;
+  max-width: 400px;
+  background-color: var(--col-gray-1);
+  color: var(--col-gray-6);
+  border-radius: 2px;
+  padding: 10px;
+  position: absolute;
+  transform: translateX(-50%) translateY(calc(-100% - 5px));
+  text-align: center;
+  z-index: 999;
+}
+
+.div:hover.div::after {
+  content: attr(data-message);
+}

@@ -17,3 +17,12 @@
     color: inherit;
   }
 }
+
+.icon {
+  &Svg {
+    width: 20px;
+  }
+  &Path {
+    fill: var(--col-gray-3);
+  }
+}

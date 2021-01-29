@@ -26,7 +26,11 @@ const emptyErrors = (state) =>
         return [field, []];
       } else if (Array.isArray(value)) {
         return [field, value.map((_) => ({}))];
-      } else if (isObject(value)) return [field, {}];
+      } else if (isObject(value)) {
+        return [field, {}];
+      } else {
+        throw new Error();
+      }
     })
   );
 

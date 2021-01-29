@@ -1,0 +1,78 @@
+.nav {
+  --separator-width: 2px;
+  --margin-bottom: 2rem;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: var(--separator-width) solid var(--col-gray-5);
+  margin-bottom: var(--margin-bottom);
+
+  &LinksList {
+    display: flex;
+    align-items: center;
+    margin-bottom: calc((-1) * var(--separator-width));
+    list-style: none;
+  }
+
+  &Link {
+    padding: 1.25em 0;
+    display: block;
+    font-size: 0.9em;
+    text-decoration: none;
+    color: inherit;
+    margin-right: 4em;
+  }
+
+  &LinkActive {
+    font-weight: bold;
+    border-bottom: var(--separator-width) solid var(--col-gray-1);
+  }
+
+  &Control {
+    display: flex;
+    align-items: center;
+  }
+
+  &Search {
+    height: 2rem;
+    border: 1.75px solid var(--col-gray-4);
+    padding: 0 0.5em;
+    border-radius: 3px;
+  }
+}
+
+.add {
+  display: grid;
+  place-items: center;
+  margin-left: 10px;
+
+  &Svg {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  &Border {
+    fill: var(--col-gray-4);
+  }
+
+  &Cross {
+    fill: var(--col-gray-4);
+    stroke: var(--col-gray-4);
+    stroke-width: 15px;
+  }
+
+  &:hover &Border {
+    fill: none;
+  }
+
+  &:hover &Cross {
+    fill: var(--col-white);
+    stroke: var(--col-white);
+  }
+
+  &:hover &Background {
+    fill: var(--col-gray-3);
+    opacity: 1;
+  }
+}

@@ -1,55 +1,55 @@
 import React from "react";
-import styles from "./LeftArrow.module.scss";
 
-function LeftArrow({ thickness, width, color, onClick }) {
+function LeftArrow({ svgClassName, pathClassName }) {
   return (
     <svg
-      onClick={onClick}
-      className={styles["icon-left-arrow"]}
       xmlns="http://www.w3.org/2000/svg"
-      width={`${width}mm`}
-      height={`${width / 2}mm`}
+      width="60.909"
+      height="35.338"
       version="1.1"
-      viewBox="0 0 130 55.686"
+      viewBox="0 0 60.909 35.338"
+      className={svgClassName}
     >
-      <g transform="translate(-100 -167.834)">
-        <g fill={color}>
-          <rect
-            width="130"
-            height={thickness}
-            x="100"
-            y="194"
-            strokeWidth="0.256"
-            ry="5"
-          ></rect>
-          <rect
-            width="40"
-            height={thickness}
-            x="208.763"
-            y="64"
-            strokeWidth="0.142"
-            ry="5"
-            transform="rotate(45)"
-          ></rect>
-          <rect
-            width="40"
-            height={thickness}
-            x="-67"
-            y="208.763"
-            strokeWidth="0.142"
-            ry="5"
-            transform="rotate(-45)"
-          ></rect>
-        </g>
+      <g
+        transform="translate(-19.465 -32.203)"
+        fill="none"
+        fillOpacity="1"
+        stroke="#bdbdbd"
+        strokeLinecap="round"
+        strokeLinejoin="bevel"
+        strokeOpacity="1"
+        strokeWidth="4"
+        className={pathClassName}
+      >
+        <rect
+          width="57.749"
+          height="0.217"
+          x="21.126"
+          y="49.892"
+          opacity="1"
+          ry="2.856"
+        ></rect>
+        <rect
+          width="22.974"
+          height="0.441"
+          x="-20.494"
+          y="49.929"
+          opacity="1"
+          ry="5.818"
+          transform="rotate(-45)"
+        ></rect>
+        <rect
+          width="22.974"
+          height="0.441"
+          x="-73.009"
+          y="20.16"
+          opacity="1"
+          ry="5.818"
+          transform="scale(-1 1) rotate(-45)"
+        ></rect>
       </g>
     </svg>
   );
 }
-
-LeftArrow.defaultProps = {
-  width: 15,
-  thickness: 8,
-  color: "#bdbdbd",
-};
 
 export default LeftArrow;

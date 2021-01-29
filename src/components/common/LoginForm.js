@@ -7,7 +7,7 @@ import Button from "components/reusable/Button";
 import { fieldProps, formDataInitial } from "forms/login";
 import { useNotify } from "context/NotificationProvider";
 import { formReducer, FORM_ACTIONS, validateForm } from "reducers/form";
-import Input from "components/form-elements/Input";
+import Input from "components/form_elements/Input";
 
 const LoginForm = (props) => {
   const [formData, dispatch] = useReducer(formReducer, formDataInitial);
