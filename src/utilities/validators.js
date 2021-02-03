@@ -41,7 +41,21 @@ const validateAllowedCharacters = (allowedCharacters, msg) => {
   return validate;
 };
 
+const validateRange = (minValue, maxValue, msg) => {
+  msg =
+    typeof msg !== "undefined"
+      ? msg
+      : `Value should be greater than ${minValue} and less than ${maxValue}`;
+  const validate = (value) => {
+    if ((value < minValue) | (value > maxValue)) {
+      throw new Error(msg);
+    }
+  };
+  return validate;
+};
+
 export {
+  validateRange,
   validateEmpty,
   validateLength,
   validateOneOf,

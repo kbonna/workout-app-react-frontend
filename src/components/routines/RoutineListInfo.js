@@ -1,11 +1,14 @@
+import { Link } from "react-router-dom";
+
 import Avatar from "components/icons/Avatar";
 import Star from "components/icons/Star";
 import React from "react";
-import { Link } from "react-router-dom";
-import routes from "utilities/routes";
 import styles from "./RoutineListInfo.module.scss";
 
-const RoutineListInfo = ({ owner, forksCount }) => {
+import routes from "utilities/routes";
+
+const RoutineListInfo = ({ routine }) => {
+  const { owner, owner_username, forks_count } = routine;
   return (
     <ul className={styles.ul}>
       <li className={styles.li}>
@@ -13,14 +16,16 @@ const RoutineListInfo = ({ owner, forksCount }) => {
           svgClassName={styles.iconSvg}
           pathClassName={styles.iconPath}
         ></Avatar>
-        <Link to={`${routes.app.users.user}${owner.pk}`}>{owner.username}</Link>
+        <Link to={`${routes.app.users.user}${owner}`}>{owner_username}</Link>
       </li>
       <li className={styles.li}>
         <Star
           svgClassName={styles.iconSvg}
           pathClassName={styles.iconPath}
         ></Star>
-        {forksCount === 0 ? "no forks yet" : forksCount}
+        {forks_count === 0
+          ? "no forks yet"
+          : `forked ${forks_count} ${forks_count === 1 ? "time" : "times"}`}
       </li>
     </ul>
   );

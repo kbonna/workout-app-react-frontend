@@ -1,38 +1,23 @@
-import LeftArrow from "components/icons/LeftArrow";
-import Spinner from "components/reusable/Spinner";
-import IconButton from "components/reusable/IconButton";
-import MuscleDiagram from "components/reusable/MuscleDiagram";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { deleteRoutine, fetchRoutine, forkRoutine } from "services/routines";
-import routes from "utilities/routes";
-import PageHeader from "../reusable/PageHeader";
-import styles from "./RoutineDetailPage.module.scss";
-import RoutineListInfo from "./RoutineListInfo";
-import RoutineUnitsTable from "./RoutineUnitsTable";
-import Box from "components/reusable/Box";
-import Paragraph from "components/reusable/Paragraph";
-import Button from "components/reusable/Button";
 import { useNotify } from "context/NotificationProvider";
-import LinkButton from "components/reusable/LinkButton";
 import { useUser } from "context/UserProvider";
+
+import RoutineUnitsTable from "./RoutineUnitsTable";
+import RoutineListInfo from "./RoutineListInfo";
+import MuscleDiagram from "components/reusable/MuscleDiagram";
+import PageHeader from "../reusable/PageHeader";
 import CenteredSpinner from "components/reusable/CenteredSpinner";
-/**
- * Rescale muscle counts (number of exercises for specific muscle) to range 1, 2, ..., limit. This
- * is useful when using in MuscleDiagram component since it can only accept three levels of muscle
- * engagement.
- *
- * @param {object} obj - Muscle count object. Keys correspond to muscles and values correspond to
- * number of exercises in a routine engaging specific muscle.
- */
-const rescaleMuscleCountObject = (obj, limit = 3) => {
-  const maxCount = Math.max(...Object.values(obj));
-  const rescaledEntries = Object.entries(obj).map(([muscle, count]) => [
-    muscle,
-    Math.ceil(((limit - 0.0001) * count) / maxCount),
-  ]);
-  return Object.fromEntries(rescaledEntries);
-};
+import Paragraph from "components/reusable/Paragraph";
+import IconButton from "components/reusable/IconButton";
+import LinkButton from "components/reusable/LinkButton";
+import LeftArrow from "components/icons/LeftArrow";
+import Button from "components/reusable/Button";
+import Box from "components/reusable/Box";
+
+import styles from "./RoutineDetailPage.module.scss";
+import routes from "utilities/routes";
+import { deleteRoutine, fetchRoutine, forkRoutine } from "services/routines";
 
 const RoutineUnitsInfo = ({ exercises }) => {
   return exercises.length ? (
@@ -65,7 +50,7 @@ const RoutineButtons = ({ routine, user, handleFork, handleDelete }) => {
   } else {
     return (
       <div className={styles.routineButtons}>
-        <span>You already own this routine</span>
+        <Button disabled label={"You already own this"}></Button>
       </div>
     );
   }
@@ -131,7 +116,7 @@ const RoutineDetailPage = () => {
   ) : (
     <>
       <IconButton onClick={history.goBack} className={styles.goBack}>
-        <LeftArrow svgClassName={styles.leftArrowSvg}></LeftArrow>
+        <LeftArrow></LeftArrow>
       </IconButton>
       <div className={styles.columns}>
         <div className={styles.column}>
@@ -144,10 +129,7 @@ const RoutineDetailPage = () => {
             svgClassName={styles.musclesSvg}
             muscles={rescaleMuscleCountObject(routine.muscles_count)}
           ></MuscleDiagram>
-          <RoutineListInfo
-            owner={{ pk: routine.owner, username: routine.owner_username }}
-            forksCount={routine.forks_count}
-          ></RoutineListInfo>
+          <RoutineListInfo routine={routine}></RoutineListInfo>
           <RoutineButtons
             routine={routine}
             user={user}
@@ -166,6 +148,23 @@ const RoutineDetailPage = () => {
       </div>
     </>
   );
+};
+
+/**
+ * Rescale muscle counts (number of exercises for specific muscle) to range 1, 2, ..., limit. This
+ * is useful when using in MuscleDiagram component since it can only accept three levels of muscle
+ * engagement.
+ *
+ * @param {object} obj - Muscle count object. Keys correspond to muscles and values correspond to
+ * number of exercises in a routine engaging specific muscle.
+ */
+const rescaleMuscleCountObject = (obj, limit = 3) => {
+  const maxCount = Math.max(...Object.values(obj));
+  const rescaledEntries = Object.entries(obj).map(([muscle, count]) => [
+    muscle,
+    Math.ceil(((limit - 0.0001) * count) / maxCount),
+  ]);
+  return Object.fromEntries(rescaledEntries);
 };
 
 export default RoutineDetailPage;

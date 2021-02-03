@@ -1,8 +1,46 @@
-$musclesSize: 350px;
+@import "variables.scss";
+
+$musclesSize: 300px;
+$breakpoint: 567px;
 
 .columns {
-  // width: 100%;
   display: flex;
+
+  @media screen and (max-width: $breakpoint) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.column {
+  & > * {
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &:first-child {
+    padding-right: 2rem;
+    width: $musclesSize;
+    border-right: $content-separator-border;
+
+    @media screen and (max-width: $breakpoint) {
+      border: none;
+      padding-right: 0;
+      margin-bottom: 2rem;
+    }
+  }
+
+  &:last-child {
+    flex-grow: 1;
+    padding-left: 2rem;
+
+    @media screen and (max-width: $breakpoint) {
+      padding-left: 0;
+    }
+  }
 }
 
 .musclesSvg {
@@ -10,26 +48,9 @@ $musclesSize: 350px;
   height: $musclesSize;
 }
 
-.column {
-  border: 1px solid blue;
-
-  &:first-child {
-    width: $musclesSize;
-    padding-right: 2rem;
-  }
-  &:last-child {
-    flex-grow: 2;
-    padding-left: 2rem;
-  }
-}
-
-.leftArrowSvg {
-  border: 1px solid red;
-}
-
 .goBack {
   transition: transform 150ms ease-in-out;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 
   &:hover {
     transform: translateX(-10px);
@@ -41,14 +62,18 @@ $musclesSize: 350px;
   padding: 2rem;
 }
 
-.paragraph {
-  border: 1px solid red;
-}
-
 .routineButtons {
-  border: 1px solid red;
+  display: grid;
 
-  &Edit {
-    margin-right: 10px;
+  & > * {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  span {
+    text-align: center;
   }
 }

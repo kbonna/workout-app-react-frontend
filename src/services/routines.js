@@ -66,4 +66,54 @@ const deleteRoutine = async (routineId) => {
   return Promise.reject();
 };
 
-export { fetchRoutine, fetchRoutines, forkRoutine, deleteRoutine };
+/**
+ * Create new routine.
+ *
+ * @param {object} data - Object containing routine data.
+ *
+ * Either resolves with newly created routine object or rejects with error messages for incorrect
+ * fields.
+ */
+const createRoutine = async (data) => {
+  const response = await fetch(routes.api.routines.self, {
+    method: "POST",
+    headers: { ...header_with_token(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  if (response.status === 201) {
+    return Promise.resolve(json);
+  }
+  return Promise.reject(json);
+};
+
+/**
+ * Edit users routine.
+ *
+ * @param {object} data - Routine data.
+ * @param {number} routinePk - Primary key of updated routine.
+ *
+ * Either resolves with succesfully updated routine object or rejects with error messages for
+ * incorrect fields.
+ */
+const updateRoutine = async function (data, routinePk) {
+  const response = await fetch(`${routes.api.routines.self}${routinePk}`, {
+    method: "PUT",
+    headers: { ...header_with_token(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  if (response.status === 200) {
+    return Promise.resolve(json);
+  }
+  return Promise.reject(json);
+};
+
+export {
+  fetchRoutine,
+  fetchRoutines,
+  forkRoutine,
+  createRoutine,
+  updateRoutine,
+  deleteRoutine,
+};

@@ -1,3 +1,5 @@
+$breakpoint: 567px;
+
 .table {
   width: 100%;
   font-size: 12px;
@@ -18,8 +20,17 @@
   }
 
   &Cell:last-child {
-    width: 25%;
+    width: 35%;
     text-align: right;
+  }
+
+  @media screen and (max-width: $breakpoint) {
+    &Cell:last-child {
+      width: 50%;
+    }
+    &Cell:nth-child(2) {
+      display: none;
+    }
   }
 }
 
@@ -42,6 +53,12 @@
     text-decoration: none;
     color: inherit;
   }
+
+  @media screen and (max-width: $breakpoint) {
+    &Cell:nth-child(2) {
+      display: none;
+    }
+  }
 }
 
 .footer {
@@ -58,5 +75,11 @@
 
   &Cell:last-child {
     text-align: right;
+  }
+
+  @media screen and (max-width: $breakpoint) {
+    &Cell:nth-child(2) {
+      display: none;
+    }
   }
 }

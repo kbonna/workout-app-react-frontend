@@ -59,7 +59,9 @@ Select.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  ),
   optionsDisplay: PropTypes.arrayOf(PropTypes.string),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,

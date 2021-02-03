@@ -6,11 +6,12 @@
   width: calc(100vw - var(--sidebar-width));
   min-height: calc(100vh - var(--header-height));
 
-  box-shadow: 0 0 5px 5px red inset;
-  padding: 2rem;
+  // box-shadow: 0 0 5px 5px red inset;
+  padding: 3rem;
 
   @media screen and (max-width: $sidebar-breakpoint) {
     left: 0;
     width: 100%;
+    padding: 1.5rem;
   }
 }

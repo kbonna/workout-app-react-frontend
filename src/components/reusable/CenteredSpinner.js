@@ -1,11 +1,8 @@
 import React from "react";
 import Spinner from "./Spinner";
 import styles from "./CenteredSpinner.module.scss";
-import { useFlags } from "context/FlagsProvider";
-const CenteredSpinner = () => {
-  const [{ isSidebarOpen }, _] = useFlags();
-  console.log(isSidebarOpen);
 
+const CenteredSpinner = () => {
   return (
     <div className={styles.spinnerWrapper}>
       <Spinner></Spinner>

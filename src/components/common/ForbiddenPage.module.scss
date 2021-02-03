@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+
+  display: grid;
+  place-items: center;
+
+  background-color: var(--col-gray-3);
+  background-image: url("/images/empty_bar.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: screen;
+}
+
+.info {
+  text-align: center;
+}
+
+.title {
+  font-size: 4rem;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--col-gray-2);
+  font-style: italic;
+  line-height: 1.5;
+}

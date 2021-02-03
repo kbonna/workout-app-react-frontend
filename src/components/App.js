@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useUser } from "context/UserProvider";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,14 +11,14 @@ import {
 import Header from "components/layout/Header";
 import Body from "components/layout/Body";
 import LoginPage from "components/common/LoginPage";
-import ProtectedRoute from "hoc/ProtectedRoute";
+import AuthenticatedRoute from "hoc/AuthenticatedRoute";
 import PublicRoute from "hoc/PublicRoute";
 import LandingPage from "components/common/LandingPage";
 import NotFoundPage from "components/common/NotFoundPage";
+import ForbiddenPage from "./common/ForbiddenPage";
 import SignupPage from "./common/SignupPage";
 import Application from "components/layout/Application";
 
-import { useUser } from "context/UserProvider";
 import routes from "utilities/routes";
 
 function App() {
@@ -33,9 +34,9 @@ function App() {
             <LandingPage></LandingPage>
           </Route>
           {/* App */}
-          <ProtectedRoute path={routes.app.self} loggedIn={user.loggedIn}>
+          <AuthenticatedRoute path={routes.app.self} loggedIn={user.loggedIn}>
             <Application></Application>
-          </ProtectedRoute>
+          </AuthenticatedRoute>
           {/* Login & Signup */}
           <PublicRoute path={routes.login} loggedIn={user.loggedIn}>
             <LoginPage></LoginPage>
@@ -43,9 +44,13 @@ function App() {
           <PublicRoute path={routes.signup} loggedIn={user.loggedIn}>
             <SignupPage></SignupPage>
           </PublicRoute>
-          {/* Not found page */}
-          <Route path={routes.notFound} loggedIn={user.loggedIn}>
+          {/* Not found (401) page */}
+          <Route path={routes.notFound}>
             <NotFoundPage></NotFoundPage>
+          </Route>
+          {/* Forbidden (403) page */}
+          <Route path={routes.forbidden}>
+            <ForbiddenPage></ForbiddenPage>
           </Route>
           {/* Fallback */}
           <Redirect to={routes.notFound} />

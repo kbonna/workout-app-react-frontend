@@ -1,7 +1,13 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import routes from "utilities/routes";
 
-function PublicRoute({ children, loggedIn, redirectTo, ...rest }) {
+function PublicRoute({
+  children,
+  loggedIn,
+  redirectTo = routes.app.dashboard.self,
+  ...rest
+}) {
   if (loggedIn) {
     return <Redirect to={redirectTo}></Redirect>;
   } else {
@@ -10,7 +16,3 @@ function PublicRoute({ children, loggedIn, redirectTo, ...rest }) {
 }
 
 export default PublicRoute;
-
-PublicRoute.defaultProps = {
-  redirectTo: "/app/dashboard",
-};

@@ -48,6 +48,7 @@ const routes = {
     },
   },
   notFound: "/404",
+  forbidden: "/403",
   login: "/login",
   signup: "/signup",
 };

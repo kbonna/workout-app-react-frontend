@@ -8,7 +8,6 @@ import RoutinePageNav from "./RoutinePageNav";
 import Add from "components/icons/Add";
 import Box from "components/reusable/Box";
 import Button from "components/reusable/Button";
-import Spinner from "components/reusable/Spinner";
 import LinkButton from "components/reusable/LinkButton";
 import styles from "./RoutineTablePage.module.scss";
 
@@ -32,10 +31,9 @@ const RoutineTablePage = ({ tableType }) => {
   const user = useUser();
   const notify = useNotify();
 
-  // ! REFACTOR TO PROMISE
   const handleDelete = (routine) => {
-    deleteRoutine(routine.pk).then((success) => {
-      if (success) {
+    deleteRoutine(routine.pk)
+      .then(() => {
         setRoutines((prevRoutines) =>
           prevRoutines.filter((r) => r.pk !== routine.pk)
         );
@@ -43,13 +41,13 @@ const RoutineTablePage = ({ tableType }) => {
           message: `Succesfully removed ${routine.name} routine.`,
           type: "success",
         });
-      } else {
+      })
+      .catch(() => {
         notify({
           message: `${routine.name} routine was already removed.`,
           type: "error",
         });
-      }
-    });
+      });
   };
 
   const handleFork = (routine) => {

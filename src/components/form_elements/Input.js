@@ -12,6 +12,7 @@ function Input({
   onChange,
   value,
   error,
+  ...rest
 }) {
   const inputClassName = classNames({
     [styles.input]: true,
@@ -34,6 +35,7 @@ function Input({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        {...rest}
       ></input>
       {error.length ? (
         <div className={styles.error}>{error.join(" ")}</div>
@@ -46,7 +48,7 @@ Input.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  type: PropTypes.oneOf(["text", "password"]),
+  type: PropTypes.oneOf(["text", "password", "number"]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.node,

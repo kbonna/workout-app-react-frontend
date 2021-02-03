@@ -4,10 +4,16 @@ import { Route, Switch } from "react-router-dom";
 import RoutineTablePage from "./RoutineTablePage";
 import RoutineDetailPage from "./RoutineDetailPage";
 import routes from "utilities/routes";
+import RoutineCreateUpdate from "./RoutineCreateUpdate";
 
 export const TABLE_TYPES = {
   MY: "my",
   DISCOVER: "discover",
+};
+
+export const ROUTINE_ACTIONS = {
+  CREATE: "create",
+  UPDATE: "update",
 };
 
 function Routines() {
@@ -24,10 +30,14 @@ function Routines() {
           <RoutineDetailPage></RoutineDetailPage>
         </Route>
         <Route path={`${routes.app.routines.routine}:id/edit`}>
-          <h1>Edit routine</h1>
+          <RoutineCreateUpdate
+            action={ROUTINE_ACTIONS.UPDATE}
+          ></RoutineCreateUpdate>
         </Route>
         <Route path={routes.app.routines.new}>
-          <h1>Create new routine</h1>
+          <RoutineCreateUpdate
+            action={ROUTINE_ACTIONS.CREATE}
+          ></RoutineCreateUpdate>
         </Route>
       </Switch>
     </>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
 import Dashboard from "components/dashboard/Dashboard";

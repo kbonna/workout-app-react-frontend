@@ -127,7 +127,6 @@ function ExerciseForm({
             value={formData.values.instructions}
             error={formData.errors.instructions}
           />
-
           <div className={styles.tags}>
             <Label label={"Tags"}></Label>
             {zip(formData.values.tags, formData.errors.tags).map(

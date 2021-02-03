@@ -17,7 +17,7 @@
 }
 
 .textarea {
-  height: 7em;
+  // This ensures that resizing can be done only vertically
   resize: vertical;
 
   &--error {

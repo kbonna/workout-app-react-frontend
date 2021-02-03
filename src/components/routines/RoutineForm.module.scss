@@ -1,0 +1,111 @@
+.fieldset {
+  border: none;
+  display: contents;
+}
+
+.form {
+  font-size: 1rem;
+
+  display: grid;
+  grid-template-areas:
+    "name kind"
+    "instructions instructions"
+    "exercises exercises";
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+
+  @media screen and (max-width: 678px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "name"
+      "kind"
+      "instructions"
+      "exercises";
+    grid-gap: 15px;
+  }
+}
+
+.field {
+  width: 100%;
+
+  &Name {
+    grid-area: name;
+  }
+
+  &Kind {
+    grid-area: kind;
+  }
+
+  &Instructions {
+    grid-area: instructions;
+  }
+
+  &Exercises {
+    grid-area: exercises;
+  }
+}
+
+.multiline {
+  display: grid;
+  grid-template-columns: 1fr 65px 2fr 22px;
+  gap: 0 10px;
+  align-items: start;
+
+  & > * label {
+    display: none;
+  }
+
+  &:first-child > * label {
+    display: block;
+  }
+
+  @media screen and (max-width: 678px) {
+    grid-template-columns: 1fr;
+    gap: 5px 0;
+    margin-bottom: 15px;
+
+    & > * label {
+      display: block;
+    }
+  }
+}
+
+.formButtons {
+  margin-top: 1rem;
+  &Submit {
+    margin-right: 0.5rem;
+  }
+}
+
+.btn {
+  &Add {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  &Delete {
+    align-self: center;
+    transform: translateY(-0.35em);
+    &:hover {
+      animation: wiggle 150ms ease-in-out alternate infinite;
+    }
+  }
+}
+
+.trash {
+  &Svg {
+    width: 22px;
+  }
+  &Path {
+    fill: var(--col-gray-1);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(10deg);
+  }
+}

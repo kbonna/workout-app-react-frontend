@@ -43,3 +43,7 @@ export const EXERCISE_TYPES_DISPLAY = [
 
 export const ASCII_AND_DIGITS =
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+export const ROUTINE_TYPES = ["sta", "cir"];
+
+export const ROUTINE_TYPES_DISPLAY = ["standard", "circuit"];

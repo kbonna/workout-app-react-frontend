@@ -1,3 +1,5 @@
+$breakpoint: 567px;
+
 .nav {
   --separator-width: 2px;
   --margin-bottom: 2rem;
@@ -8,11 +10,23 @@
   border-bottom: var(--separator-width) solid var(--col-gray-5);
   margin-bottom: var(--margin-bottom);
 
+  @media screen and (max-width: $breakpoint) {
+    flex-direction: column;
+    align-items: stretch;
+    border-bottom: none;
+  }
+
   &LinksList {
     display: flex;
     align-items: center;
     margin-bottom: calc((-1) * var(--separator-width));
     list-style: none;
+
+    @media screen and (max-width: $breakpoint) {
+      margin-bottom: 2rem;
+      border-bottom: var(--separator-width) solid var(--col-gray-5);
+      justify-content: space-around;
+    }
   }
 
   &Link {
@@ -22,6 +36,11 @@
     text-decoration: none;
     color: inherit;
     margin-right: 4em;
+
+    @media screen and (max-width: $breakpoint) {
+      margin-right: 0;
+      transform: translateY(2px);
+    }
   }
 
   &LinkActive {
@@ -39,6 +58,10 @@
     border: 1.75px solid var(--col-gray-4);
     padding: 0 0.5em;
     border-radius: 3px;
+
+    @media screen and (max-width: $breakpoint) {
+      width: 100%;
+    }
   }
 }
 
