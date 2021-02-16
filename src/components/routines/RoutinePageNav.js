@@ -8,22 +8,22 @@ import styles from "./RoutinePageNav.module.scss";
 const RoutinePageNav = ({ searchFilter, setSearchFilter }) => {
   const location = useLocation();
   return (
-    <div className={styles.nav}>
-      <ul className={styles.navLinksList}>
-        <li className={styles.navLinksListItem}>
+    <div className={styles.Nav}>
+      <ul className={styles.Nav_linkList}>
+        <li className={styles.Nav_linkListItem}>
           <LinkHighlighedIfMatch
-            classNameBase={styles.navLink}
-            classNameActive={styles.navLinkActive}
+            classNameBase={styles.Nav_link}
+            classNameActive={styles.Nav_link___active}
             location={location}
             to={routes.app.routines.myRoutines}
           >
             My Routines
           </LinkHighlighedIfMatch>
         </li>
-        <li className={styles.navLinksListItem}>
+        <li className={styles.Nav_linkListItem}>
           <LinkHighlighedIfMatch
-            classNameBase={styles.navLink}
-            classNameActive={styles.navLinkActive}
+            classNameBase={styles.Nav_link}
+            classNameActive={styles.Nav_link___active}
             location={location}
             to={routes.app.routines.discover}
           >
@@ -31,21 +31,21 @@ const RoutinePageNav = ({ searchFilter, setSearchFilter }) => {
           </LinkHighlighedIfMatch>
         </li>
       </ul>
-      <div className={styles.navControl}>
+      <div className={styles.Nav_control}>
         <input
-          className={styles.navSearch}
+          className={styles.Nav_search}
           onChange={(e) => {
             setSearchFilter(e.target.value);
           }}
           value={searchFilter}
           placeholder={"search..."}
         ></input>
-        <Link className={styles.add} to={routes.app.routines.new}>
+        <Link className={styles.ButtonAdd} to={routes.app.routines.new}>
           <Add
-            svgClassName={styles.addSvg}
-            crossClassName={styles.addCross}
-            borderClassName={styles.addBorder}
-            backgroundClassName={styles.addBackground}
+            svgClassName={styles.ButtonAdd_svg}
+            crossClassName={styles.ButtonAdd_cross}
+            borderClassName={styles.ButtonAdd_border}
+            backgroundClassName={styles.ButtonAdd_background}
           ></Add>
         </Link>
       </div>

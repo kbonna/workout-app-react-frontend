@@ -1,7 +1,7 @@
-@import "variables.scss";
+@import "index.scss";
 
-$musclesSize: 300px;
-$breakpoint: 567px;
+$musclesSize: 30rem;
+$breakpoint: 56.7rem;
 
 .columns {
   display: flex;
@@ -14,7 +14,7 @@ $breakpoint: 567px;
 
 .column {
   & > * {
-    margin-bottom: 2rem;
+    margin-bottom: 3.2rem;
 
     &:last-child {
       margin-bottom: 0;
@@ -22,20 +22,20 @@ $breakpoint: 567px;
   }
 
   &:first-child {
-    padding-right: 2rem;
+    padding-right: 3.2rem;
     width: $musclesSize;
     border-right: $content-separator-border;
 
     @media screen and (max-width: $breakpoint) {
       border: none;
       padding-right: 0;
-      margin-bottom: 2rem;
+      margin-bottom: 3.2rem;
     }
   }
 
   &:last-child {
     flex-grow: 1;
-    padding-left: 2rem;
+    padding-left: 3.2rem;
 
     @media screen and (max-width: $breakpoint) {
       padding-left: 0;
@@ -50,23 +50,23 @@ $breakpoint: 567px;
 
 .goBack {
   transition: transform 150ms ease-in-out;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.4rem;
 
   &:hover {
-    transform: translateX(-10px);
+    transform: translateX(-1rem);
   }
 }
 
 .box {
   text-align: center;
-  padding: 2rem;
+  padding: 3.2rem;
 }
 
 .routineButtons {
   display: grid;
 
   & > * {
-    margin-bottom: 1rem;
+    margin-bottom: 1.6rem;
 
     &:last-child {
       margin-bottom: 0;

@@ -5,7 +5,7 @@
 .li {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.6rem;
 }
 
 .li:last-child {
@@ -14,8 +14,8 @@
 
 .icon {
   &Svg {
-    width: 20px;
-    margin-right: 10px;
+    width: 2.0rem;
+    margin-right: 1.0rem;
   }
   &Path {
     fill: var(--col-gray-3);

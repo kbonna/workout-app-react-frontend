@@ -1,4 +1,4 @@
-@import "../../variables.scss";
+@import "index.scss";
 
 .sidebar {
   --transition-duration: 100ms;
@@ -13,7 +13,7 @@
 
   // style
   background-color: var(--col-gray-5);
-  font-size: 1.25rem;
+  font-size: 2rem;
   color: var(--col-gray-1);
 
   @media screen and (max-width: $sidebar-breakpoint) {
@@ -37,7 +37,7 @@
     align-self: center;
     font-size: 0.75em;
     font-weight: bold;
-    border-top: 1px solid var(--col-gray-4);
+    border-top: 0.1rem solid var(--col-gray-4);
     padding-top: 0.5em;
     width: 90%;
   }
@@ -47,7 +47,7 @@
     color: inherit;
     display: block;
     padding: 0.5em 0.5em;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     margin: 0.6em 1.2em;
 
     &--active {

@@ -1,31 +1,31 @@
 .notification {
   width: 100%;
   padding: 1em;
-  margin-bottom: 0.5rem;
-  border-radius: 3px;
+  margin-bottom: 0.8rem;
+  border-radius: 0.3rem;
   color: var(--col-gray-1);
-  border: 1px solid var(--col-gray-4);
+  border: 0.1rem solid var(--col-gray-4);
   background-color: var(--col-gray-6);
 
   &:last-child {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.4rem;
   }
 }
 
 .notification--success {
   color: var(--col-success-1);
-  border: 1px solid var(--col-success-5);
+  border: 0.1rem solid var(--col-success-5);
   background-color: var(--col-success-6);
 }
 
 .notification--error {
   color: var(--col-error-1);
-  border: 1px solid var(--col-error-5);
+  border: 0.1rem solid var(--col-error-5);
   background-color: var(--col-error-6);
 }
 
 .notification--warning {
   color: var(--col-warning-1);
-  border: 1px solid var(--col-warning-5);
+  border: 0.1rem solid var(--col-warning-5);
   background-color: var(--col-warning-6);
 }

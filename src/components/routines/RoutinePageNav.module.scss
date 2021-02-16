@@ -1,8 +1,8 @@
-$breakpoint: 567px;
+$breakpoint: 56.7rem;
 
-.nav {
-  --separator-width: 2px;
-  --margin-bottom: 2rem;
+.Nav {
+  --separator-width: 0.2rem;
+  --margin-bottom: 3.2rem;
 
   display: flex;
   justify-content: space-between;
@@ -16,20 +16,20 @@ $breakpoint: 567px;
     border-bottom: none;
   }
 
-  &LinksList {
+  &_linkList {
     display: flex;
     align-items: center;
     margin-bottom: calc((-1) * var(--separator-width));
     list-style: none;
 
     @media screen and (max-width: $breakpoint) {
-      margin-bottom: 2rem;
+      margin-bottom: 3.2rem;
       border-bottom: var(--separator-width) solid var(--col-gray-5);
       justify-content: space-around;
     }
   }
 
-  &Link {
+  &_link {
     padding: 1.25em 0;
     display: block;
     font-size: 0.9em;
@@ -37,27 +37,27 @@ $breakpoint: 567px;
     color: inherit;
     margin-right: 4em;
 
+    &___active {
+      font-weight: bold;
+      border-bottom: var(--separator-width) solid var(--col-gray-1);
+    }
+
     @media screen and (max-width: $breakpoint) {
       margin-right: 0;
-      transform: translateY(2px);
+      transform: translateY(0.2rem);
     }
   }
 
-  &LinkActive {
-    font-weight: bold;
-    border-bottom: var(--separator-width) solid var(--col-gray-1);
-  }
-
-  &Control {
+  &_control {
     display: flex;
     align-items: center;
   }
 
-  &Search {
-    height: 2rem;
-    border: 1.75px solid var(--col-gray-4);
+  &_search {
+    height: 3.2rem;
+    border: 0.2rem solid var(--col-gray-5);
     padding: 0 0.5em;
-    border-radius: 3px;
+    border-radius: 0.3rem;
 
     @media screen and (max-width: $breakpoint) {
       width: 100%;
@@ -65,36 +65,36 @@ $breakpoint: 567px;
   }
 }
 
-.add {
+.ButtonAdd {
   display: grid;
   place-items: center;
-  margin-left: 10px;
+  margin-left: 1rem;
 
-  &Svg {
-    height: 2rem;
-    width: 2rem;
+  &_svg {
+    height: 3.2rem;
+    width: 3.2rem;
   }
 
-  &Border {
+  &_border {
     fill: var(--col-gray-4);
   }
 
-  &Cross {
+  &_cross {
     fill: var(--col-gray-4);
     stroke: var(--col-gray-4);
-    stroke-width: 15px;
+    stroke-width: 1.5rem;
   }
 
-  &:hover &Border {
+  &:hover &_border {
     fill: none;
   }
 
-  &:hover &Cross {
+  &:hover &_cross {
     fill: var(--col-white);
     stroke: var(--col-white);
   }
 
-  &:hover &Background {
+  &:hover &_background {
     fill: var(--col-gray-3);
     opacity: 1;
   }

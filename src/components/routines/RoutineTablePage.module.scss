@@ -4,7 +4,7 @@
 }
 
 .box {
-  height: 150px;
+  height: 15.0rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +18,7 @@
   &AddSvg {
     height: 1em;
     display: inline;
-    transform: translateY(3px);
+    transform: translateY(0.3rem);
   }
 
   &AddPath {

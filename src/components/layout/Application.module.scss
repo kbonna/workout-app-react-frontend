@@ -1,4 +1,4 @@
-@import "../../variables.scss";
+@import "index.scss";
 
 .appContent {
   position: relative;
@@ -6,12 +6,12 @@
   width: calc(100vw - var(--sidebar-width));
   min-height: calc(100vh - var(--header-height));
 
-  // box-shadow: 0 0 5px 5px red inset;
-  padding: 3rem;
+  // box-shadow: 0 0 0.5rem 0.5rem red inset;
+  padding: 4.8rem;
 
   @media screen and (max-width: $sidebar-breakpoint) {
     left: 0;
     width: 100%;
-    padding: 1.5rem;
+    padding: 2.4rem;
   }
 }

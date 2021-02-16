@@ -1,0 +1,28 @@
+:root {
+  --col-white: #ffffff;
+  --col-gray-1: #333333;
+  --col-gray-2: #4f4f4f;
+  --col-gray-3: #828282;
+  --col-gray-4: #bdbdbd;
+  --col-gray-5: #e0e0e0;
+  --col-gray-6: #f2f2f2;
+  --col-error-1: #721c24;
+  --col-error-2: #91363f;
+  --col-error-3: #b55b64;
+  --col-error-3: #fb98a1;
+  --col-error-5: #f5c6cb;
+  --col-error-6: #f8d7da;
+  --col-success-1: #155724;
+  --col-success-5: #c3e6cb;
+  --col-success-6: #d4edda;
+  --col-warning-1: #856404;
+  --col-warning-5: #ffeeba;
+  --col-warning-6: #fff3cd;
+
+  --header-height: 8rem;
+  --sidebar-width: 22.5rem;
+}
+
+// sass variables
+$sidebar-breakpoint: 1000px;
+$content-separator-border: 1px solid var(--col-gray-5);

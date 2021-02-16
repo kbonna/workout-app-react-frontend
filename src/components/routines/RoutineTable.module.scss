@@ -1,8 +1,8 @@
-$breakpoint: 567px;
+$breakpoint: 56.7rem;
 
 .table {
   width: 100%;
-  font-size: 12px;
+  font-size: 1.2rem;
   table-layout: fixed;
 }
 
@@ -36,8 +36,8 @@ $breakpoint: 567px;
 
 .body {
   &Row {
-    border-bottom: 1px solid var(--col-gray-6);
-    height: 3.5rem; // works like min-height
+    border-bottom: 0.1rem solid var(--col-gray-6);
+    height: 5.6rem; // works like min-height
   }
 
   &Cell:last-child {

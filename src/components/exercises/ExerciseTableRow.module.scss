@@ -1,6 +1,6 @@
 .row {
-  border-bottom: 1px solid var(--col-gray-6);
-  height: 3.5rem; // works like min-height
+  border-bottom: 0.1rem solid var(--col-gray-6);
+  height: 5.6rem; // works like min-height
 
   &__cell:last-child {
     text-align: right;

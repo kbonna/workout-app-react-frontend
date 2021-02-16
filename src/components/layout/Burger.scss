@@ -1,14 +1,14 @@
-@import "../../variables.scss";
+@import "index.scss";
 
 .burger-wrapper {
   cursor: pointer;
-  padding: 4px;
+  padding: 0.4rem;
 }
 
 .burger {
-  --burger-width: 30px;
-  --burger-height: 4px;
-  --burger-gap: 5px;
+  --burger-width: 3rem;
+  --burger-height: 0.4rem;
+  --burger-gap: 0.5rem;
   --transition-duration: 100ms;
 
   position: relative;

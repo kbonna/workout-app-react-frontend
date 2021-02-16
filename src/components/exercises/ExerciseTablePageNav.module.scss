@@ -1,6 +1,6 @@
 .nav {
-  --separator-width: 2px;
-  --margin-bottom: 2rem;
+  --separator-width: 0.2rem;
+  --margin-bottom: 3.2rem;
 
   display: flex;
   justify-content: space-between;
@@ -34,10 +34,10 @@
   }
 
   &__search {
-    height: 2rem;
-    border: 2px solid var(--col-gray-5);
+    height: 3.2rem;
+    border: 0.2rem solid var(--col-gray-5);
     padding: 0 0.5em;
-    border-radius: 3px;
+    border-radius: 0.3rem;
   }
 
   &__btn-add {
@@ -54,10 +54,10 @@
       justify-content: center;
       align-items: center;
 
-      width: 2rem;
-      height: 2rem;
+      width: 3.2rem;
+      height: 3.2rem;
       background-color: var(--col-gray-6);
-      border: 1px solid var(--col-gray-5);
+      border: 0.1rem solid var(--col-gray-5);
       border-radius: 50%;
     }
 

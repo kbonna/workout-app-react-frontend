@@ -4,8 +4,6 @@
 }
 
 .form {
-  font-size: 1rem;
-
   display: grid;
   grid-template-areas:
     "name name name"
@@ -13,9 +11,9 @@
     "instructions instructions instructions"
     "muscles tags tutorials";
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
+  grid-gap: 1rem;
 
-  @media screen and (max-width: 678px) {
+  @media screen and (max-width: 67.8rem) {
     grid-template-columns: 1fr;
     grid-template-areas:
       "name"
@@ -24,7 +22,7 @@
       "muscles"
       "tags"
       "tutorials";
-    grid-gap: 15px;
+    grid-gap: 1.5rem;
   }
 }
 
@@ -45,7 +43,7 @@
 }
 
 .form__buttons {
-  margin-top: 1rem;
+  margin-top: 1.6rem;
 
   button {
     margin-right: 0.5em;
@@ -55,14 +53,14 @@
 .multiline {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 }
 
 .btn {
   &--add {
-    margin-top: 6px;
+    margin-top: 0.6rem;
     width: 100%;
-    @media screen and (max-width: 678px) {
+    @media screen and (max-width: 67.8rem) {
       margin-top: 0;
     }
   }
@@ -70,8 +68,8 @@
 
 .btn {
   &Delete {
-    margin-left: 5px;
-    margin-top: 8px;
+    margin-left: 0.5rem;
+    margin-top: 0.8rem;
 
     &:hover {
       animation: wiggle 150ms ease-in-out alternate infinite;
@@ -81,7 +79,7 @@
 
 .trash {
   &Svg {
-    width: 22px;
+    width: 2.2rem;
   }
   &Path {
     fill: var(--col-gray-1);

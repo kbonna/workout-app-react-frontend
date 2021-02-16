@@ -1,32 +1,32 @@
 .page {
-  padding: 0 2rem;
+  padding: 0 3.2rem;
 }
 
 .content {
   display: flex;
-  margin-top: 1.5rem;
+  margin-top: 2.4rem;
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 70.0rem) {
     flex-direction: column;
-    row-gap: 4rem;
+    row-gap: 6.4rem;
   }
 }
 
 .content__info {
-  margin-right: 4rem;
-  max-width: 225px;
+  margin-right: 6.4rem;
+  max-width: 22.5rem;
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 70.0rem) {
     align-self: center;
   }
 }
 
 .content__more {
   flex: 2;
-  padding: 0 2rem;
+  padding: 0 3.2rem;
 
-  @media screen and (min-width: 700px) {
-    border-left: 1px solid var(--col-gray-5);
+  @media screen and (min-width: 70.0rem) {
+    border-left: 0.1rem solid var(--col-gray-5);
   }
 }
 
@@ -34,6 +34,6 @@
   transition: transform 150ms ease-in-out;
 
   &:hover {
-    transform: translateX(-10px);
+    transform: translateX(-1.0rem);
   }
 }
