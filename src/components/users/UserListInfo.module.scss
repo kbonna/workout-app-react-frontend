@@ -1,0 +1,41 @@
+.List {
+  list-style-type: none;
+  font-size: 1.3rem;
+
+  &_listItem {
+    display: grid;
+    grid-template-rows: 2.3rem 2.3rem;
+    grid-template-columns: 4rem 1fr;
+
+    &:not(:last-child) {
+      margin-bottom: 2.3rem;
+    }
+  }
+
+  &_listItemIconWrapper {
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: start;
+  }
+
+  &_listItemLabel {
+    grid-column: 2 / 3;
+    align-self: center;
+    color: var(--col-gray-2);
+  }
+
+  &_listItemText {
+    grid-column: 2 / 3;
+    align-self: center;
+    color: var(--col-gray-1);
+    font-weight: bold;
+  }
+
+  &_listItemIconSvg {
+    width: 2.1rem;
+  }
+
+  &_listItemIconPath {
+    fill: var(--col-gray-3);
+  }
+}

@@ -1,0 +1,60 @@
+@import "index.scss";
+
+$breakpoint: 45rem;
+
+.Container > * {
+  // outline: 1px solid red;
+}
+
+.Button {
+  width: 100%;
+}
+
+.Paragraph {
+  &_header {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  &_box {
+    text-align: center;
+    padding: 3.2rem;
+  }
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_column {
+    &___info {
+      margin-bottom: 7rem;
+    }
+    &___content {
+      align-self: stretch;
+    }
+  }
+
+  &_column > * {
+    &:not(:last-child) {
+      margin-bottom: 3rem;
+    }
+  }
+
+  @media screen and (min-width: $breakpoint) {
+    flex-direction: row;
+    align-items: flex-start;
+
+    &_column {
+      &___info {
+        border-right: $content-separator-border;
+        padding-right: 5rem;
+        margin-bottom: 0;
+      }
+      &___content {
+        padding-left: 5rem;
+        flex-grow: 1;
+      }
+    }
+  }
+}

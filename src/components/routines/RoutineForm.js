@@ -18,8 +18,6 @@ const RoutineForm = ({
   handleCancel,
   availableExercises,
 }) => {
-  console.log(formData.values);
-
   const handleChange = (e) => {
     e.preventDefault();
     dispatch({
@@ -90,7 +88,7 @@ const RoutineForm = ({
           error={formData.errors.instructions}
         />
         <div className={styles.fieldExercises}>
-          {zip(formData.values.exercises, formData.errors.exercises).map(
+          {zip([formData.values.exercises, formData.errors.exercises]).map(
             ([exercise, exerciseError], index) => (
               <div className={styles.multiline} key={exercise.key}>
                 <Select
@@ -103,11 +101,7 @@ const RoutineForm = ({
                   options={availableExercises.map((ex) => ex.pk)}
                   optionsDisplay={availableExercises.map((ex) => ex.name)}
                   onChange={(e) => {
-                    handleListChange(
-                      e,
-                      index,
-                      fieldProps.exercises.exercise.modifier
-                    );
+                    handleListChange(e, index, fieldProps.exercises.exercise.modifier);
                   }}
                 />
                 <Input
@@ -119,11 +113,7 @@ const RoutineForm = ({
                   value={exercise.sets}
                   error={exerciseError.sets}
                   onChange={(e) => {
-                    handleListChange(
-                      e,
-                      index,
-                      fieldProps.exercises.sets.modifier
-                    );
+                    handleListChange(e, index, fieldProps.exercises.sets.modifier);
                   }}
                   min={fieldProps.exercises.sets.minValue}
                   max={fieldProps.exercises.sets.maxValue}
@@ -136,11 +126,7 @@ const RoutineForm = ({
                   value={exercise.instructions}
                   error={exerciseError.instructions}
                   onChange={(e) => {
-                    handleListChange(
-                      e,
-                      index,
-                      fieldProps.exercises.instructions.modifier
-                    );
+                    handleListChange(e, index, fieldProps.exercises.instructions.modifier);
                   }}
                 ></Textarea>
                 <IconButton
@@ -149,10 +135,7 @@ const RoutineForm = ({
                   aria-label={"delete"}
                   type={"button"}
                 >
-                  <Trash
-                    svgClassName={styles.trashSvg}
-                    pathClassName={styles.trashPath}
-                  />
+                  <Trash svgClassName={styles.trashSvg} pathClassName={styles.trashPath} />
                 </IconButton>
               </div>
             )
@@ -163,9 +146,7 @@ const RoutineForm = ({
             buttonSize="small"
             handleClick={handleAddExercise}
             type="button"
-            disabled={
-              formData.values.exercises.length >= fieldProps.exercises._limit
-            }
+            disabled={formData.values.exercises.length >= fieldProps.exercises._limit}
           />
         </div>
       </fieldset>

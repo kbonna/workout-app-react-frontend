@@ -57,9 +57,7 @@ export function sleep(miliseconds) {
 export const getPaginatedRange = (currentPage, nItemsPerPage, nItems) => {
   const firstItemIndex = (currentPage - 1) * nItemsPerPage;
   const lastItemIndex =
-    currentPage * nItemsPerPage + 1 > nItems
-      ? nItems
-      : currentPage * nItemsPerPage;
+    currentPage * nItemsPerPage + 1 > nItems ? nItems : currentPage * nItemsPerPage;
   return [firstItemIndex, lastItemIndex, Math.ceil(nItems / nItemsPerPage)];
 };
 
@@ -84,11 +82,10 @@ export const classNames = (classes) =>
     .join(" ");
 
 /**
- * Given two arrays a and b, return zipped array with corresponding elements from a and b. Works
- * also when arrays have different length. Rough equivalent of Python zip function.
+ * Given array of arrays return zipped array with corresponding elements input arrays. Rough
+ * equivalent of Python zip function.
  */
-export const zip = (a, b) =>
-  Array.from(Array(Math.max(b.length, a.length)), (_, i) => [a[i], b[i]]);
+export const zip = (arr) => arr[0].map((_, c) => arr.map((row) => row[c]));
 
 /**
  * Add random string acting as key prop for react elements.
@@ -102,8 +99,7 @@ export const randomKey = (obj) => ({ key: v4(), ...obj });
  *
  * @param {*} obj - Any JS variable
  */
-export const isString = (obj) =>
-  Object.prototype.toString.call(obj) === "[object String]";
+export const isString = (obj) => Object.prototype.toString.call(obj) === "[object String]";
 
 /**
  * Checks whethere something is a boolean.
@@ -125,3 +121,31 @@ export const isBoolean = (obj) => "boolean" === typeof obj;
  * @param {*} obj - Any JS variable
  */
 export const isObject = (obj) => !!obj && obj.constructor === Object;
+
+/**
+ * Return human-readable Twitter-style duration from past event till now.
+ *
+ * @param {*} timeStamp - Past event timestamp.
+ */
+export const timeSince = (timeStamp) => {
+  const now = new Date(),
+    secondsPast = (now.getTime() - timeStamp) / 1000;
+  if (secondsPast < 60) {
+    return parseInt(secondsPast) + "s";
+  }
+  if (secondsPast < 3600) {
+    return parseInt(secondsPast / 60) + "m";
+  }
+  if (secondsPast <= 86400) {
+    return parseInt(secondsPast / 3600) + "h";
+  }
+  if (secondsPast > 86400) {
+    const day = timeStamp.getDate();
+    const month = timeStamp
+      .toDateString()
+      .match(/ [a-zA-Z]*/)[0]
+      .replace(" ", "");
+    const year = timeStamp.getFullYear() === now.getFullYear() ? "" : " " + timeStamp.getFullYear();
+    return day + " " + month + year;
+  }
+};

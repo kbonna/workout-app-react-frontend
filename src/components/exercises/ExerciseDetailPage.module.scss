@@ -1,22 +1,22 @@
-.page {
-  padding: 0 3.2rem;
-}
-
 .content {
   display: flex;
   margin-top: 2.4rem;
 
-  @media screen and (max-width: 70.0rem) {
+  @media screen and (max-width: 70rem) {
     flex-direction: column;
     row-gap: 6.4rem;
   }
 }
 
 .content__info {
-  margin-right: 6.4rem;
-  max-width: 22.5rem;
+  margin-right: 3rem;
+  max-width: 25rem;
 
-  @media screen and (max-width: 70.0rem) {
+  & > *:not(:last-child) {
+    margin-bottom: 3.2rem;
+  }
+
+  @media screen and (max-width: 70rem) {
     align-self: center;
   }
 }
@@ -25,7 +25,11 @@
   flex: 2;
   padding: 0 3.2rem;
 
-  @media screen and (min-width: 70.0rem) {
+  & > *:not(:last-child) {
+    margin-bottom: 3.2rem;
+  }
+
+  @media screen and (min-width: 70rem) {
     border-left: 0.1rem solid var(--col-gray-5);
   }
 }
@@ -34,6 +38,6 @@
   transition: transform 150ms ease-in-out;
 
   &:hover {
-    transform: translateX(-1.0rem);
+    transform: translateX(-1rem);
   }
 }

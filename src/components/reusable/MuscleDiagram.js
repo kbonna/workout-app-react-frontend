@@ -12,7 +12,7 @@ import { classNames } from "utilities/misc";
 const MuscleDiagram = ({ svgClassName, muscles = {} }) => {
   const svgClasses = classNames({
     [styles.svg]: true,
-    [svgClassName]: svgClassName !== undefined,
+    [svgClassName]: Boolean(svgClassName),
   });
 
   const musclesClasses = Object.fromEntries(

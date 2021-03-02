@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { fetchRoutine, updateRoutine } from "services/routines";
 import routes from "utilities/routes";
 import { formReducer, FORM_ACTIONS, validateForm } from "reducers/form";
-import {
-  formDataFromRoutine,
-  formDataInitial,
-  fieldProps,
-} from "forms/routine";
+import { formDataFromRoutine, formDataInitial, fieldProps } from "forms/routine";
 import { ROUTINE_ACTIONS } from "./Routines";
 import RoutineForm from "./RoutineForm";
 import { fetchExercises } from "services/exercises";
@@ -18,6 +14,7 @@ import { createRoutine } from "services/routines";
 import Header from "components/reusable/Header";
 
 const RoutineCreateUpdate = ({ action }) => {
+  const [fetched, setFetched] = useState(false);
   const [availableExercises, setAvailableExercises] = useState(null);
   const [formData, dispatch] = useReducer(formReducer, null);
   const { id: routineId } = useParams();
@@ -62,12 +59,6 @@ const RoutineCreateUpdate = ({ action }) => {
   const fetchAvailableExercisesData = () => {
     fetchExercises(user.pk)
       .then((availableExercises) => {
-        // ! remove later, only for testing purpose
-        availableExercises.push({
-          pk: 999,
-          name: "fake exercise",
-          kind: "ep",
-        });
         setAvailableExercises(availableExercises);
       })
       .catch(() => {
@@ -75,10 +66,13 @@ const RoutineCreateUpdate = ({ action }) => {
       });
   };
 
+  console.log(formData);
+
   const fetchRoutineData = () => {
     fetchRoutine(routineId)
       .then((routine) => {
         if (!routine.can_be_modified) {
+          console.log("forbidden");
           history.push(routes.forbidden);
         } else {
           dispatch({

@@ -15,8 +15,6 @@ const LoginForm = (props) => {
   const notify = useNotify();
   const history = useHistory();
 
-  console.log(formData);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     validateForm(fieldProps, formData)

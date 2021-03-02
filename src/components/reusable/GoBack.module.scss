@@ -1,0 +1,8 @@
+.button {
+  transition: transform 150ms ease-in-out;
+  margin-bottom: 2.5rem;
+
+  &:hover {
+    transform: translateX(-1rem);
+  }
+}

@@ -13,13 +13,7 @@ import Label from "components/form_elements/Label";
 import Trash from "components/icons/Trash";
 import Textarea from "components/form_elements/Textarea";
 
-function ExerciseForm({
-  fieldProps,
-  formData,
-  dispatch,
-  handleSubmit,
-  handleCancel,
-}) {
+function ExerciseForm({ fieldProps, formData, dispatch, handleSubmit, handleCancel }) {
   const handleChange = (e) => {
     e.preventDefault();
     dispatch({
@@ -129,31 +123,26 @@ function ExerciseForm({
           />
           <div className={styles.tags}>
             <Label label={"Tags"}></Label>
-            {zip(formData.values.tags, formData.errors.tags).map(
-              ([tag, tagError], index) => (
-                <div key={tag.key} className={styles.multiline}>
-                  <Input
-                    className={`${styles.field} ${styles["field--tag"]}`}
-                    name={fieldProps.tags.name.htmlName}
-                    placeholder={fieldProps.tags.name.placeholder}
-                    type={"text"}
-                    onChange={(e) => handleListChange(e, index)}
-                    value={tag.name}
-                    error={tagError.name}
-                  />
-                  <IconButton
-                    onClick={(e) => handleRemoveTag(e, index)}
-                    aria-label={"delete"}
-                    className={styles.btnDelete}
-                  >
-                    <Trash
-                      svgClassName={styles.trashSvg}
-                      pathClassName={styles.trashPath}
-                    />
-                  </IconButton>
-                </div>
-              )
-            )}
+            {zip([formData.values.tags, formData.errors.tags]).map(([tag, tagError], index) => (
+              <div key={tag.key} className={styles.multiline}>
+                <Input
+                  className={`${styles.field} ${styles["field--tag"]}`}
+                  name={fieldProps.tags.name.htmlName}
+                  placeholder={fieldProps.tags.name.placeholder}
+                  type={"text"}
+                  onChange={(e) => handleListChange(e, index)}
+                  value={tag.name}
+                  error={tagError.name}
+                />
+                <IconButton
+                  onClick={(e) => handleRemoveTag(e, index)}
+                  aria-label={"delete"}
+                  className={styles.btnDelete}
+                >
+                  <Trash svgClassName={styles.trashSvg} pathClassName={styles.trashPath} />
+                </IconButton>
+              </div>
+            ))}
             <Button
               className={styles["btn--add"]}
               label="Add tag"
@@ -166,7 +155,7 @@ function ExerciseForm({
 
           <div className={styles.muscles}>
             <Label label={"Muscles"}></Label>
-            {zip(formData.values.muscles, formData.errors.muscles).map(
+            {zip([formData.values.muscles, formData.errors.muscles]).map(
               ([muscle, muscleError], index) => (
                 <div key={muscle.key} className={styles.multiline}>
                   <Select
@@ -184,10 +173,7 @@ function ExerciseForm({
                     aria-label={"delete"}
                     className={styles.btnDelete}
                   >
-                    <Trash
-                      svgClassName={styles.trashSvg}
-                      pathClassName={styles.trashPath}
-                    />
+                    <Trash svgClassName={styles.trashSvg} pathClassName={styles.trashPath} />
                   </IconButton>
                 </div>
               )
@@ -198,15 +184,13 @@ function ExerciseForm({
               buttonSize="small"
               handleClick={handleAddMuscle}
               type="button"
-              disabled={
-                formData.values.muscles.length >= fieldProps.muscles._limit
-              }
+              disabled={formData.values.muscles.length >= fieldProps.muscles._limit}
             />
           </div>
 
           <div className={styles.tutorials}>
             <Label label={"Tutorials"}></Label>
-            {zip(formData.values.tutorials, formData.errors.tutorials).map(
+            {zip([formData.values.tutorials, formData.errors.tutorials]).map(
               ([tutorial, tutorialError], index) => (
                 <div key={tutorial.key} className={styles.multiline}>
                   <Input
@@ -223,10 +207,7 @@ function ExerciseForm({
                     aria-label={"delete"}
                     className={styles.btnDelete}
                   >
-                    <Trash
-                      svgClassName={styles.trashSvg}
-                      pathClassName={styles.trashPath}
-                    />
+                    <Trash svgClassName={styles.trashSvg} pathClassName={styles.trashPath} />
                   </IconButton>
                 </div>
               )
@@ -237,9 +218,7 @@ function ExerciseForm({
               buttonSize="small"
               handleClick={handleAddTutorial}
               type="button"
-              disabled={
-                formData.values.tutorials.length >= fieldProps.tutorials._limit
-              }
+              disabled={formData.values.tutorials.length >= fieldProps.tutorials._limit}
             />
           </div>
         </fieldset>
@@ -250,11 +229,7 @@ function ExerciseForm({
             handleClick={handleSubmit}
             label="Submit"
           ></Button>
-          <Button
-            type="button"
-            handleClick={handleCancel}
-            label="Cancel"
-          ></Button>
+          <Button type="button" handleClick={handleCancel} label="Cancel"></Button>
         </div>
       </form>
     </>

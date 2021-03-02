@@ -1,6 +1,5 @@
 @import "index.scss";
 
-$musclesSize: 30rem;
 $breakpoint: 56.7rem;
 
 .columns {
@@ -13,17 +12,13 @@ $breakpoint: 56.7rem;
 }
 
 .column {
-  & > * {
+  & > *:not(:last-child) {
     margin-bottom: 3.2rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 
   &:first-child {
     padding-right: 3.2rem;
-    width: $musclesSize;
+    width: 25rem;
     border-right: $content-separator-border;
 
     @media screen and (max-width: $breakpoint) {
@@ -40,20 +35,6 @@ $breakpoint: 56.7rem;
     @media screen and (max-width: $breakpoint) {
       padding-left: 0;
     }
-  }
-}
-
-.musclesSvg {
-  width: $musclesSize;
-  height: $musclesSize;
-}
-
-.goBack {
-  transition: transform 150ms ease-in-out;
-  margin-bottom: 2.4rem;
-
-  &:hover {
-    transform: translateX(-1rem);
   }
 }
 

@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 import Dashboard from "components/dashboard/Dashboard";
 import Exercises from "components/exercises/Exercises";
 import Routines from "components/routines/Routines";
+import Users from "components/users/Users";
 import Notifications from "components/reusable/Notifications";
 
 import { useNotification } from "context/NotificationProvider";
@@ -43,6 +44,9 @@ function Application() {
           </Route>
           <Route path={routes.app.statistics.self}>
             <Dashboard></Dashboard>
+          </Route>
+          <Route path={routes.app.users.self}>
+            <Users></Users>
           </Route>
         </Switch>
       </div>

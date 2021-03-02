@@ -9,23 +9,20 @@ import MuscleDiagram from "components/reusable/MuscleDiagram";
 import PageHeader from "../reusable/PageHeader";
 import CenteredSpinner from "components/reusable/CenteredSpinner";
 import Paragraph from "components/reusable/Paragraph";
-import IconButton from "components/reusable/IconButton";
 import LinkButton from "components/reusable/LinkButton";
-import LeftArrow from "components/icons/LeftArrow";
 import Button from "components/reusable/Button";
 import Box from "components/reusable/Box";
 
 import styles from "./RoutineDetailPage.module.scss";
 import routes from "utilities/routes";
 import { deleteRoutine, fetchRoutine, forkRoutine } from "services/routines";
+import GoBack from "components/reusable/GoBack";
 
 const RoutineUnitsInfo = ({ exercises }) => {
   return exercises.length ? (
     <RoutineUnitsTable exercises={exercises}></RoutineUnitsTable>
   ) : (
-    <Box className={styles.box}>
-      {"This routine doesn't have any exercises yet."}
-    </Box>
+    <Box className={styles.box}>{"This routine doesn't have any exercises yet."}</Box>
   );
 };
 
@@ -62,8 +59,6 @@ const RoutineDetailPage = () => {
   const history = useHistory();
   const notify = useNotify();
   const user = useUser();
-
-  console.log(routine);
 
   const handleFork = () => {
     forkRoutine(routine.pk)
@@ -115,9 +110,7 @@ const RoutineDetailPage = () => {
     <CenteredSpinner></CenteredSpinner>
   ) : (
     <>
-      <IconButton onClick={history.goBack} className={styles.goBack}>
-        <LeftArrow></LeftArrow>
-      </IconButton>
+      <GoBack history={history}></GoBack>
       <div className={styles.columns}>
         <div className={styles.column}>
           <PageHeader
@@ -125,10 +118,7 @@ const RoutineDetailPage = () => {
             title={routine.name}
             subtitle={routine.kind_display}
           ></PageHeader>
-          <MuscleDiagram
-            svgClassName={styles.musclesSvg}
-            muscles={rescaleMuscleCountObject(routine.muscles_count)}
-          ></MuscleDiagram>
+          <MuscleDiagram muscles={rescaleMuscleCountObject(routine.muscles_count)}></MuscleDiagram>
           <RoutineListInfo routine={routine}></RoutineListInfo>
           <RoutineButtons
             routine={routine}

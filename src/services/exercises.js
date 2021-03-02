@@ -9,15 +9,27 @@ import routes from "utilities/routes";
  * @param {boolean} discover - Determines if querystring should include discover
  * flag.
  */
-export const fetchExercises = async function (userPk, discover = false) {
-  const response = await fetch(
-    `${routes.api.exercises.self}?user=${userPk}${
-      discover ? "&discover=True" : ""
-    }`,
-    {
-      headers: header_with_token(),
-    }
-  );
+export const fetchExercises = async function (
+  userPk = null,
+  discover = false,
+  orderby = null,
+  limit = null
+) {
+  const userQueryParam = userPk
+    ? `user.${discover ? "neq" : "eq"}=${userPk}`
+    : "";
+  const orderbyQueryParam = orderby ? `orderby=${orderby}` : "";
+  const limitQueryParam = limit ? `limit=${limit}` : "";
+  const queryParams = [
+    userQueryParam,
+    orderbyQueryParam,
+    limitQueryParam,
+  ].filter((qp) => qp);
+  const queryString = queryParams.length > 0 ? "?" + queryParams.join("&") : "";
+
+  const response = await fetch(`${routes.api.exercises.self}${queryString}`, {
+    headers: header_with_token(),
+  });
   if (response.status !== 200) {
     return [];
   }

@@ -46,6 +46,9 @@ const routes = {
     routines: {
       self: "/routines",
     },
+    users: {
+      self: "/users",
+    },
   },
   notFound: "/404",
   forbidden: "/403",
