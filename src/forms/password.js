@@ -2,38 +2,17 @@ import { validateEmpty, validateLength } from "utilities/validators";
 
 const formDataInitial = {
   values: {
-    username: "",
-    email: "",
     password: "",
-    repeatPassword: "",
+    repeatedPassword: "",
   },
   errors: {
-    username: [],
-    email: [],
     password: [],
-    repeatPassword: [],
+    repeatedPassword: [],
   },
 };
 
 const fieldProps = {
-  _simpleFields: ["username", "email", "password", "repeatPassword"],
-  username: {
-    label: "Username",
-    htmlName: "username",
-    placeholder: "username",
-    type: "text",
-    validators: [
-      validateEmpty("Please provide username."),
-      validateLength(3, "Username should be at least 3 characters long."),
-    ],
-  },
-  email: {
-    label: "Email",
-    htmlName: "email",
-    placeholder: "email",
-    type: "email",
-    validators: [validateEmpty("Please provide email.")],
-  },
+  _simpleFields: ["password", "repeatedPassword"],
   password: {
     label: "Password",
     htmlName: "password",
@@ -44,9 +23,9 @@ const fieldProps = {
       validateLength(4, "Password should be at least 4 characters long."),
     ],
   },
-  repeatPassword: {
+  repeatedPassword: {
     label: "Repeat password",
-    htmlName: "repeatPassword",
+    htmlName: "repeatedPassword",
     placeholder: "repeat password",
     type: "password",
     validators: [validateEmpty("Please repeat your password.")],

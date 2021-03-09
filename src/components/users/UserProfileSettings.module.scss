@@ -1,0 +1,55 @@
+.List {
+  list-style-type: none;
+
+  &:not(:last-of-type) {
+    margin-bottom: 4rem;
+  }
+
+  &:last-of-type {
+    margin-bottom: 2rem;
+  }
+
+  &_item {
+    display: grid;
+    grid-template-columns: 15rem minmax(15rem, min-content) 1fr;
+    align-items: center;
+    min-height: 4rem;
+    column-gap: 3rem;
+
+    &___avatar {
+      align-items: flex-end;
+      margin-bottom: 1.1rem;
+    }
+
+    @media screen and (max-width: 27rem) {
+      grid-template-columns: 1fr;
+      margin-bottom: 2rem;
+      row-gap: 0.5rem;
+    }
+  }
+
+  &_itemValue {
+    color: var(--col-gray-3);
+  }
+
+  &_item > *:last-child {
+    justify-self: left;
+  }
+}
+
+.Edit {
+  width: 2rem;
+
+  &_path {
+    fill: var(--col-gray-3);
+  }
+}
+
+.Avatar {
+  width: 7rem;
+  height: 7rem;
+}
+
+.Title {
+  margin-bottom: 3rem;
+}

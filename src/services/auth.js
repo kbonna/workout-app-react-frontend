@@ -33,26 +33,22 @@ export async function loginUser(username, password) {
 /**
  * Signup function trying to create new user using users list endpoint.
  *
- * If new user is created it resolves without any value.
- *
- * If new user cannot be created it rejects with an error message read from
- * backend response.
- *
- * @param {string} username
- * @param {string} password
+ * Data should contain username, password and email. Function either resolves with 201 and new user
+ * object or rejects with 400 and corresponding field errors.
  */
-export async function signupUser(username, password) {
+export async function signupUser(data) {
   const response = await fetch(`${API_URL}/users/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username: username, password: password }),
+    body: JSON.stringify(data),
   });
-  if (response.status !== 201) {
-    const json = await response.json();
-    throw new Error(json.username[0]); // TODO: this is too specific, may lead to bugs later
+  const json = await response.json();
+  if (response.ok) {
+    return Promise.resolve(json);
   }
+  return Promise.reject(json);
 }
 
 /**

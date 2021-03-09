@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { Redirect, useHistory, useParams } from "react-router-dom";
-import { fetchRoutine, updateRoutine } from "services/routines";
+import { useHistory, useParams } from "react-router-dom";
+import { useUser } from "context/UserProvider";
+import { useNotify } from "context/NotificationProvider";
+
+import CenteredSpinner from "components/reusable/CenteredSpinner";
+import RoutineForm from "./RoutineForm";
+
 import routes from "utilities/routes";
+import { createRoutine } from "services/routines";
+import { fetchRoutine, updateRoutine } from "services/routines";
+import { fetchExercises } from "services/exercises";
 import { formReducer, FORM_ACTIONS, validateForm } from "reducers/form";
 import { formDataFromRoutine, formDataInitial, fieldProps } from "forms/routine";
 import { ROUTINE_ACTIONS } from "./Routines";
-import RoutineForm from "./RoutineForm";
-import { fetchExercises } from "services/exercises";
-import { useUser } from "context/UserProvider";
-import CenteredSpinner from "components/reusable/CenteredSpinner";
-import { useNotify } from "context/NotificationProvider";
-import { createRoutine } from "services/routines";
-import Header from "components/reusable/Header";
 
 const RoutineCreateUpdate = ({ action }) => {
-  const [fetched, setFetched] = useState(false);
   const [availableExercises, setAvailableExercises] = useState(null);
   const [formData, dispatch] = useReducer(formReducer, null);
   const { id: routineId } = useParams();
@@ -56,43 +56,30 @@ const RoutineCreateUpdate = ({ action }) => {
     history.goBack();
   };
 
-  const fetchAvailableExercisesData = () => {
-    fetchExercises(user.pk)
-      .then((availableExercises) => {
-        setAvailableExercises(availableExercises);
-      })
-      .catch(() => {
-        history.push(routes.notFound);
-      });
-  };
-
-  console.log(formData);
-
-  const fetchRoutineData = () => {
-    fetchRoutine(routineId)
-      .then((routine) => {
-        if (!routine.can_be_modified) {
-          console.log("forbidden");
-          history.push(routes.forbidden);
-        } else {
-          dispatch({
-            type: FORM_ACTIONS.SET_STATE,
-            state: formDataFromRoutine(routine),
-          });
-        }
-      })
-      .catch(() => {
-        history.push(routes.notFound);
-      });
-  };
-
   const fetchData = () => {
     if (action === ROUTINE_ACTIONS.CREATE) {
       dispatch({ type: FORM_ACTIONS.SET_STATE, state: formDataInitial });
-      fetchAvailableExercisesData();
+      fetchExercises(user.pk)
+        .then((availableExercises) => {
+          setAvailableExercises(availableExercises);
+        })
+        .catch(() => {
+          history.replace(routes.notFound);
+        });
     } else if (action === ROUTINE_ACTIONS.UPDATE) {
-      fetchRoutineData();
-      fetchAvailableExercisesData();
+      Promise.all([fetchRoutine(routineId), fetchExercises(user.pk)])
+        .then(([routine, availableExercises]) => {
+          if (!routine.can_be_modified) {
+            history.replace(routes.forbidden);
+          } else {
+            dispatch({
+              type: FORM_ACTIONS.SET_STATE,
+              state: formDataFromRoutine(routine),
+            });
+            setAvailableExercises(availableExercises);
+          }
+        })
+        .catch(() => history.replace(routes.notFound));
     }
   };
 
@@ -102,7 +89,9 @@ const RoutineCreateUpdate = ({ action }) => {
     <CenteredSpinner></CenteredSpinner>
   ) : (
     <>
-      <Header>{`${action} routine`}</Header>
+      <h1 className={"mb-5"}>{`${
+        action === ROUTINE_ACTIONS.CREATE ? "Create" : "Edit"
+      } routine`}</h1>
       <RoutineForm
         fieldProps={fieldProps}
         formData={formData}

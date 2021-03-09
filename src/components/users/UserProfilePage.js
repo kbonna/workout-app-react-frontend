@@ -56,9 +56,9 @@ const UserProfilePage = () => {
           <UserListInfo userProfile={data.userData}></UserListInfo>
           {String(user.pk) === userPk ? (
             <LinkButton
-              to={`${routes.app.users.user}${userPk}/edit-profile`}
+              to={routes.app.settings.profile.self}
               className={styles.Button}
-              label={"Edit profile"}
+              label={"Settings"}
             ></LinkButton>
           ) : null}
         </div>

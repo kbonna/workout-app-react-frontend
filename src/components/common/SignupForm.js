@@ -17,6 +17,8 @@ function SignupForm(props) {
   const notify = useNotify();
   let history = useHistory();
 
+  console.log(formData);
+
   const validateFormCustom = (formData) =>
     new Promise((resolve, reject) => {
       if (formData.values.password === formData.values.repeatPassword) {
@@ -26,37 +28,24 @@ function SignupForm(props) {
       }
     });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validate = Promise.all([
-      validateForm(fieldProps, formData),
-      validateFormCustom(formData),
-    ]);
-
-    validate
-      .then(() => {
-        signup(formData.values.username, formData.values.password)
-          .then(() => {
-            notify({
-              message: `Account ${formData.values.username} successfully created.`,
-              type: "success",
-            });
-            history.push(routes.app.self);
-          })
-          .catch((errors) => {
-            dispatch({
-              type: FORM_ACTIONS.UPDATE_ERRORS,
-              errors: { username: [errors.message] },
-            });
-          });
-      })
-      .catch((errors) => {
-        dispatch({
-          type: FORM_ACTIONS.UPDATE_ERRORS,
-          errors,
-        });
+    try {
+      await validateForm(fieldProps, formData);
+      await validateFormCustom(formData);
+      await signup(formData.values);
+      notify({
+        message: `Account ${formData.values.username} successfully created.`,
+        type: "success",
       });
+      history.push(routes.app.dashboard.self);
+    } catch (errors) {
+      dispatch({
+        type: FORM_ACTIONS.SET_ERRORS,
+        errors,
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -80,6 +69,16 @@ function SignupForm(props) {
           onChange={handleChange}
           value={formData.values.username}
           error={formData.errors.username}
+        ></Input>
+        <Input
+          className={styles.input}
+          label={fieldProps.email.label}
+          name={fieldProps.email.htmlName}
+          type={fieldProps.email.type}
+          placeholder={fieldProps.email.placeholder}
+          onChange={handleChange}
+          value={formData.values.email}
+          error={formData.errors.email}
         ></Input>
         <Input
           className={styles.input}

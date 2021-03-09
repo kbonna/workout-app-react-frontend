@@ -8,18 +8,13 @@ import Placeholder from "components/icons/Placeholder";
 import ListWithIcons from "components/reusable/ListWithIcons";
 
 import { timeSince } from "utilities/misc";
+import { fullLocation, fullName } from "utilities/formatting";
 
 const UserListInfo = ({ userProfile: user }) => {
   const { profile } = user;
 
-  const userName =
-    user.first_name + user.last_name
-      ? `${user.first_name}${user.first_name ? " " : ""}${user.last_name}`
-      : "–";
-  const userLocation =
-    profile.city + profile.country
-      ? `${profile.city}${profile.country ? ", " : ""}${profile.country}`
-      : "–";
+  const userName = fullName(user.first_name, user.last_name);
+  const userLocation = fullLocation(user.profile.city, user.profile.location);
   const userDateOfBirth = profile.date_of_birth || "–";
   const userGender = profile.gender_display || "–";
   const userLastLogin = user.last_login ? timeSince(new Date(user.last_login)) + " ago" : "never";

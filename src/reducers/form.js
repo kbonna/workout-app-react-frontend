@@ -1,10 +1,4 @@
-import {
-  isEmpty,
-  isString,
-  isNumber,
-  isBoolean,
-  isObject,
-} from "utilities/misc";
+import { isEmpty, isString, isNumber, isBoolean, isObject } from "utilities/misc";
 
 const FORM_ACTIONS = {
   SET_STATE: "set_state",
@@ -77,10 +71,7 @@ const formReducer = (state, action) => {
       // action.index
       // action.value
       [listName, fieldName] = action.name.split("__");
-      if (
-        !(listName in state.values) ||
-        !(fieldName in state.values[listName][action.index])
-      ) {
+      if (!(listName in state.values) || !(fieldName in state.values[listName][action.index])) {
         throw new Error(
           `List field ${action.name} with index ${action.index} is not part of the state`
         );
@@ -115,15 +106,11 @@ const formReducer = (state, action) => {
         ...state,
         errors: {
           ...state.errors,
-          [action.name]: state.errors[action.name].filter(
-            (_, i) => i !== action.index
-          ),
+          [action.name]: state.errors[action.name].filter((_, i) => i !== action.index),
         },
         values: {
           ...state.values,
-          [action.name]: state.values[action.name].filter(
-            (_, i) => i !== action.index
-          ),
+          [action.name]: state.values[action.name].filter((_, i) => i !== action.index),
         },
       };
     default:
@@ -167,17 +154,13 @@ const validateForm = (fieldProps, formData) =>
             if ("validators" in fieldProps[listFieldName][fieldName]) {
               formData.values[listFieldName].forEach((obj, index) => {
                 try {
-                  fieldProps[listFieldName][fieldName].validators.forEach(
-                    (validate) => {
-                      validate(obj[fieldName]);
-                    }
-                  );
+                  fieldProps[listFieldName][fieldName].validators.forEach((validate) => {
+                    validate(obj[fieldName]);
+                  });
                 } catch (error) {
                   // Adds error field when at least one value is wrong
                   if (!(listFieldName in errors)) {
-                    errors[listFieldName] = new Array(
-                      formData.values[listFieldName].length
-                    )
+                    errors[listFieldName] = new Array(formData.values[listFieldName].length)
                       .fill(null)
                       .map(() => ({}));
                   }
@@ -196,4 +179,12 @@ const validateForm = (fieldProps, formData) =>
     }
   });
 
-export { FORM_ACTIONS, formReducer, validateForm };
+const handleChangeField = (dispatch) => (e) => {
+  dispatch({
+    type: FORM_ACTIONS.CHANGE_FIELD,
+    name: e.target.name,
+    value: e.target.value,
+  });
+};
+
+export { FORM_ACTIONS, formReducer, validateForm, handleChangeField };

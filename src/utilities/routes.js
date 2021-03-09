@@ -37,6 +37,13 @@ const routes = {
     statistics: {
       self: "/statistics",
     },
+    settings: {
+      self: "/settings",
+      profile: {
+        self: "/profile",
+        edit: "/edit",
+      },
+    },
   },
   api: {
     self: API_URL,

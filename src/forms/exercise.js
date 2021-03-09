@@ -1,8 +1,4 @@
-import {
-  validateAllowedCharacters,
-  validateEmpty,
-  validateOneOf,
-} from "utilities/validators";
+import { validateAllowedCharacters, validateEmpty, validateOneOf } from "utilities/validators";
 import { randomKey } from "utilities/misc";
 import {
   EXERCISE_TYPES,
@@ -95,9 +91,7 @@ const fieldProps = {
       label: null,
       htmlName: "tutorials__url",
       placeholder: "add tutorial",
-      validators: [
-        validateEmpty("Please provide YouTube url or remove this field."),
-      ],
+      validators: [validateEmpty("Please provide YouTube url or remove this field.")],
     },
   },
 };

@@ -1,0 +1,29 @@
+.Modal {
+  padding: 5rem;
+  background-color: var(--col-gray-5);
+  min-width: 35rem;
+
+  &_title {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--col-gray-1);
+  }
+}
+
+.Form {
+  &_fieldset {
+    border: none;
+  }
+
+  &_input:not(:last-of-type) {
+    margin-bottom: 0.8rem;
+  }
+
+  &_input:last-of-type {
+    margin-bottom: 3rem;
+  }
+
+  &_submitButton {
+    width: 100%;
+  }
+}

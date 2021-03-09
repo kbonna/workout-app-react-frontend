@@ -54,10 +54,34 @@ const validateRange = (minValue, maxValue, msg) => {
   return validate;
 };
 
+const validateEmail = (msg) => {
+  msg = typeof msg !== "undefined" ? msg : "Incorrect email address.";
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  const validate = (value) => {
+    if (!re.test(String(value).toLowerCase())) {
+      throw new Error(msg);
+    }
+  };
+  return validate;
+};
+
+// multi-field validator
+const validateRepeatedPassword = (password1, password2, errorFieldName) =>
+  new Promise((resolve, reject) => {
+    if (password1 === password2) {
+      resolve();
+    } else {
+      reject({ [errorFieldName]: ["Passwords are not matching."] });
+    }
+  });
+
 export {
   validateRange,
   validateEmpty,
   validateLength,
   validateOneOf,
   validateAllowedCharacters,
+  validateEmail,
+  validateRepeatedPassword,
 };

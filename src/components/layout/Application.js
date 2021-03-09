@@ -1,13 +1,13 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
 import Dashboard from "components/dashboard/Dashboard";
 import Exercises from "components/exercises/Exercises";
 import Routines from "components/routines/Routines";
-import Users from "components/users/Users";
 import Notifications from "components/reusable/Notifications";
-
+import Settings from "components/users/Settings";
+import UserProfilePage from "components/users/UserProfilePage";
 import { useNotification } from "context/NotificationProvider";
 
 import styles from "./Application.module.scss";
@@ -19,10 +19,7 @@ function Application() {
     <>
       <div className={styles.appContent}>
         <Sidebar></Sidebar>
-        <Notifications
-          notifications={notifications}
-          dispatch={dispatch}
-        ></Notifications>
+        <Notifications notifications={notifications} dispatch={dispatch}></Notifications>
         <Switch>
           <Route path={routes.app.dashboard.self}>
             <Dashboard></Dashboard>
@@ -45,9 +42,13 @@ function Application() {
           <Route path={routes.app.statistics.self}>
             <Dashboard></Dashboard>
           </Route>
-          <Route path={routes.app.users.self}>
-            <Users></Users>
+          <Route exact path={`${routes.app.users.user}:pk`}>
+            <UserProfilePage></UserProfilePage>
           </Route>
+          <Route path={routes.app.settings.self}>
+            <Settings></Settings>
+          </Route>
+          <Redirect to={routes.notFound}></Redirect>
         </Switch>
       </div>
     </>

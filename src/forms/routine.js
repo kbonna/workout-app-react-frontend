@@ -1,8 +1,4 @@
-import {
-  validateEmpty,
-  validateOneOf,
-  validateRange,
-} from "utilities/validators";
+import { validateEmpty, validateOneOf, validateRange } from "utilities/validators";
 import { randomKey } from "utilities/misc";
 import { ROUTINE_TYPES, ROUTINE_TYPES_DISPLAY } from "utilities/models";
 
@@ -49,11 +45,7 @@ const fieldProps = {
       type: "number",
       modifier: (value) => parseInt(value),
       validators: [
-        validateRange(
-          1,
-          50,
-          "Number of sets should be at least 1 and no more than 50."
-        ),
+        validateRange(1, 50, "Number of sets should be at least 1 and no more than 50."),
       ],
       minValue: 1,
       maxValue: 50,

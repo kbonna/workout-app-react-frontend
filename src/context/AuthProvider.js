@@ -27,9 +27,9 @@ function AuthProvider(props) {
     setUser({ ...user, loggedIn: true });
   };
 
-  const signup = async (username, password) => {
-    await signupUser(username, password);
-    await login(username, password);
+  const signup = async (data) => {
+    await signupUser(data);
+    await login(data.username, data.password);
   };
 
   const logout = () => {
