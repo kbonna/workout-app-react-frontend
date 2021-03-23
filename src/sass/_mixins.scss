@@ -1,0 +1,5 @@
+@mixin spread-children-vertically($gap: 0.8rem) {
+  & > *:not(:last-child) {
+    margin-right: $gap;
+  }
+}

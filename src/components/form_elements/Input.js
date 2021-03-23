@@ -36,7 +36,7 @@ Input.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  type: PropTypes.oneOf(["text", "password", "number", "email"]),
+  type: PropTypes.oneOf(["text", "password", "number", "email", "date"]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.node,
@@ -44,6 +44,7 @@ Input.propTypes = {
 };
 
 Input.defaultProps = {
+  type: "text",
   label: null,
   error: [],
 };

@@ -1,22 +1,22 @@
-.btn {
+.Button {
   cursor: pointer;
   text-decoration: none;
   text-align: center;
   display: inline-block;
 
-  &--normal {
+  &__normal {
     border-radius: 0.3rem;
     padding: 0.4em 0.8em;
     font-size: 1em;
   }
 
-  &--small {
+  &__small {
     border-radius: 0.2rem;
     padding: 0.32em 0.64em;
     font-size: 0.85em;
   }
 
-  &--light {
+  &__light {
     background-color: var(--col-gray-6);
     border: 0.1rem solid var(--col-gray-5);
     color: var(--col-gray-1);
@@ -25,14 +25,14 @@
     }
   }
 
-  &--light:hover {
+  &__light:hover {
     background-color: var(--col-gray-5);
     &:disabled {
       background-color: var(--col-gray-6);
     }
   }
 
-  &--dark {
+  &__dark {
     border: 0.1rem solid var(--col-gray-1);
     background-color: var(--col-gray-2);
     color: var(--col-white);
@@ -41,14 +41,14 @@
     }
   }
 
-  &--dark:hover {
+  &__dark:hover {
     background-color: var(--col-gray-1);
     &:disabled {
       background-color: var(--col-gray-2);
     }
   }
 
-  &--error {
+  &__error {
     border: 0.1rem solid var(--col-error-5);
     background-color: var(--col-error-6);
     color: var(--col-error-1);
@@ -57,7 +57,7 @@
     }
   }
 
-  &--error:hover {
+  &__error:hover {
     background-color: var(--col-error-5);
     &:disabled {
       background-color: var(--col-error-6);

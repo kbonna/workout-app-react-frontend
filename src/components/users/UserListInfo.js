@@ -14,7 +14,7 @@ const UserListInfo = ({ userProfile: user }) => {
   const { profile } = user;
 
   const userName = fullName(user.first_name, user.last_name);
-  const userLocation = fullLocation(user.profile.city, user.profile.location);
+  const userLocation = fullLocation(user.profile.city, user.profile.country);
   const userDateOfBirth = profile.date_of_birth || "–";
   const userGender = profile.gender_display || "–";
   const userLastLogin = user.last_login ? timeSince(new Date(user.last_login)) + " ago" : "never";

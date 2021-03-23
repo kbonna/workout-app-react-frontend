@@ -20,6 +20,10 @@
   }
 }
 
+.input[type="date"]{
+  // display: none;
+}
+
 .error {
   color: var(--col-error-1);
   font-size: 0.8em;

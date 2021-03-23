@@ -61,6 +61,7 @@ const routes = {
   forbidden: "/403",
   login: "/login",
   signup: "/signup",
+  root: "",
 };
 
 const createFullRoutesRecursively = (obj, prevPath = "") => {

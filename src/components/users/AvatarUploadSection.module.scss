@@ -1,0 +1,26 @@
+.Section {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  row-gap: 1rem;
+  column-gap: 2rem;
+  grid-template-areas:
+    "label label"
+    "avatar buttons";
+
+  &_label {
+    grid-area: label;
+  }
+
+  &_avatar {
+    grid-area: avatar;
+  }
+
+  &_buttons {
+    grid-area: buttons;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 15rem;
+    gap: 1rem;
+  }
+}

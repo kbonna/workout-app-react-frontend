@@ -1,66 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useUser } from "context/UserProvider";
-import { useAuth } from "context/AuthProvider";
 import { FLAGS_ACTIONS, useFlags } from "context/FlagsProvider";
+import { useUser } from "context/UserProvider";
+import { Link } from "react-router-dom";
 
-import Button from "components/reusable/Button";
+import Dropdown from "./Dropdown";
 import Burger from "./Burger";
-import "./Header.scss";
+
+import styles from "./Header.module.scss";
+import routes from "utilities/routes";
 
 function Header(props) {
   const [flags, dispatchFlags] = useFlags();
-  const { logout } = useAuth();
   const user = useUser();
-
-  // Left-sied logo based on login status
-  let homePath;
-  if (!user.loggedIn) {
-    homePath = "/";
-  } else {
-    homePath = "/app/dashboard";
-  }
-
-  // Right-side navigation based on login status
-  let headerNav;
-  if (!user.loggedIn) {
-    headerNav = (
-      <>
-        <Link to="/login">
-          <Button label="Login"></Button>
-        </Link>
-        <Link to="/signup">
-          <Button label="Sign up" className="mx-1"></Button>
-        </Link>
-      </>
-    );
-  } else {
-    headerNav = (
-      <>
-        <span className="header__span">Hello, {user.username}.</span>
-        <Link to="/">
-          <Button handleClick={logout} label="Logout" className="mx-2"></Button>
-        </Link>
-        <Burger
-          handleClick={() => {
-            dispatchFlags({ type: FLAGS_ACTIONS.TOGGLE_SIDEBAR });
-          }}
-          isOpened={flags.isSidebarOpen}
-        ></Burger>
-      </>
-    );
-  }
+  const handleBurgerClick = () => {
+    dispatchFlags({ type: FLAGS_ACTIONS.TOGGLE_SIDEBAR });
+  };
 
   return (
-    <>
-      <nav className="header">
-        <Link to={homePath} className="header__logo">
-          Workout App
-        </Link>
-        <div className="header__nav">{headerNav}</div>
-      </nav>
-      {props.children}
-    </>
+    <header className={styles.Header}>
+      <Link
+        to={user.loggedIn ? routes.app.dashboard.self : routes.root}
+        className={styles.Header_logo}
+      >
+        Workout App
+      </Link>
+      <div className={styles.Header_menu}>
+        <Dropdown></Dropdown>
+        {user.loggedIn ? (
+          <Burger onClick={handleBurgerClick} isOpened={flags.isSidebarOpen}></Burger>
+        ) : null}
+      </div>
+    </header>
   );
 }
 

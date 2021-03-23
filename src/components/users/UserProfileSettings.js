@@ -89,11 +89,18 @@ const UserProfileSettings = () => {
           </span>
         </li>
         <li className={styles.List_item}>
+          <span className={styles.List_itemLabel}>Date of birth:</span>
+          <span className={styles.List_itemValue}>{userData.profile.date_of_birth || "–"}</span>
+        </li>
+        <li className={styles.List_item}>
           <span className={styles.List_itemLabel}>Gender:</span>
-          <span className={styles.List_itemValue}>{userData.profile.gender && "–"}</span>
+          <span className={styles.List_itemValue}>{userData.profile.gender_display || "–"}</span>
         </li>
       </ul>
-      <LinkButton to={routes.app.settings.profile.edit} label={"Edit profile"}></LinkButton>
+      <div className={styles.Buttons}>
+        <LinkButton to={routes.app.settings.profile.edit} label={"Edit profile"}></LinkButton>
+        <LinkButton to={`${routes.app.users.user}${user.pk}`} label={"Visit profile"}></LinkButton>
+      </div>
     </>
   );
 };

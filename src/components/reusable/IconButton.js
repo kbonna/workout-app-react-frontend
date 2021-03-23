@@ -6,7 +6,7 @@ import { classNames } from "utilities/misc";
 function IconButton({ children, onClick, className, ...rest }) {
   const buttonClasses = classNames({
     [styles.button]: true,
-    [className]: className !== undefined,
+    [className]: className,
   });
 
   return (
@@ -21,10 +21,7 @@ IconButton.defaultProps = {
 };
 
 IconButton.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   className: PropTypes.string,
   handleClick: PropTypes.func,
 };

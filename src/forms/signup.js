@@ -1,4 +1,4 @@
-import { validateEmpty, validateLength } from "utilities/validators";
+import { validateEmail, validateEmpty, validateLength } from "utilities/validators";
 
 const formDataInitial = {
   values: {
@@ -32,7 +32,7 @@ const fieldProps = {
     htmlName: "email",
     placeholder: "email",
     type: "email",
-    validators: [validateEmpty("Please provide email.")],
+    validators: [validateEmpty("Please provide email."), validateEmail()],
   },
   password: {
     label: "Password",

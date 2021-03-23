@@ -1,3 +1,5 @@
+@import "index.scss";
+
 .List {
   list-style-type: none;
 
@@ -52,4 +54,8 @@
 
 .Title {
   margin-bottom: 3rem;
+}
+
+.Buttons {
+  @include spread-children-vertically;
 }

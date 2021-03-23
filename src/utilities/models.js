@@ -1,4 +1,4 @@
-export const MUSCLES = [
+const MUSCLES = [
   "cal",
   "qua",
   "ham",
@@ -15,7 +15,7 @@ export const MUSCLES = [
   "for",
 ];
 
-export const MUSCLES_DISPLAY = [
+const MUSCLES_DISPLAY = [
   "Calves",
   "Quads",
   "Hamstrings",
@@ -32,18 +32,28 @@ export const MUSCLES_DISPLAY = [
   "Forearms",
 ];
 
-export const EXERCISE_TYPES = ["rep", "rew", "tim", "dis"];
+const EXERCISE_TYPES = ["rep", "rew", "tim", "dis"];
 
-export const EXERCISE_TYPES_DISPLAY = [
-  "reps",
-  "reps x weigh",
-  "time",
-  "distance",
-];
+const EXERCISE_TYPES_DISPLAY = ["reps", "reps x weigh", "time", "distance"];
 
-export const ASCII_AND_DIGITS =
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const ASCII_AND_DIGITS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-export const ROUTINE_TYPES = ["sta", "cir"];
+const ROUTINE_TYPES = ["sta", "cir"];
 
-export const ROUTINE_TYPES_DISPLAY = ["standard", "circuit"];
+const ROUTINE_TYPES_DISPLAY = ["standard", "circuit"];
+
+const GENDER_TYPES = ["m", "f"];
+
+const GENDER_TYPES_DISPLAY = ["male", "female"];
+
+export {
+  MUSCLES,
+  MUSCLES_DISPLAY,
+  EXERCISE_TYPES,
+  EXERCISE_TYPES_DISPLAY,
+  ASCII_AND_DIGITS,
+  ROUTINE_TYPES,
+  ROUTINE_TYPES_DISPLAY,
+  GENDER_TYPES,
+  GENDER_TYPES_DISPLAY,
+};

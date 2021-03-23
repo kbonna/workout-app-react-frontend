@@ -17,8 +17,6 @@ function SignupForm(props) {
   const notify = useNotify();
   let history = useHistory();
 
-  console.log(formData);
-
   const validateFormCustom = (formData) =>
     new Promise((resolve, reject) => {
       if (formData.values.password === formData.values.repeatPassword) {
@@ -58,7 +56,7 @@ function SignupForm(props) {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h1 className={styles.title}>Register</h1>
+      <h1 className={styles.title}>Sign up</h1>
       <fieldset className={styles.fieldset}>
         <Input
           className={styles.input}

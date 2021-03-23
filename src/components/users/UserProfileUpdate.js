@@ -1,52 +1,90 @@
-import Avatar from "components/reusable/Avatar";
-import CenteredSpinner from "components/reusable/CenteredSpinner";
+import React, { useEffect, useReducer, useState } from "react";
+import { useHistory } from "react-router";
+import { useNotify } from "context/NotificationProvider";
 import { useUser } from "context/UserProvider";
-import React, { useEffect, useState } from "react";
-import { header_with_token } from "services/auth";
-import { fetchUser } from "services/users";
-import routes, { BASE_URL } from "utilities/routes";
+
+import CenteredSpinner from "components/reusable/CenteredSpinner";
+import AvatarUploadSection from "./AvatarUploadSection";
+import UserProfileForm from "./UserProfileForm";
+
+import { formReducer, FORM_ACTIONS, validateForm } from "reducers/form";
+import { fetchUser, updateUserProfile } from "services/users";
+import {
+  fieldProps,
+  formDataFromUserData,
+  userDataFromFormData,
+  formErrorsFromUserDataErrors,
+} from "forms/profile";
+import routes from "utilities/routes";
 
 const UserProfileUpdate = () => {
   const user = useUser();
-  const [userData, setUserData] = useState(null);
+  const [formData, dispatch] = useReducer(formReducer, null);
+  const [profilePictureURL, setProfilePictureURL] = useState(null);
+  const notify = useNotify();
+  const history = useHistory();
 
-  const handleChange = (e) => {
-    const image = e.target.files[0];
-    const imageData = new FormData();
-    imageData.append("profile_picture", image);
-
-    console.log(imageData);
-
-    // users/<int:user_pk>/profile_picture
-    fetch(`${routes.api.users.self}${user.pk}/profile_picture`, {
-      method: "PUT",
-      body: imageData,
-      headers: header_with_token(),
-    }).then((response) => {
-      response.json().then((json) => {
-        console.log(json);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Frontend validation
+      await validateForm(fieldProps, formData);
+    } catch (errors) {
+      notify({
+        message: "Form has errors. Fix them and resubmit again.",
+        type: "error",
       });
-    });
+      dispatch({
+        type: FORM_ACTIONS.UPDATE_ERRORS,
+        errors,
+      });
+    }
+    try {
+      // Backend validation has to be separated because of different format of error JSON (backend
+      // serializer is nested, whereas frontend informations are represented by "flat" structure)
+      await updateUserProfile(userDataFromFormData(formData), user.pk);
+      history.push(`${routes.app.settings.profile.self}`);
+      notify({
+        message: `Successfully updated your profile.`,
+        type: "success",
+      });
+    } catch (errors) {
+      console.log("backend fail", formErrorsFromUserDataErrors(errors));
+      dispatch({
+        type: FORM_ACTIONS.UPDATE_ERRORS,
+        errors: formErrorsFromUserDataErrors(errors),
+      });
+    }
   };
 
   useEffect(() => {
     fetchUser(user.pk)
       .then((userData) => {
-        setUserData(userData);
+        console.log(userData);
+        dispatch({ type: FORM_ACTIONS.SET_STATE, state: formDataFromUserData(userData) });
+        setProfilePictureURL(userData.profile.profile_picture);
       })
       .catch();
     // eslint-disable-next-line
   }, []);
 
-  console.log(userData);
+  console.log(formData, profilePictureURL);
 
-  return userData === null ? (
+  return formData === null ? (
     <CenteredSpinner></CenteredSpinner>
   ) : (
     <>
-      <h1>Edit your profile</h1>
-      Avatar: <input onChange={handleChange} type="file" accept="image/png, image/jpeg"></input>
-      <Avatar src={BASE_URL + userData.profile.profile_picture}></Avatar>
+      <h1 className={"mb-5"}>Edit your profile</h1>
+      <AvatarUploadSection
+        profilePictureURL={profilePictureURL}
+        setProfilePictureURL={setProfilePictureURL}
+        className={"mb-5"}
+      ></AvatarUploadSection>
+      <UserProfileForm
+        formData={formData}
+        dispatch={dispatch}
+        handleSubmit={handleSubmit}
+      ></UserProfileForm>
     </>
   );
 };

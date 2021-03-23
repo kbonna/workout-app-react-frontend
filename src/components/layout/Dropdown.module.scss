@@ -1,0 +1,86 @@
+@import "index.scss";
+
+.Dropdown {
+  position: relative;
+
+  &_avatarSvg {
+    height: 2.5rem;
+    width: 100%;
+    fill: var(--col-white);
+  }
+
+  &_list {
+    display: none;
+    list-style-type: none;
+    position: absolute;
+    background-color: white;
+    bottom: -1rem;
+    right: 0;
+    color: var(--col-gray-1);
+    transform: translateY(100%);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.3);
+
+    &___open {
+      display: block;
+    }
+  }
+
+  &_listItem {
+    &:hover {
+      background-color: var(--col-gray-5);
+    }
+    &:not(:last-of-type) {
+      border-bottom: $content-separator-border;
+    }
+    min-width: 17rem;
+  }
+
+  &_button {
+    cursor: pointer;
+    font-size: inherit;
+    background-color: inherit;
+    border: none;
+    width: 100%;
+  }
+
+  &_link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  &_icon {
+    width: 2rem;
+    margin-right: 1.5rem;
+  }
+
+  &_separator {
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    font-size: 1.3rem;
+    padding: 1.5rem 1.5rem 0.1rem 1.5rem;
+
+    i {
+      font-weight: bold;
+    }
+  }
+
+  &_avatarArrowPath {
+    transition: all 170ms ease-in-out;
+    transform-origin: 86.67% 56.47%;
+    &___open {
+      fill: var(--col-gray-4);
+      transform: rotateX(180deg);
+    }
+  }
+
+  &_username {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%);
+    font-weight: bold;
+  }
+}
