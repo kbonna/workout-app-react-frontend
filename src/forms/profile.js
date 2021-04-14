@@ -35,7 +35,7 @@ const fieldProps = {
     placeholder: "gender",
     options: GENDER_TYPES,
     optionsDisplay: GENDER_TYPES_DISPLAY,
-    validators: [validateOneOf(GENDER_TYPES, "Incorrect gender.")],
+    validators: [validateOneOf(GENDER_TYPES.concat([""]) , "Incorrect gender.")],
   },
 };
 

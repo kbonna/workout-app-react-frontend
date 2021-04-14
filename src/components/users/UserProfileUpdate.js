@@ -25,6 +25,7 @@ const UserProfileUpdate = () => {
   const history = useHistory();
 
   const handleSubmit = async (e) => {
+    // TODO: fix invalid frontend values still goes to server
     e.preventDefault();
     try {
       // Frontend validation
